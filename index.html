@@ -9,12 +9,12 @@
         :root {
             --bg: #000000;
             --surface: #0a0e14;
-            --accent: #00ffc3; /* Verde Dopamina */
-            --danger: #ff0055; /* Rosa Alerta */
-            --gold: #ffcc00;   /* Ouro Exclusivo */
+            --accent: #00ffc3; /* Verde Elétrico */
+            --danger: #ff0055; /* Rosa Neon */
+            --gold: #ffcc00;   /* Destaque Alpha */
             --text: #ffffff;
             --text-dim: #64748b;
-            --border: rgba(0, 255, 195, 0.15);
+            --border: rgba(0, 255, 195, 0.12);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,160 +23,119 @@
             color: var(--text); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             overflow: hidden;
-            /* Grânulos de ruído sutil para textura de terminal caro */
             background-image: radial-gradient(circle at 50% 50%, #0a1118 0%, #000 100%);
         }
 
-        /* Ticker com brilho neon */
+        /* Ticker Superior Limpo */
         .live-ticker { 
             background: #000; 
             border-bottom: 1px solid var(--border); 
-            padding: 10px 0; 
+            padding: 12px 0; 
             font-family: 'JetBrains Mono'; 
             font-size: 11px; 
             color: var(--accent); 
-            box-shadow: 0 0 15px rgba(0, 255, 195, 0.1);
+            overflow: hidden;
+            letter-spacing: 1px;
         }
+        .ticker-move { display: inline-block; white-space: nowrap; animation: ticker-scroll 60s linear infinite; }
+        @keyframes ticker-scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
 
         header { 
-            padding: 20px 30px; 
+            padding: 15px 30px; 
             border-bottom: 1px solid var(--border); 
             display: flex; 
             justify-content: space-between; 
             align-items: center;
         }
-        
-        .logo { 
-            font-size: 22px; 
-            font-weight: 800; 
-            letter-spacing: -1px; 
-            color: #fff;
-            text-shadow: 0 0 10px rgba(0, 255, 195, 0.3);
-        }
+        .logo { font-size: 22px; font-weight: 800; letter-spacing: -1px; text-transform: uppercase; }
         .logo span { color: var(--accent); }
 
-        .container { display: flex; height: calc(100vh - 105px); }
+        .container { display: flex; height: calc(100vh - 100px); }
 
-        /* Sidebar com efeito de vidro */
-        aside { 
-            width: 240px; 
-            background: rgba(10, 14, 20, 0.8); 
-            padding: 25px; 
-            border-right: 1px solid var(--border);
-        }
-
+        /* Menu Lateral */
+        aside { width: 220px; background: rgba(0,0,0,0.4); padding: 20px; border-right: 1px solid var(--border); }
         .nav-btn { 
-            width: 100%; padding: 14px; background: transparent; border: none; 
+            width: 100%; padding: 12px; background: transparent; border: none; 
             color: var(--text-dim); text-align: left; cursor: pointer; 
-            font-weight: 700; margin-bottom: 8px; transition: 0.3s;
-            font-size: 12px; letter-spacing: 1px;
-            border-radius: 4px;
+            font-weight: 700; margin-bottom: 5px; transition: 0.3s; font-size: 11px;
+            border-radius: 6px; text-transform: uppercase;
         }
-        .nav-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
-        .nav-btn.active { 
-            color: #000; 
-            background: var(--accent); 
-            box-shadow: 0 0 20px rgba(0, 255, 195, 0.4);
-        }
+        .nav-btn.active { color: #000; background: var(--accent); box-shadow: 0 0 15px rgba(0, 255, 195, 0.3); }
 
-        main { flex: 1; padding: 30px; overflow-y: auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        /* Grid de Cards */
+        main { flex: 1; padding: 25px; overflow-y: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
 
-        /* Card com Animação de Dopamina */
         .card { 
-            background: #080a0f; 
+            background: #0d1117; 
             border: 1px solid var(--border); 
-            border-radius: 16px; 
-            padding: 24px; 
+            border-radius: 12px; 
+            padding: 22px; 
             cursor: pointer; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
-        .card:hover { 
-            transform: scale(1.03); 
-            border-color: var(--accent);
-            box-shadow: 0 0 30px rgba(0, 255, 195, 0.15);
-        }
+        .card:hover { border-color: var(--accent); transform: translateY(-3px); background: #121821; }
         
-        /* Gráfico de fundo mais nítido */
+        /* Sparkline no Hover */
         .hover-chart {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 80px;
-            opacity: 0.1; transition: 0.5s; pointer-events: none;
-            filter: saturate(2) brightness(1.5);
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
+            opacity: 0; transition: 0.4s; pointer-events: none;
+            filter: hue-rotate(140deg) brightness(1.5);
         }
-        .card:hover .hover-chart { opacity: 0.6; height: 100px; }
+        .card:hover .hover-chart { opacity: 0.4; }
 
-        .symbol { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 13px; font-weight: 700; }
-        .price { font-size: 32px; font-weight: 800; margin: 10px 0; letter-spacing: -1px; }
+        .symbol { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 12px; font-weight: 700; margin-bottom: 8px; display: block; }
+        .price { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+        .stock-name { font-size: 11px; color: var(--text-dim); margin-bottom: 15px; height: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         
         .badge { 
-            font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 6px; 
+            font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 4px; 
             display: inline-flex; align-items: center; gap: 5px;
         }
-        .up { background: rgba(0, 255, 195, 0.15); color: var(--accent); animation: pulse-green 2s infinite; }
-        .down { background: rgba(255, 0, 85, 0.15); color: var(--danger); }
+        .up { background: rgba(0, 255, 195, 0.1); color: var(--accent); }
+        .down { background: rgba(255, 0, 85, 0.1); color: var(--danger); }
 
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(0, 255, 195, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(0, 255, 195, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 255, 195, 0); }
-        }
-
-        /* News Sidebar - Efeito Alpha */
+        /* Barra de Notícias Lateral */
         .news-sidebar {
-            width: 50px; background: #05070a; border-left: 1px solid var(--border);
-            transition: width 0.5s cubic-bezier(0.85, 0, 0.15, 1);
+            width: 45px; background: #05070a; border-left: 1px solid var(--border);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .news-sidebar:hover { width: 420px; }
-        
-        .news-indicator { height: 100%; display: flex; align-items: center; justify-content: center; }
-        .news-indicator span { 
-            transform: rotate(90deg); white-space: nowrap; font-size: 11px; 
-            color: var(--gold); font-weight: 800; letter-spacing: 4px;
-        }
+        .news-sidebar:hover { width: 380px; }
+        .news-indicator { height: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .news-indicator span { transform: rotate(90deg); white-space: nowrap; font-size: 10px; color: var(--gold); font-weight: 800; letter-spacing: 3px; }
 
-        .news-content { padding: 30px; opacity: 0; transition: 0.3s; visibility: hidden; }
+        .news-content { padding: 25px; opacity: 0; transition: 0.2s; visibility: hidden; width: 335px; }
         .news-sidebar:hover .news-content { opacity: 1; visibility: visible; }
 
-        .news-folder { margin-bottom: 20px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,204,0,0.2); }
-        .folder-header { 
-            padding: 16px; cursor: pointer; display: flex; justify-content: space-between; 
-            font-size: 12px; font-weight: 800; color: var(--gold);
-        }
-        .news-item { padding: 15px; border-top: 1px solid rgba(255,204,0,0.1); }
+        .folder-header { font-size: 11px; font-weight: 800; color: var(--gold); margin-bottom: 20px; letter-spacing: 1px; border-bottom: 1px solid rgba(255,204,0,0.2); padding-bottom: 10px; }
+        .news-item { margin-bottom: 15px; border-left: 2px solid var(--accent); padding-left: 12px; }
         .news-time { font-family: 'JetBrains Mono'; font-size: 10px; color: var(--accent); }
-        .news-text { font-size: 14px; font-weight: 600; margin-top: 5px; line-height: 1.5; }
-
+        .news-text { font-size: 13px; font-weight: 600; margin-top: 4px; line-height: 1.4; }
     </style>
 </head>
 <body>
 
 <div class="live-ticker">
-    <div class="ticker-move" id="live-ticker-inner">ALPHAMARKETCAP // ELITE TERMINAL // REAL-TIME DATA // DOPAMINE FLOW ENABLED...</div>
+    <div class="ticker-move" id="live-ticker-inner">CARREGANDO DADOS ALPHA...</div>
 </div>
 
 <header>
     <div class="logo">ALPHA<span>MARKETCAP</span></div>
-    <div id="clock" style="font-family: 'JetBrains Mono'; font-size: 13px; color: var(--gold); font-weight: 700;">00:00:00</div>
+    <div id="clock" style="font-family: 'JetBrains Mono'; font-size: 13px; color: var(--gold);">00:00:00</div>
 </header>
 
 <div class="container">
     <aside id="menu-side"></aside>
-
     <main>
         <div class="grid" id="market-grid"></div>
     </main>
-
     <div class="news-sidebar">
         <div class="news-indicator"><span>PREMIUM INTELLIGENCE</span></div>
         <div class="news-content">
-            <div class="news-folder">
-                <div class="folder-header" onclick="toggleFolder('today-news')">
-                    🔥 TODAY'S ALPHA NEWS <span id="arrow-today">▼</span>
-                </div>
-                <div class="folder-body open" id="today-news" style="display:block;"></div>
-            </div>
+            <div class="folder-header">📁 TODAY'S MARKET NEWS</div>
+            <div id="today-news"></div>
         </div>
     </div>
 </div>
@@ -185,24 +144,15 @@
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9hPdpNw-jrALbP32-Pgqhwe_X98uaZht0tjtZXidCFwiXvXTjbJc5diOaI270W8m_hyHYpd5xwlQl/pub?gid=0&single=true&output=csv';
     const sectors = ["Tecnologia", "Defesa", "Energia", "Cibersegurança", "Bancos", "Commodities", "Logística", "Saúde", "Varejo", "Refúgio"];
     
-    const newsArchive = [
-        { time: "15:30", text: "WHALE ALERT: Fluxo massivo detectado em opções de tecnologia." },
-        { time: "12:10", text: "Alpha Cap indica: Momento de acumulação em ativos de Defesa." },
-        { time: "09:00", text: "Terminal Conectado. Prepare-se para a volatilidade." }
-    ];
+    // Função para limpar sujeira nos textos (aspas, espaços extras)
+    function clean(text) {
+        if (!text) return "";
+        return text.replace(/"/g, '').trim();
+    }
 
     setInterval(() => { 
         document.getElementById('clock').innerText = new Date().toLocaleTimeString(); 
     }, 1000);
-
-    function renderNews() {
-        document.getElementById('today-news').innerHTML = newsArchive.map(n => `
-            <div class="news-item">
-                <span class="news-time">${n.time}</span>
-                <p class="news-text">${n.text}</p>
-            </div>
-        `).join('');
-    }
 
     async function loadData() {
         try {
@@ -213,29 +163,30 @@
             window.allStocks = rows.map(row => {
                 const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                 return {
-                    ticker: cols[0]?.replace(/"/g, '').trim(),
-                    name: cols[1]?.replace(/"/g, ''),
-                    price: cols[2],
-                    change: cols[3]?.trim(),
-                    sector: cols[4]?.trim()
+                    ticker: clean(cols[0]),
+                    name: clean(cols[1]),
+                    price: clean(cols[2]),
+                    change: clean(cols[3]),
+                    sector: clean(cols[4])
                 };
-            }).filter(s => s.ticker && !s.ticker.includes('#N/A'));
+            }).filter(s => s.ticker && s.ticker !== "" && !s.ticker.includes('#N/A'));
 
             updateTicker();
-            renderGrid(document.querySelector('.nav-btn.active')?.innerText || "TECNOLOGIA");
-        } catch (e) {}
+            const currentSector = document.querySelector('.nav-btn.active')?.innerText || "TECNOLOGIA";
+            renderGrid(currentSector);
+        } catch (e) { console.error("Erro Alpha:", e); }
     }
 
     function updateTicker() {
         const tickerDiv = document.getElementById('live-ticker-inner');
-        const text = window.allStocks.map(s => `${s.ticker}: R$ ${s.price} (${s.change})`).join('  ///  ');
+        const text = window.allStocks.map(s => `${s.ticker}: R$ ${s.price} [${s.change}]`).join('  ///  ');
         tickerDiv.innerText = `+++ ALPHA FEED: ${text} +++`;
     }
 
     function renderGrid(sectorName) {
         const grid = document.getElementById('market-grid');
         grid.innerHTML = '';
-        const filtered = window.allStocks.filter(s => s.sector && s.sector.toLowerCase() === sectorName.toLowerCase());
+        const filtered = window.allStocks.filter(s => s.sector.toLowerCase() === sectorName.toLowerCase());
 
         filtered.forEach(s => {
             const isUp = !s.change.includes('-');
@@ -245,7 +196,7 @@
                 <div class="card">
                     <span class="symbol">${s.ticker}</span>
                     <div class="price">R$ ${s.price}</div>
-                    <div style="font-size:12px; color:var(--text-dim); margin-bottom:12px">${s.name}</div>
+                    <div class="stock-name">${s.name}</div>
                     <span class="badge ${isUp ? 'up' : 'down'}">${isUp ? '🚀' : '📉'} ${s.change}</span>
                     <img class="hover-chart" src="${chartUrl}">
                 </div>
@@ -253,6 +204,7 @@
         });
     }
 
+    // Criar botões do menu
     const menuContainer = document.getElementById('menu-side');
     sectors.forEach((sec, index) => {
         const btn = document.createElement('button');
@@ -266,9 +218,20 @@
         menuContainer.appendChild(btn);
     });
 
+    // Mock de notícias
+    document.getElementById('today-news').innerHTML = `
+        <div class="news-item">
+            <span class="news-time">14:05</span>
+            <p class="news-text">Fluxo comprador atinge ativos de IA no setor de Tecnologia.</p>
+        </div>
+        <div class="news-item">
+            <span class="news-time">11:20</span>
+            <p class="news-text">ALPHAMARKETCAP detecta suporte em Commodities.</p>
+        </div>
+    `;
+
     loadData();
-    renderNews();
-    setInterval(loadData, 60000);
+    setInterval(loadData, 30000); // Atualiza a cada 30 segundos
 </script>
 </body>
 </html>
