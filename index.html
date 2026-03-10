@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TradeVision | Terminal</title>
+    <title>TradeVision | Terminal Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     
@@ -17,86 +17,79 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; }
 
+        /* Ticker Superior de Atualizações em Tempo Real */
+        .live-ticker { background: #000; border-bottom: 1px solid var(--border); padding: 8px 0; font-family: 'JetBrains Mono'; font-size: 10px; color: var(--accent); overflow: hidden; }
+        .ticker-move { display: inline-block; white-space: nowrap; animation: move 40s linear infinite; }
+        @keyframes move { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+
         header { padding: 15px 30px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
         .logo { font-size: 20px; font-weight: 800; color: var(--text); text-decoration: none; }
         .logo span { color: var(--accent); }
 
-        /* Layout Principal */
-        .container { display: flex; height: calc(100vh - 65px); position: relative; }
+        .container { display: flex; height: calc(100vh - 95px); position: relative; }
 
-        /* Sidebar Esquerda (Fixa) */
+        /* Sidebar Esquerda */
         aside { width: 220px; background: var(--surface); padding: 20px; border-right: 1px solid var(--border); overflow-y: auto; }
         .nav-btn { width: 100%; padding: 12px; background: transparent; border: none; color: var(--text-dim); text-align: left; cursor: pointer; border-radius: 8px; font-weight: 600; margin-bottom: 5px; transition: 0.2s; }
         .nav-btn.active { color: var(--accent); background: rgba(0,255,195,0.05); }
 
         /* Área Central */
-        main { flex: 1; padding: 25px; overflow-y: auto; transition: margin-right 0.3s ease; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+        main { flex: 1; padding: 25px; overflow-y: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
 
-        /* ABA DE NOTÍCIAS (RETRÁTIL AO PASSAR O MOUSE) */
-        .news-sidebar {
-            width: 40px; /* Largura apenas do "título" vertical */
-            background: var(--surface);
-            border-left: 1px solid var(--border);
-            height: 100%;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        /* CARDS COM GRÁFICO NO HOVER */
+        .card { 
+            background: rgba(255,255,255,0.02); 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            padding: 20px; 
+            cursor: pointer; 
+            transition: 0.3s; 
             position: relative;
             overflow: hidden;
-            display: flex;
         }
+        .card:hover { border-color: var(--accent); background: #0c111a; }
+        
+        /* O Gráfico que aparece no Hover */
+        .hover-chart {
+            position: absolute;
+            bottom: -100px; left: 0; width: 100%; height: 80px;
+            opacity: 0; transition: 0.4s; pointer-events: none;
+            filter: grayscale(1) brightness(1.5);
+        }
+        .card:hover .hover-chart { bottom: 0; opacity: 0.6; }
 
-        /* Quando o mouse passa por cima */
-        .news-sidebar:hover {
-            width: 350px;
-        }
-
-        /* Texto Vertical de Indicação */
-        .news-indicator {
-            min-width: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,255,195,0.02);
-            cursor: pointer;
-        }
-        .news-indicator span {
-            transform: rotate(90deg);
-            white-space: nowrap;
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--accent);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* Conteúdo das Notícias (Escondido por padrão) */
-        .news-content {
-            padding: 25px;
-            min-width: 310px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            overflow-y: auto;
-        }
-        .news-sidebar:hover .news-content {
-            opacity: 1;
-        }
-
-        .news-item { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
-        .news-item:last-child { border: none; }
-        .news-tag { font-family: 'JetBrains Mono'; font-size: 10px; color: var(--accent); margin-bottom: 5px; display: block; }
-        .news-text { font-size: 14px; font-weight: 600; line-height: 1.4; color: var(--text); }
-
-        /* Estilo dos Cards (Baseado na sua imagem) */
-        .card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: 0.3s; }
-        .card:hover { border-color: var(--accent); background: rgba(255,255,255,0.05); }
-        .symbol { font-family: 'JetBrains Mono'; color: var(--text-dim); font-size: 11px; margin-bottom: 8px; display: block; }
-        .price { font-size: 26px; font-weight: 800; margin-bottom: 15px; }
-        .badge { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; display: inline-block; }
+        .symbol { font-family: 'JetBrains Mono'; color: var(--accent); font-size: 11px; margin-bottom: 5px; display: block; }
+        .price { font-size: 26px; font-weight: 800; margin-bottom: 10px; }
+        .badge { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; }
         .up { background: rgba(0,255,195,0.1); color: var(--accent); }
         .down { background: rgba(255,70,85,0.1); color: var(--danger); }
+
+        /* SIDEBAR DE NOTÍCIAS (HOVER) */
+        .news-sidebar {
+            width: 40px; background: var(--surface); border-left: 1px solid var(--border);
+            height: 100%; transition: width 0.4s ease; position: relative; overflow: hidden; display: flex;
+        }
+        .news-sidebar:hover { width: 380px; }
+        .news-indicator { min-width: 40px; display: flex; align-items: center; justify-content: center; background: #000; cursor: pointer; }
+        .news-indicator span { transform: rotate(90deg); white-space: nowrap; font-size: 10px; color: var(--accent); letter-spacing: 2px; }
+        
+        .news-content { padding: 25px; min-width: 340px; opacity: 0; transition: 0.3s; overflow-y: auto; }
+        .news-sidebar:hover .news-content { opacity: 1; }
+        
+        .news-item { margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+        .news-date { font-family: 'JetBrains Mono'; font-size: 9px; color: var(--text-dim); margin-bottom: 4px; display: block; }
+        .news-text { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--text); }
+        .news-src { color: var(--accent); font-size: 10px; margin-top: 5px; display: block; }
     </style>
 </head>
 <body>
+
+<div class="live-ticker">
+    <div class="ticker-move" id="live-price-ticker">
+        CARREGANDO ATUALIZAÇÕES DO MERCADO...
+    </div>
+</div>
 
 <header>
     <a href="#" class="logo">Trade<span>Vision</span></a>
@@ -107,18 +100,14 @@
     <aside id="menu-side"></aside>
 
     <main>
-        <h2 id="sector-title" style="margin-bottom: 25px; color: var(--accent);">Tecnologia</h2>
         <div class="grid" id="market-grid"></div>
     </main>
 
     <div class="news-sidebar">
-        <div class="news-indicator">
-            <span>GLOBAL NEWS FEED</span>
-        </div>
+        <div class="news-indicator"><span>MERCADO GLOBAL</span></div>
         <div class="news-content">
-            <h3 style="font-size: 12px; margin-bottom: 20px; color: var(--text-dim); letter-spacing: 1px;">MERCADO HOJE</h3>
-            <div id="news-list">
-                </div>
+            <h3 style="font-size: 11px; margin-bottom: 20px; color: var(--accent);">HISTÓRICO E NOTÍCIAS</h3>
+            <div id="news-list"></div>
         </div>
     </div>
 </div>
@@ -127,11 +116,14 @@
     const CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9hPdpNw-jrALbP32-Pgqhwe_X98uaZht0tjtZXidCFwiXvXTjbJc5diOaI270W8m_hyHYpd5xwlQl/pub?gid=0&single=true&output=csv';
     const sectors = ["Tecnologia", "Defesa", "Energia", "Cibersegurança", "Bancos", "Commodities", "Logística", "Saúde", "Varejo", "Refúgio"];
     
+    // Lista de Notícias ampliada (Dias anteriores)
     const newsData = [
-        { source: "REUTERS", time: "10:45", text: "Fed indica manutenção de taxas de juros para o próximo trimestre." },
-        { source: "BLOOMBERG", time: "10:15", text: "NVIDIA anuncia nova arquitetura de chips Blackwell para IA." },
-        { source: "INVESTING", time: "09:55", text: "Tensões no Mar Vermelho elevam custo do frete marítimo global." },
-        { source: "CNN BIZ", time: "09:10", text: "Petróleo Brent sobe 2.1% após novos dados de estoque da OPEP." }
+        { date: "HOJE 10:45", src: "REUTERS", text: "Inflação nos EUA vem abaixo do esperado; mercados reagem com alta." },
+        { date: "HOJE 08:30", src: "BLOOMBERG", text: "NVIDIA ultrapassa Apple em valor de mercado após rali de IA." },
+        { date: "ONTEM", src: "CNBC", text: "Petróleo fecha em queda com aumento de estoques nos terminais de Cushing." },
+        { date: "08 MAR", src: "INVESTING", text: "Bancos europeus reportam lucros recordes no primeiro bimestre de 2024." },
+        { date: "07 MAR", src: "FINANCIAL TIMES", text: "Tensões comerciais entre China e UE afetam setor automotivo." },
+        { date: "06 MAR", src: "TRADEVISION", text: "Fluxo de capital institucional migra para ativos de cibersegurança." }
     ];
 
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
@@ -139,8 +131,9 @@
     function renderNews() {
         document.getElementById('news-list').innerHTML = newsData.map(n => `
             <div class="news-item">
-                <span class="news-tag">${n.time} • ${n.source}</span>
+                <span class="news-date">${n.date}</span>
                 <p class="news-text">${n.text}</p>
+                <span class="news-src">FONTE: ${n.src}</span>
             </div>
         `).join('');
     }
@@ -151,34 +144,39 @@
             const t = await r.text();
             const store = t.split('\n').slice(1).map(row => {
                 const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                return { t: c[0]?.replace(/"/g, ''), n: c[1]?.replace(/"/g, ''), p: c[2], v: c[3]?.trim(), s: c[4]?.trim() };
+                return { t: c[0]?.replace(/"/g, '').trim(), n: c[1]?.replace(/"/g, ''), p: c[2], v: c[3]?.trim(), s: c[4]?.trim() };
             }).filter(i => i.t && !i.t.includes('#N/A'));
             
             window.marketData = store;
+            updateLiveTicker(store);
             render(document.querySelector('.nav-btn.active')?.innerText || "TECNOLOGIA");
         } catch(e) {}
     }
 
+    function updateLiveTicker(data) {
+        const ticker = document.getElementById('live-price-ticker');
+        const content = data.map(i => `${i.t}: R$ ${i.p} (${i.v})`).join('  //  ');
+        ticker.innerText = `+++ ULTIMAS ATUALIZAÇÕES: ${content} +++`;
+    }
+
     function render(sName) {
-        document.getElementById('sector-title').innerText = sName;
         const g = document.getElementById('market-grid');
         g.innerHTML = '';
-        
         const filtered = window.marketData.filter(i => i.s && i.s.toLowerCase() === sName.toLowerCase());
         
-        if(filtered.length === 0) {
-            g.innerHTML = `<p style="color:var(--text-dim)">Nenhum dado encontrado para este setor na planilha.</p>`;
-            return;
-        }
-
         filtered.forEach(i => {
             const up = !i.v.includes('-');
+            // Gerador de imagem de gráfico do TradingView baseado no ticker
+            const chartUrl = `https://s3.tradingview.com/generated_chart_images/s_${i.t}.png`;
+
             g.innerHTML += `
                 <div class="card">
                     <span class="symbol">${i.t}</span>
                     <div class="price">R$ ${i.p}</div>
                     <div style="font-size:12px; color:var(--text-dim); margin-bottom:12px">${i.n}</div>
-                    <span class="badge ${up ? 'up' : 'down'}">${up ? '▲' : '▼'} ${i.v}</span>
+                    <span class="badge ${up ? 'up' : 'down'}">${i.v}</span>
+                    
+                    <img class="hover-chart" src="${chartUrl}" onerror="this.style.display='none'">
                 </div>
             `;
         });
@@ -199,6 +197,7 @@
 
     update();
     renderNews();
+    setInterval(update, 30000); // Atualiza dados da planilha a cada 30 segundos
 </script>
 </body>
 </html>
