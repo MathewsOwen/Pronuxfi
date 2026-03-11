@@ -3,59 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPHAMARKETCAP | Portal de Inteligência Financeira</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <title>ALPHAMARKETCAP | Portal de Dados Financeiros</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0b0e11; --surface: #151921; --accent: #00f2ff; --up: #00ff88; --down: #ff3366; --text: #ffffff; --border: #2b2f3a; }
+        :root { --bg: #0b0e11; --surface: #151921; --accent: #00f2ff; --up: #00ff88; --down: #ff3366; --border: #2b2f3a; --text: #ffffff; --text-dim: #848e9c; }
         
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; }
 
-        /* 1. TICKER TAPE (A barra de cotações que desliza) */
-        .ticker-wrap { width: 100%; overflow: hidden; background: #fff; height: 40px; border-bottom: 1px solid #ddd; }
-        
-        /* 2. HEADER PRINCIPAL */
-        header { background: #000; height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 3px solid var(--accent); }
-        .logo { font-weight: 800; font-size: 20px; text-transform: uppercase; color: #fff; }
+        /* 1. TICKER TAPE (B3 STYLE) */
+        .ticker-tape { background: #fff; height: 40px; border-bottom: 1px solid #ddd; overflow: hidden; }
+
+        /* 2. HEADER E NAVEGAÇÃO HORIZONTAL */
+        header { background: #000; padding: 0 5%; height: 70px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--accent); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: 800; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
         .logo span { color: var(--accent); }
-
-        .main-portal { max-width: 1400px; margin: 0 auto; padding: 30px; }
-
-        /* 3. DASHBOARD ESTILO B3 (Gráfico + Indicadores) */
-        .b3-hero { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 40px; }
         
-        .b3-main-card { background: var(--surface); border-radius: 4px; padding: 25px; border: 1px solid var(--border); position: relative; }
-        .b3-indicators { display: flex; gap: 30px; margin-bottom: 20px; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        .indicator-item { display: flex; flex-direction: column; }
-        .indicator-item span { color: var(--accent); font-weight: 700; }
+        nav { display: flex; gap: 30px; }
+        .nav-link { color: var(--text-dim); text-decoration: none; font-size: 13px; font-weight: 600; text-transform: uppercase; transition: 0.3s; cursor: pointer; }
+        .nav-link:hover, .nav-link.active { color: var(--accent); }
 
-        .b3-side-card { background: var(--surface); border-radius: 4px; padding: 20px; border: 1px solid var(--border); }
+        /* 3. HERO DASHBOARD (O CORAÇÃO DO SITE B3) */
+        .hero-container { max-width: 1400px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+
+        .market-main { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 30px; }
+        .market-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; }
         
-        /* TABS DE PERFORMANCE */
-        .perf-tabs { display: flex; gap: 15px; border-bottom: 1px solid var(--border); margin-bottom: 15px; padding-bottom: 10px; }
-        .tab-btn { background: none; border: none; color: #848e9c; font-weight: 700; cursor: pointer; font-size: 12px; }
-        .tab-btn.active { color: #fff; border-bottom: 2px solid var(--accent); }
+        .index-info h1 { font-size: 32px; font-weight: 800; display: flex; align-items: center; gap: 15px; }
+        .index-info .price { font-size: 40px; font-family: 'JetBrains Mono'; }
+        .index-info .change { font-size: 18px; font-weight: 700; }
 
-        .stock-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .stock-ticker { display: flex; align-items: center; gap: 10px; }
-        .stock-icon { width: 30px; height: 30px; border-radius: 50%; background: #333; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+        .indicator-pills { display: flex; gap: 20px; margin-bottom: 30px; }
+        .pill { background: #000; border: 1px solid var(--border); padding: 10px 20px; border-radius: 4px; font-size: 12px; }
+        .pill span { display: block; color: var(--accent); font-weight: 800; font-size: 16px; }
 
-        /* LISTA DE TODAS AS EMPRESAS ABAIXO */
-        .full-list-section { margin-top: 50px; }
-        .grid-alpha { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .alpha-card { background: var(--surface); padding: 20px; border: 1px solid var(--border); border-radius: 8px; transition: 0.2s; }
-        .alpha-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+        /* 4. PERFORMANCE TABS (LATERAL B3) */
+        .side-performance { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 25px; }
+        .tabs-header { display: flex; gap: 15px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+        .tab-btn { background: none; border: none; color: var(--text-dim); padding-bottom: 10px; font-weight: 700; font-size: 12px; cursor: pointer; position: relative; }
+        .tab-btn.active { color: #fff; }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 3px; background: var(--accent); }
 
-        /* MENU LATERAL SLIM */
-        .side-nav { position: fixed; left: 0; top: 100px; display: flex; flex-direction: column; gap: 10px; padding: 10px; z-index: 1000; }
-        .nav-dot { width: 45px; height: 45px; background: #000; border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--accent); font-size: 18px; }
-        .nav-dot:hover { background: var(--accent); color: #000; }
+        .asset-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; cursor: pointer; }
+        .asset-row:hover { background: rgba(255,255,255,0.02); }
+        .asset-row .ticker { font-weight: 700; color: var(--accent); }
+
+        /* 5. DATA GRID (LISTAGEM COMPLETA) */
+        .data-section { max-width: 1400px; margin: 60px auto; padding: 0 20px; }
+        .section-title { font-size: 24px; margin-bottom: 30px; border-left: 5px solid var(--accent); padding-left: 20px; text-transform: uppercase; }
+        
+        .alpha-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .alpha-card { background: var(--surface); border: 1px solid var(--border); padding: 25px; border-radius: 4px; position: relative; overflow: hidden; }
+        .alpha-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent); opacity: 0; transition: 0.3s; }
+        .alpha-card:hover::before { opacity: 1; }
+
+        /* SOBRE NOS / HISTORIA */
+        .history-content { max-width: 800px; margin: 100px auto; padding: 40px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); display: none; }
 
     </style>
 </head>
 <body>
 
-<div class="ticker-wrap">
+<div class="ticker-tape">
     <div class="tradingview-widget-container">
         <div class="tradingview-widget-container__widget"></div>
         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
@@ -65,7 +74,7 @@
             {"proName": "BMFBOVESPA:PETR4", "title": "PETR4"},
             {"proName": "BMFBOVESPA:VALE3", "title": "VALE3"},
             {"proName": "BMFBOVESPA:ITUB4", "title": "ITUB4"},
-            {"proName": "FX_IDC:USDBRL", "title": "USD/BRL"}
+            {"proName": "FX_IDC:USDBRL", "title": "DÓLAR/BRL"}
           ],
           "showSymbolLogo": true, "colorTheme": "light", "isTransparent": false, "displayMode": "adaptive", "locale": "br"
         }
@@ -74,121 +83,127 @@
 </div>
 
 <header>
-    <div class="logo">ALPHA<span>MARKETCAP</span></div>
-    <div id="clock" style="font-family: 'JetBrains Mono'; font-size: 12px; color: var(--accent)">00:00:00</div>
+    <div class="logo" onclick="location.reload()">ALPHA<span>MARKETCAP</span></div>
+    <nav>
+        <a class="nav-link active" onclick="showSection('dashboard')">Home</a>
+        <a class="nav-link" onclick="showSection('dashboard')">Market Data</a>
+        <a class="nav-link" onclick="showSection('about')">Nossa História</a>
+    </nav>
 </header>
 
-<div class="side-nav">
-    <div class="nav-dot" title="Dashboard" onclick="window.scrollTo(0,0)">📊</div>
-    <div class="nav-dot" title="Screener" onclick="document.getElementById('full-list').scrollIntoView()">🔍</div>
-    <div class="nav-dot" title="Institucional" onclick="alert('Sobre a Alphamarketcap: Nosso sonho se tornando realidade.')">ℹ️</div>
+<div id="main-view">
+    <section class="hero-container">
+        <div class="market-main">
+            <div class="market-header">
+                <div class="index-info">
+                    <h1><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" width="30"> IBOVESPA</h1>
+                    <div class="price">183.325,86</div>
+                    <div class="change" style="color: var(--down)">-0,07% (Hoje)</div>
+                </div>
+                <div style="text-align: right">
+                    <div id="clock" style="font-family: 'JetBrains Mono'; font-size: 14px; color: var(--accent)">00:00:00</div>
+                    <div style="font-size: 10px; color: var(--text-dim)">ATUALIZADO EM TEMPO REAL</div>
+                </div>
+            </div>
+
+            <div class="indicator-pills">
+                <div class="pill">TAXA DI <span>14,90%</span></div>
+                <div class="pill">ÍNDICE DI <span>55.677</span></div>
+                <div class="pill">DOLAR <span>R$ 5,12</span></div>
+            </div>
+
+            <div id="chart-container" style="height: 400px; border-radius: 4px; overflow: hidden;"></div>
+        </div>
+
+        <div class="side-performance">
+            <div class="tabs-header">
+                <button class="tab-btn active">Mais Negociados</button>
+                <button class="tab-btn">Altas</button>
+                <button class="tab-btn">Baixas</button>
+            </div>
+            <div id="side-list-data">
+                </div>
+        </div>
+    </section>
+
+    <section class="data-section">
+        <h2 class="section-title">Monitoramento Alpha</h2>
+        <div class="alpha-grid" id="main-stocks-grid"></div>
+    </section>
 </div>
 
-<div class="main-portal">
-    
-    <div class="b3-hero">
-        <div class="b3-main-card">
-            <div class="b3-indicators">
-                <div class="indicator-item">Taxa DI 10/03 <br><span>14,90%</span></div>
-                <div class="indicator-item">Índice DI 11/03 <br><span>55.677,19</span></div>
-                <div class="indicator-item">S&P/B3 IBOVESPA VIX <br><span style="color:var(--up)">26,40 (+5.31%)</span></div>
-            </div>
-            
-            <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" width="30">
-                <h2 style="font-size:24px;">Índice Bovespa</h2>
-                <div style="margin-left:auto; text-align:right;">
-                    <div style="font-size:28px; font-weight:800;">183.325,86 <span style="font-size:14px; font-weight:400; color:var(--down)">-0,07%</span></div>
-                </div>
-            </div>
-            
-            <div id="b3-line-chart" style="height: 300px; width: 100%;"></div>
-        </div>
-
-        <div class="b3-side-card">
-            <div class="perf-tabs">
-                <button class="tab-btn active">Mais Negociados</button>
-                <button class="tab-btn">Maiores Altas</button>
-                <button class="tab-btn">Maiores Baixas</button>
-            </div>
-            <div id="side-stock-list">
-                </div>
-            <p style="font-size:10px; color:#848e9c; margin-top:20px;">Lista das empresas com o maior volume financeiro hoje.</p>
-        </div>
-    </div>
-
-    <div id="full-list" class="full-list-section">
-        <h2 style="margin-bottom:25px; font-weight:300; border-left:4px solid var(--accent); padding-left:15px;">ACOMPANHE AS COTAÇÕES</h2>
-        <div class="grid-alpha" id="alpha-grid"></div>
-    </div>
-
+<div id="about-view" class="history-content">
+    <h2 style="color: var(--accent); margin-bottom: 20px;">O SONHO ALPHAMARKETCAP</h2>
+    <p>O que você vê aqui é o resultado de meses de desafios técnicos e a vontade de criar algo grande. A AlphaMarketCap foi construída para investidores que não aceitam dados superficiais.</p>
+    <p style="margin-top: 15px;">Superamos bugs, instabilidades e a barreira da tecnologia para entregar um terminal com a alma da B3 e a velocidade da era digital. Nosso objetivo é o reconhecimento global.</p>
 </div>
 
 <script src="https://s3.tradingview.com/tv.js"></script>
 <script>
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9hPdpNw-jrALbP32-Pgqhwe_X98uaZht0tjtZXidCFwiXvXTjbJc5diOaI270W8m_hyHYpd5xwlQl/pub?gid=0&single=true&output=csv';
 
-    // 1. CARREGAR GRÁFICO DE LINHA (ESTILO B3)
+    // 1. CARREGAR GRÁFICO (B3 STYLE)
     new TradingView.widget({
-        "container_id": "b3-line-chart",
+        "container_id": "chart-container",
         "symbol": "BMFBOVESPA:IBOV",
-        "interval": "D", "timezone": "America/Sao_Paulo", "theme": "dark",
-        "style": "3", "locale": "br", "hide_top_toolbar": true, "save_image": false,
-        "width": "100%", "height": "100%"
+        "interval": "D", "theme": "dark", "style": "3", "locale": "br", "width": "100%", "height": "100%", "hide_top_toolbar": true
     });
 
-    // 2. CARREGAR DADOS DA PLANILHA
-    async function loadAlphaData() {
-        const r = await fetch(SHEET_URL);
-        const t = await r.text();
-        const rows = t.split('\n').slice(1);
-        const stocks = rows.map(row => {
-            const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-            return { 
-                ticker: c[0].replace(/"/g,''), 
-                name: c[1].replace(/"/g,''), 
-                price: c[2], 
-                pct: c[3] 
-            };
-        }).filter(x => x.ticker);
+    // 2. BUSCAR DADOS
+    async function init() {
+        try {
+            const r = await fetch(SHEET_URL);
+            const t = await r.text();
+            const rows = t.split('\n').slice(1);
+            const data = rows.map(row => {
+                const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                return { 
+                    ticker: c[0].replace(/"/g,''), 
+                    name: c[1].replace(/"/g,''), 
+                    price: c[2], 
+                    pct: c[3] 
+                };
+            }).filter(x => x.ticker);
 
-        renderSideList(stocks.slice(0,4)); // Mostra 4 na lateral estilo B3
-        renderGrid(stocks); // Mostra todas embaixo
+            // Renderiza Lateral
+            const side = document.getElementById('side-list-data');
+            data.slice(0, 6).forEach(x => {
+                side.innerHTML += `
+                    <div class="asset-row">
+                        <div><span class="ticker">${x.ticker}</span><br><small style="color:var(--text-dim); font-size:10px">${x.name.substring(0,20)}</small></div>
+                        <div style="text-align:right"><strong>${x.price}</strong><br><span style="color:${x.pct.includes('-')?'var(--down)':'var(--up)'}; font-size:11px">${x.pct}</span></div>
+                    </div>`;
+            });
+
+            // Renderiza Grid Principal
+            const grid = document.getElementById('main-stocks-grid');
+            data.forEach(x => {
+                grid.innerHTML += `
+                    <div class="alpha-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center">
+                            <span style="font-weight:800; color:var(--accent)">${x.ticker}</span>
+                            <span style="color:${x.pct.includes('-')?'var(--down)':'var(--up)'}; font-weight:800">${x.pct}</span>
+                        </div>
+                        <div style="font-size:26px; font-weight:700; margin:15px 0; font-family:'JetBrains Mono'">${x.price}</div>
+                        <div style="color:var(--text-dim); font-size:12px">${x.name}</div>
+                    </div>`;
+            });
+
+        } catch(e) { console.error("Erro Alpha Engine"); }
     }
 
-    function renderSideList(data) {
-        const list = document.getElementById('side-stock-list');
-        list.innerHTML = '';
-        data.forEach(x => {
-            list.innerHTML += `
-                <div class="stock-item">
-                    <div class="stock-ticker">
-                        <div class="stock-icon">${x.ticker.substring(0,2)}</div>
-                        <div><strong>${x.ticker}</strong><br><small style="color:#848e9c; font-size:10px">${x.name.substring(0,15)}...</small></div>
-                    </div>
-                    <div style="text-align:right;">
-                        <div style="font-size:14px; font-weight:700;">${x.price}</div>
-                        <div style="font-size:12px; color:${x.pct.includes('-')?'var(--down)':'var(--up)'}">${x.pct}</div>
-                    </div>
-                </div>`;
-        });
-    }
-
-    function renderGrid(data) {
-        const grid = document.getElementById('alpha-grid');
-        grid.innerHTML = '';
-        data.forEach(x => {
-            grid.innerHTML += `
-                <div class="alpha-card">
-                    <div style="font-size:11px; color:var(--accent); font-weight:800">${x.ticker}</div>
-                    <div style="font-size:22px; margin:10px 0; font-family:'JetBrains Mono'">${x.price}</div>
-                    <div style="color:${x.pct.includes('-')?'var(--down)':'var(--up)'}; font-weight:800">${x.pct}</div>
-                </div>`;
-        });
+    function showSection(id) {
+        if(id === 'about') {
+            document.getElementById('main-view').style.display = 'none';
+            document.getElementById('about-view').style.display = 'block';
+        } else {
+            document.getElementById('main-view').style.display = 'block';
+            document.getElementById('about-view').style.display = 'none';
+        }
     }
 
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-    loadAlphaData();
+    init();
 </script>
 </body>
 </html>
