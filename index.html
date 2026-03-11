@@ -3,193 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPHAMARKETCAP | Global Terminal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <title>ALPHAMARKETCAP | Dynamic Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #05070a; --surface: #0d1117; --accent: #00f2ff; --up: #00ff88; --down: #ff3366; --text: #f0f3f5; --text-dim: #848e9c; --border: #1f2937; }
-        
-        /* RESET TOTAL PARA NITIDEZ */
+        :root { --bg: #05070a; --surface: #0d1117; --accent: #00f2ff; --up: #00ff88; --down: #ff3366; --text: #f0f3f5; --border: #1f2937; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
         
-        header { background: #000; padding: 0 30px; border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; height: 60px; z-index: 100; position: relative; }
-        .logo { font-weight: 800; font-size: 20px; text-transform: uppercase; letter-spacing: 1px; color: #fff; }
+        header { background: #000; padding: 0 30px; border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; height: 65px; z-index: 100; position: relative; }
+        .logo { font-weight: 800; font-size: 22px; text-transform: uppercase; color: #fff; }
         .logo span { color: var(--accent); }
 
-        .container { display: flex; height: calc(100vh - 60px); }
+        .container { display: flex; height: calc(100vh - 65px); }
         
         /* SIDEBAR */
-        aside { width: 240px; padding: 20px; border-right: 1px solid var(--border); background: #000; display: flex; flex-direction: column; flex-shrink: 0; }
-        .nav-label { font-size: 10px; color: var(--accent); font-weight: 800; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
-        .nav-item { padding: 12px; color: var(--text-dim); cursor: pointer; font-size: 11px; font-weight: 600; border-radius: 4px; transition: 0.2s; text-transform: uppercase; margin-bottom: 4px; border-left: 3px solid transparent; }
-        .nav-item:hover, .nav-item.active { color: #fff; background: #161b22; border-left: 3px solid var(--accent); }
+        aside { width: 230px; padding: 20px; border-right: 1px solid var(--border); background: #000; display: flex; flex-direction: column; flex-shrink: 0; }
+        .nav-label { font-size: 10px; color: var(--accent); font-weight: 800; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 2px; }
+        .nav-item { padding: 12px; color: #848e9c; cursor: pointer; font-size: 11px; font-weight: 600; border-radius: 4px; transition: 0.2s; margin-bottom: 4px; }
+        .nav-item.active, .nav-item:hover { color: #fff; background: #161b22; border-left: 3px solid var(--accent); }
 
-        .btn-about { margin-top: auto; padding: 15px; background: var(--surface); border: 1px solid var(--border); color: var(--accent); text-align: center; font-size: 10px; font-weight: 800; cursor: pointer; border-radius: 4px; text-transform: uppercase; }
+        /* DASHBOARD PRINCIPAL */
+        main { flex: 1; padding: 25px; overflow-y: auto; background: var(--bg); }
+        .hero-chart-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 25px; height: 500px; }
+        
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .status-badge { background: rgba(0, 242, 255, 0.1); color: var(--accent); padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; animation: pulse 2s infinite; }
+        
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        /* VIEWPORTS */
-        main { flex: 1; position: relative; background: #05070a; overflow: hidden; }
-        .view-section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; overflow-y: auto; padding: 30px; }
-        .view-section.active { display: block; }
+        .grid-stocks { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
+        .card { background: var(--surface); padding: 20px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+        .card:hover { border-color: var(--accent); }
 
-        /* GRID DESTAQUES */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
-        .card { background: var(--surface); padding: 25px; border: 1px solid var(--border); cursor: pointer; border-radius: 4px; transition: 0.2s; }
-        .card:hover { border-color: var(--accent); background: #161b22; transform: translateY(-2px); }
-        .card-ticker { color: var(--text-dim); font-family: 'JetBrains Mono'; font-size: 12px; margin-bottom: 10px; }
-        .card-price { font-size: 26px; font-weight: 700; font-family: 'JetBrains Mono'; margin-bottom: 10px; }
+        /* SOBRE */
+        .about-view { display: none; max-width: 800px; margin: 40px auto; line-height: 1.8; }
+        .about-view h1 { color: var(--accent); font-size: 32px; margin-bottom: 20px; }
 
-        /* QUEM SOMOS - TEXTO EMOCIONAL */
-        .about-content { max-width: 850px; margin: 0 auto; line-height: 1.8; color: #ccc; }
-        .about-content h1 { color: var(--accent); font-size: 32px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: -1px; }
-        .about-content h2 { color: #fff; font-size: 20px; margin: 40px 0 20px; border-left: 4px solid var(--accent); padding-left: 15px; }
-        .highlight { color: var(--accent); font-weight: 600; }
-
-        /* MODAL */
-        #chart-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 10000; }
-        .close-btn { position: fixed; top: 20px; right: 20px; width: 45px; height: 45px; background: var(--down); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10001; font-weight: bold; border: none; }
+        #modal-full { position: fixed; top:0; left:0; width:100%; height:100%; background:#000; display:none; z-index:2000; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo">ALPHA<span>MARKETCAP</span></div>
-    <div id="clock" style="font-family: 'JetBrains Mono'; font-size: 13px; color: var(--accent)">00:00:00</div>
+    <div id="clock" style="font-family: 'JetBrains Mono'; font-size: 14px; color: var(--accent)">00:00:00</div>
 </header>
 
 <div class="container">
     <aside>
-        <div class="nav-label">Inteligência</div>
-        <div class="nav-item active" id="tab-terminal" onclick="switchTab('terminal')">📊 Destaques Alpha</div>
-        <div class="nav-item" id="tab-screener" onclick="switchTab('screener')">🔍 Screener Global</div>
+        <div class="nav-label">Terminal Intelligence</div>
+        <div class="nav-item active" onclick="switchTab('terminal')">📊 Dashboard Rotativo</div>
+        <div class="nav-item" onclick="switchTab('about')">ℹ️ Nossa História</div>
         
-        <div class="nav-label">Setores Alpha</div>
+        <div class="nav-label">Setores de Análise</div>
         <div id="sector-btns"></div>
-
-        <div class="btn-about" onclick="switchTab('about')">ℹ️ Nossa História</div>
     </aside>
 
-    <main>
-        <div id="terminal-view" class="view-section active">
-            <div class="grid" id="main-grid"></div>
-        </div>
-        
-        <div id="screener-view" class="view-section" style="padding:0;">
-            <div id="screener-container" style="height:100%; width:100%;"></div>
+    <main id="main-content">
+        <div id="terminal-view">
+            <div class="hero-chart-section">
+                <div class="chart-header">
+                    <div>
+                        <span id="current-ticker-name" style="font-size: 18px; font-weight: 700;">IBOVESPA</span>
+                        <span id="current-ticker-symbol" style="color: var(--text-dim); margin-left: 10px; font-family: 'JetBrains Mono';">BMFBOVESPA:IBOV</span>
+                    </div>
+                    <div class="status-badge">● Live Carrossel Alpha</div>
+                </div>
+                <div id="main-tradingview-chart" style="height: 400px; width: 100%;"></div>
+            </div>
+
+            <h2 style="margin-bottom: 20px; font-weight: 400;">Mercado <span style="color: var(--accent)">Em Foco</span></h2>
+            <div class="grid-stocks" id="stock-grid"></div>
         </div>
 
-        <div id="about-view" class="view-section">
-            <div class="about-content">
-                <h1>O Sonho por trás da ALPHAMARKETCAP</h1>
-                <p>O que você vê hoje em sua tela não é apenas um site de cotações. É a materialização de um sonho que nasceu da vontade de democratizar a alta inteligência financeira. Construir a <span class="highlight">ALPHAMARKETCAP</span> foi, e continua sendo, um dos maiores desafios da minha jornada.</p>
-                
-                <h2>A Luta contra a Corrente</h2>
-                <p>No início, muitos disseram que o mercado financeiro era um "clube fechado" e que criar um terminal do zero seria impossível para quem não tem os bilhões de Wall Street. Enfrentei noites em claro lidando com bugs complexos, instabilidade de dados e a dúvida que assombra todo empreendedor. Mas cada erro no código era um passo mais perto da perfeição.</p>
-                
-                <h2>Nossa Missão</h2>
-                <p>Este site foi feito para o investidor que, assim como eu, acredita na força dos dados. Passamos por dificuldades técnicas imensas para garantir que cada decimal fosse preciso e que a interface passasse a confiança de um terminal da B3, mas com a identidade vibrante da nova era digital.</p>
-                
-                <h2>Um Sonho Global</h2>
-                <p>Meu objetivo é claro: fazer com que a <span class="highlight">ALPHAMARKETCAP</span> seja reconhecida mundialmente como referência em dados. Não queremos ser apenas mais um site; queremos ser a ferramenta que você abre antes de tomar sua decisão mais importante. Obrigado por fazer parte deste sonho que está apenas começando.</p>
-                
-                <p style="margin-top:50px; font-family: 'JetBrains Mono'; font-size: 12px; color: var(--accent);">— MATHEUS, FUNDADOR DA ALPHAMARKETCAP</p>
-            </div>
+        <div id="about-view" class="about-view">
+            <h1>A Jornada ALPHAMARKETCAP</h1>
+            <p>Este projeto nasceu de um sonho: criar o terminal financeiro mais respeitado do Brasil. Passamos por inúmeros bugs, noites sem sono e desafios técnicos para integrar dados globais em uma interface que passa autoridade e confiança.</p>
+            <p style="margin-top: 20px;">Nosso sistema rotativo automático de bancos foi projetado para que o investidor tenha a visão completa do setor financeiro sem precisar mover um dedo. A tecnologia a serviço da estratégia.</p>
         </div>
     </main>
 </div>
 
-<div id="chart-modal">
-    <button class="close-btn" onclick="document.getElementById('chart-modal').style.display='none'">X</button>
-    <div style="display:flex; width:100%; height:100%;">
-        <div id="chart-area" style="flex:3;"></div>
-        <div id="desc-area" style="flex:1; background:#000; padding:40px; border-left:1px solid var(--border); overflow-y:auto;"></div>
-    </div>
-</div>
-
+<script src="https://s3.tradingview.com/tv.js"></script>
 <script>
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9hPdpNw-jrALbP32-Pgqhwe_X98uaZht0tjtZXidCFwiXvXTjbJc5diOaI270W8m_hyHYpd5xwlQl/pub?gid=0&single=true&output=csv';
 
-    function switchTab(id) {
-        document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-        document.getElementById(id + '-view').classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        
-        if(id === 'screener') {
-            document.getElementById('tab-screener').classList.add('active');
-            loadScreener(); // Só carrega o widget quando clica
-        } else if(id === 'terminal') {
-            document.getElementById('tab-terminal').classList.add('active');
-        }
+    // LISTA DE BANCOS PARA O CARROSSEL (12 MAIORES)
+    const bankCarousel = [
+        { name: "IBOVESPA", symbol: "BMFBOVESPA:IBOV" },
+        { name: "Itaú Unibanco", symbol: "BMFBOVESPA:ITUB4" },
+        { name: "Bradesco", symbol: "BMFBOVESPA:BBDC4" },
+        { name: "Banco do Brasil", symbol: "BMFBOVESPA:BBAS3" },
+        { name: "Santander Brasil", symbol: "BMFBOVESPA:SANB11" },
+        { name: "BTG Pactual", symbol: "BMFBOVESPA:BPAC11" },
+        { name: "Banco Inter", symbol: "NASDAQ:INTR" },
+        { name: "Nubank", symbol: "NYSE:NU" },
+        { name: "Banrisul", symbol: "BMFBOVESPA:BRSR6" },
+        { name: "Banco ABC", symbol: "BMFBOVESPA:ABCB4" },
+        { name: "Banco Pine", symbol: "BMFBOVESPA:PINE4" },
+        { name: "Banco Pan", symbol: "BMFBOVESPA:BPAN4" },
+        { name: "B3 S.A.", symbol: "BMFBOVESPA:B3SA3" }
+    ];
+
+    let carouselIndex = 0;
+
+    function updateCarouselChart() {
+        const activeAsset = bankCarousel[carouselIndex];
+        document.getElementById('current-ticker-name').innerText = activeAsset.name;
+        document.getElementById('current-ticker-symbol').innerText = activeAsset.symbol;
+
+        new TradingView.widget({
+            "container_id": "main-tradingview-chart",
+            "symbol": activeAsset.symbol,
+            "interval": "D",
+            "timezone": "America/Sao_Paulo",
+            "theme": "dark",
+            "style": "3",
+            "locale": "br",
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": false,
+            "hide_top_toolbar": true,
+            "save_image": false,
+            "width": "100%",
+            "height": "100%"
+        });
+
+        carouselIndex = (carouselIndex + 1) % bankCarousel.length;
     }
 
-    // FUNÇÃO QUE PREVINE O BUG DO CÓDIGO APARECER NA TELA
-    function loadScreener() {
-        const container = document.getElementById('screener-container');
-        if (container.innerHTML !== "") return; // Já carregou uma vez
-        
-        const script = document.createElement('script');
-        script.src = "https://s3.tradingview.com/external-embedding/embed-widget-screener.js";
-        script.type = "text/javascript";
-        script.async = true;
-        script.innerHTML = JSON.stringify({
-            "width": "100%", "height": "100%", "defaultColumn": "overview",
-            "defaultScreen": "most_capitalized", "market": "brazil",
-            "showToolbar": true, "colorTheme": "dark", "locale": "br"
-        });
-        container.appendChild(script);
+    // INICIA CARROSSEL A CADA 15 SEGUNDOS
+    updateCarouselChart();
+    setInterval(updateCarouselChart, 15000);
+
+    function switchTab(tab) {
+        document.getElementById('terminal-view').style.display = tab === 'terminal' ? 'block' : 'none';
+        document.getElementById('about-view').style.display = tab === 'about' ? 'block' : 'none';
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        if(event) event.currentTarget.classList.add('active');
     }
 
     async function loadData() {
-        try {
-            const r = await fetch(SHEET_URL);
-            const t = await r.text();
-            const rows = t.split('\n').slice(1);
-            window.stocks = rows.map(row => {
-                const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                return { 
-                    ticker: c[0]?.trim().replace(/"/g, ''), 
-                    name: c[1]?.trim().replace(/"/g, ''), 
-                    price: c[2], pct: c[3], 
-                    sector: c[4]?.trim().replace(/"/g, ''), 
-                    desc: c[5]?.trim().replace(/"/g, '') 
-                };
-            }).filter(x => x.ticker);
-            renderGrid("Tecnologia");
-        } catch(e) { console.error("Planilha falhou."); }
+        const r = await fetch(SHEET_URL);
+        const t = await r.text();
+        const rows = t.split('\n').slice(1);
+        window.stocks = rows.map(row => {
+            const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            return { ticker: c[0].replace(/"/g,''), name: c[1].replace(/"/g,''), price: c[2], pct: c[3], sector: c[4].trim() };
+        }).filter(x => x.ticker);
+        renderGrid("Tecnologia");
     }
 
-    function renderGrid(s) {
-        const g = document.getElementById('main-grid'); g.innerHTML = '';
-        const filtered = window.stocks.filter(x => x.sector.toUpperCase() === s.toUpperCase());
-        
-        if(filtered.length === 0) {
-            g.innerHTML = `<p style="color:var(--text-dim)">Nenhum ativo encontrado no setor ${s}. Atualize sua planilha.</p>`;
-            return;
-        }
-
-        filtered.forEach(x => {
-            const card = document.createElement('div'); card.className = 'card';
-            card.innerHTML = `<div class="card-ticker">${x.ticker}</div><div class="card-price">R$ ${x.price}</div><div style="color:${x.pct.includes('-')?'var(--down)':'var(--up)'};font-weight:800">${x.pct}</div>`;
-            card.onclick = () => {
-                document.getElementById('chart-modal').style.display = 'block';
-                const tickerClean = x.ticker.includes(':') ? x.ticker.split(':')[1] : x.ticker;
-                document.getElementById('chart-area').innerHTML = `<iframe src="https://s.tradingview.com/widgetembed/?symbol=${tickerClean}&theme=dark" style="width:100%;height:100%;border:none"></iframe>`;
-                document.getElementById('desc-area').innerHTML = `<h2 style="color:var(--accent);margin-bottom:20px;font-weight:400">${x.name}</h2><p style="color:#888;line-height:1.8;text-align:justify;font-size:14px">${x.desc || 'Análise Alpha em processamento...'}</p>`;
-            };
+    function renderGrid(sector) {
+        const g = document.getElementById('stock-grid'); g.innerHTML = '';
+        window.stocks.filter(x => x.sector.toUpperCase() === sector.toUpperCase()).forEach(x => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<div style="font-size:11px; color:#848e9c">${x.ticker}</div><div style="font-size:22px; font-weight:700; margin:8px 0">R$ ${x.price}</div><div style="color:${x.pct.includes('-')?'var(--down)':'var(--up)'}; font-weight:800">${x.pct}</div>`;
             g.appendChild(card);
         });
     }
 
     const sectors = ["Tecnologia", "Defesa", "Energia", "Bancos", "Commodities", "Refúgio"];
-    const secContainer = document.getElementById('sector-btns');
     sectors.forEach(s => {
         const btn = document.createElement('div'); btn.className = 'nav-item'; btn.innerText = s;
-        btn.onclick = (e) => { 
-            switchTab('terminal'); 
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            e.currentTarget.classList.add('active');
-            renderGrid(s); 
-        };
-        secContainer.appendChild(btn);
+        btn.onclick = (e) => { switchTab('terminal'); renderGrid(s); document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); btn.classList.add('active'); };
+        document.getElementById('sector-btns').appendChild(btn);
     });
 
     loadData();
