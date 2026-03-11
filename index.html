@@ -3,288 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>ALPHAMARKETCAP | Inteligência e Dados de Mercado</title>
-    <meta name="description" content="Terminal de inteligência financeira com dados em tempo real, análise técnica e notícias globais. O padrão Alpha de mercado.">
-    <meta name="robots" content="index, follow">
-
+    <title>ALPHAMARKETCAP | Global Financial Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --bg: #05070a; --surface: #0d1117; --accent: #00f2ff;
-            --up: #00ff88; --down: #ff3366; --text: #f0f3f5;
-            --text-dim: #848e9c; --border: #1f2937;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        :root { --bg: #05070a; --surface: #0d1117; --accent: #00f2ff; --up: #00ff88; --down: #ff3366; --text: #f0f3f5; --text-dim: #848e9c; --border: #1f2937; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; }
-
-        /* HEADER ESTILO B3 (SÓBRIO) */
-        header { 
-            background: #000; padding: 0 30px; border-bottom: 2px solid var(--accent); 
-            display: flex; justify-content: space-between; align-items: center; height: 70px;
-        }
-        .logo { font-weight: 800; font-size: 22px; letter-spacing: -1px; text-transform: uppercase; cursor: pointer; }
+        
+        header { background: #000; padding: 0 30px; border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; height: 60px; }
+        .logo { font-weight: 800; font-size: 20px; text-transform: uppercase; cursor: pointer; color: #fff; text-decoration: none; }
         .logo span { color: var(--accent); }
         
-        .market-status { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 600; color: var(--text-dim); }
-        .status-dot { width: 8px; height: 8px; background: var(--up); border-radius: 50%; box-shadow: 0 0 8px var(--up); }
-
-        /* TICKER BAR */
-        .ticker-wrap { background: #000; border-bottom: 1px solid var(--border); padding: 10px 0; overflow: hidden; height: 40px; }
-        .ticker { display: inline-block; white-space: nowrap; animation: scroll 70s linear infinite; font-family: 'JetBrains Mono'; font-size: 12px; color: var(--text-dim); }
+        .ticker-wrap { background: #000; border-bottom: 1px solid var(--border); padding: 8px 0; overflow: hidden; height: 35px; }
+        .ticker { display: inline-block; white-space: nowrap; animation: scroll 60s linear infinite; font-family: 'JetBrains Mono'; font-size: 11px; color: var(--text-dim); }
         @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
 
-        .container { display: flex; height: calc(100vh - 110px); }
-
-        /* SIDEBAR INSTITUCIONAL */
-        aside { width: 230px; padding: 25px 15px; border-right: 1px solid var(--border); background: #000; display: flex; flex-direction: column; }
-        .nav-label { font-size: 10px; color: var(--accent); font-weight: 800; margin: 20px 0 10px 10px; text-transform: uppercase; letter-spacing: 2px; }
-        .nav-item { 
-            padding: 14px 15px; color: var(--text-dim); cursor: pointer; font-size: 11px; 
-            font-weight: 600; border-radius: 6px; margin-bottom: 4px; transition: 0.2s;
-        }
+        .container { display: flex; height: calc(100vh - 95px); }
+        
+        /* SIDEBAR */
+        aside { width: 220px; padding: 20px; border-right: 1px solid var(--border); background: #000; display: flex; flex-direction: column; }
+        .nav-label { font-size: 9px; color: var(--accent); font-weight: 800; margin: 15px 0 5px 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-item { padding: 12px; color: var(--text-dim); cursor: pointer; font-size: 11px; font-weight: 600; border-radius: 4px; transition: 0.2s; text-transform: uppercase; margin-bottom: 2px; }
         .nav-item:hover { color: #fff; background: rgba(0, 242, 255, 0.05); }
-        .nav-item.active { background: var(--surface); color: var(--accent); font-weight: 800; border: 1px solid var(--border); }
-
-        .sidebar-footer { border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto; }
-        .footer-link { display: block; font-size: 10px; color: #444; text-decoration: none; margin-bottom: 12px; font-weight: 700; text-transform: uppercase; }
-        .footer-link:hover { color: var(--accent); }
-
-        /* MAIN CONTENT - GRID ORGANIZADO */
-        main { flex: 1; padding: 30px; overflow-y: auto; background: radial-gradient(at top left, #0d1117 0%, #05070a 100%); }
-        .section-header { margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        .section-header h2 { font-size: 20px; font-weight: 400; color: #fff; }
+        .nav-item.active { background: var(--surface); color: var(--accent); border: 1px solid var(--border); }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+        /* MAIN */
+        main { flex: 1; overflow-y: auto; background: #05070a; position: relative; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); padding: 0; }
+        .card { background: #05070a; padding: 25px; cursor: pointer; transition: 0.2s; }
+        .card:hover { background: #0d1117; outline: 1px solid var(--accent); z-index: 1; }
+        .symbol { color: var(--text-dim); font-size: 11px; font-weight: 700; font-family: 'JetBrains Mono'; }
+        .price { font-size: 24px; font-weight: 600; margin: 10px 0; font-family: 'JetBrains Mono'; }
+        .pos { color: var(--up); } .neg { color: var(--down); }
+
+        /* SCREENER CONTAINER */
+        #screener-view { display: none; width: 100%; height: 100%; background: #000; }
+
+        /* MODAL */
+        #chart-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 10000; }
+        .modal-body { display: flex; width: 100%; height: 100%; }
+        .close-btn { position: fixed; top: 20px; right: 20px; width: 45px; height: 45px; background: var(--down); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10001; font-weight: bold; border: none; }
         
-        /* CARDS ESTILO TERMINAL */
-        .card { 
-            background: #05070a; padding: 25px; transition: 0.2s; cursor: pointer;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .card:hover { background: #0d1117; z-index: 1; outline: 1px solid var(--accent); }
-        .symbol { color: var(--text-dim); font-size: 12px; font-weight: 700; margin-bottom: 5px; font-family: 'JetBrains Mono'; }
-        .price { font-size: 28px; font-weight: 500; font-family: 'JetBrains Mono'; color: #fff; margin-bottom: 15px; }
-        .change-box { display: flex; align-items: center; gap: 8px; }
-        .change { font-size: 12px; font-weight: 800; font-family: 'JetBrains Mono'; }
-        .pos { color: var(--up); }
-        .neg { color: var(--down); }
-
-        /* NEWS PANEL (DIREITO) */
-        .world-news { width: 350px; border-left: 1px solid var(--border); background: #000; display: flex; flex-direction: column; }
-        .news-header { padding: 25px; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
-        .news-scroll { flex: 1; overflow-y: auto; padding: 0; }
-        .news-card { padding: 20px; border-bottom: 1px solid var(--border); transition: 0.3s; }
-        .news-card:hover { background: #0d1117; }
-        .news-headline { font-size: 13px; font-weight: 400; color: #ccc; text-decoration: none; display: block; line-height: 1.6; }
-        .news-headline:hover { color: var(--accent); }
-
-        /* PAGES (SOBRE / AVISO) */
-        .content-page { display: none; max-width: 900px; margin: 0 auto; line-height: 1.8; padding: 40px; }
-        .content-page h1 { font-size: 32px; font-weight: 300; margin-bottom: 30px; color: var(--accent); }
-        .highlight-box { border-left: 2px solid var(--accent); padding-left: 30px; margin: 40px 0; }
-
-        /* MODAL WAR ROOM */
-        #chart-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 10000; justify-content: center; align-items: center; }
-        .modal-body { width: 98%; height: 95%; display: flex; gap: 2px; background: var(--border); border: 1px solid var(--border); }
-        .analysis-left { flex: 3; background: #000; overflow: hidden; }
-        .analysis-right { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-        .gauge-box { flex: 1; background: #000; overflow: hidden; }
-        .close-btn { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 40px; cursor: pointer; z-index: 10001; font-weight: 200; }
-
-        #company-info { position: fixed; display: none; width: 300px; background: #000; border: 1px solid var(--accent); padding: 20px; z-index: 9999; pointer-events: none; box-shadow: 20px 20px 60px rgba(0,0,0,0.5); }
+        .world-news { width: 320px; border-left: 1px solid var(--border); background: #000; overflow-y: auto; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo" onclick="showMarket()">ALPHA<span>MARKETCAP</span></div>
-    <div class="market-status">
-        <div class="status-dot"></div>
-        SISTEMA ALPHA OPERACIONAL | <span id="real-clock">00:00:00</span>
-    </div>
+    <a href="/" class="logo">ALPHA<span>MARKETCAP</span></a>
+    <div style="font-size: 11px; color: var(--text-dim)" id="clock">00:00:00</div>
 </header>
 
-<div class="ticker-wrap"><div class="ticker" id="ticker-feed">CARREGANDO DADOS DA BOLSA MUNDIAL...</div></div>
+<div class="ticker-wrap"><div class="ticker" id="ticker-feed">SINCRONIZANDO COM A BASE DE DADOS B3 & NASDAQ...</div></div>
 
 <div class="container">
     <aside>
-        <div class="nav-group" id="side-menu">
-            <div class="nav-label">Setores B3 & Global</div>
-        </div>
-        <div class="sidebar-footer">
-            <a href="javascript:void(0)" onclick="showPage('page-about')" class="footer-link">Quem Somos</a>
-            <a href="javascript:void(0)" onclick="showPage('page-disclaimer')" class="footer-link">Aviso de Risco</a>
-        </div>
+        <div class="nav-label">Inteligência</div>
+        <div class="nav-item active" onclick="showSection('terminal')">📊 DESTAQUES ALPHA</div>
+        <div class="nav-item" onclick="showSection('screener')">🔍 SCREENER GLOBAL</div>
+        
+        <div class="nav-label">Setores Alpha</div>
+        <div id="sector-menu"></div>
     </aside>
 
-    <main id="main-content">
-        <div id="grid-header" class="section-header">
-            <h2 id="sector-title">TECNOLOGIA</h2>
-        </div>
-        
-        <div class="grid" id="main-grid"></div>
-
-        <div id="page-about" class="content-page">
-            <h1>Sobre o Terminal Alpha</h1>
-            <p>O <strong>ALPHAMARKETCAP</strong> é uma infraestrutura de dados financeiros desenvolvida para oferecer transparência e profundidade técnica ao investidor moderno.</p>
-            <div class="highlight-box">
-                <p>Nossa plataforma consolida cotações em tempo real, indicadores de volatilidade e o sentimento do mercado global em uma interface unificada, inspirada na precisão dos grandes pregões mundiais.</p>
-            </div>
+    <main>
+        <div id="terminal-view">
+            <div class="grid" id="main-grid"></div>
         </div>
 
-        <div id="page-disclaimer" class="content-page">
-            <h1>Aviso Legal e Compliance</h1>
-            <p>O conteúdo apresentado neste terminal é estritamente informativo. O <strong>ALPHAMARKETCAP</strong> não realiza recomendações de investimento.</p>
-            <div class="highlight-box">
-                <p>A volatilidade do mercado financeiro implica riscos. Toda decisão tomada com base nos dados aqui expostos é de inteira responsabilidade do usuário.</p>
+        <div id="screener-view">
+            <div class="tradingview-widget-container" style="height:100%;width:100%">
+                <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+                {
+                "width": "100%",
+                "height": "100%",
+                "defaultColumn": "overview",
+                "defaultScreen": "most_capitalized",
+                "market": "brazil",
+                "showToolbar": true,
+                "colorTheme": "dark",
+                "locale": "br"
+                }
+                </script>
             </div>
         </div>
     </main>
 
-    <section class="world-news">
-        <div class="news-header">Fluxo de Notícias</div>
-        <div class="news-scroll" id="world-feed"></div>
-    </section>
+    <section class="world-news" id="news-feed"></section>
 </div>
 
 <div id="chart-modal">
-    <span class="close-btn" onclick="closeChart()">&times;</span>
+    <button class="close-btn" onclick="closeChart()">X</button>
     <div class="modal-body">
-        <div class="analysis-left" id="tv-chart-main"></div>
-        <div class="analysis-right" id="tv-analysis-pane"></div>
+        <div id="chart-area" style="flex: 3; border-right: 1px solid var(--border)"></div>
+        <div id="desc-area" style="flex: 1; padding: 40px; overflow-y: auto; background: #000;"></div>
     </div>
-</div>
-
-<div id="company-info">
-    <div style="color:var(--accent); font-weight:800; font-size:13px; margin-bottom:8px; letter-spacing:1px" id="tt-name"></div>
-    <div style="font-size:12px; line-height:1.6; color:#888" id="tt-desc"></div>
 </div>
 
 <script>
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9hPdpNw-jrALbP32-Pgqhwe_X98uaZht0tjtZXidCFwiXvXTjbJc5diOaI270W8m_hyHYpd5xwlQl/pub?gid=0&single=true&output=csv';
-    
-    function sanitize(val) { return val ? val.toString().replace(/["']/g, "").trim() : ""; }
 
-    function showPage(pageId) {
-        document.getElementById('main-grid').style.display = 'none';
-        document.getElementById('grid-header').style.display = 'none';
-        document.querySelectorAll('.content-page').forEach(p => p.style.display = 'none');
-        document.getElementById(pageId).style.display = 'block';
-        document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+    // TROCA DE SEÇÕES
+    function showSection(type) {
+        document.getElementById('terminal-view').style.display = type === 'terminal' ? 'block' : 'none';
+        document.getElementById('screener-view').style.display = type === 'screener' ? 'block' : 'none';
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        event.currentTarget.classList.add('active');
     }
 
-    function showMarket() {
-        document.querySelectorAll('.content-page').forEach(p => p.style.display = 'none');
-        document.getElementById('main-grid').style.display = 'grid';
-        document.getElementById('grid-header').style.display = 'block';
-    }
-
-    async function loadWorldNews() {
-        try {
-            const RSS_URL = encodeURIComponent("https://news.google.com/rss?hl=pt-BR&gl=BR&ceid=BR:pt-419");
-            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${RSS_URL}`);
-            const data = await response.json();
-            if (data.status === 'ok') {
-                document.getElementById('world-feed').innerHTML = data.items.map(item => `
-                    <div class="news-card">
-                        <a href="${item.link}" target="_blank" class="news-headline">${item.title}</a>
-                        <div style="font-size:9px; color:#444; margin-top:8px; font-family:JetBrains Mono">${new Date(item.pubDate).toLocaleTimeString()} // INTEL</div>
-                    </div>
-                `).join('');
-            }
-        } catch (e) { console.error("News error"); }
-    }
-
+    // CARREGAMENTO DE DADOS (PLANILHA)
     async function fetchData() {
         try {
             const r = await fetch(SHEET_URL);
-            const text = await r.text();
-            const rows = text.split(/\r?\n/).slice(1);
+            const t = await r.text();
+            const rows = t.split('\n').slice(1);
             window.stocks = rows.map(row => {
-                const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                return { ticker: sanitize(cols[0]), name: sanitize(cols[1]), price: sanitize(cols[2]), pct: sanitize(cols[3]), sector: sanitize(cols[4]), desc: sanitize(cols[5]) };
-            }).filter(s => s.ticker);
-            renderGrid(document.querySelector('.nav-item.active')?.innerText || "TECNOLOGIA");
-            updateTicker();
-        } catch (e) {}
+                const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                return { 
+                    ticker: c[0]?.trim().replace(/"/g, ''), 
+                    name: c[1]?.trim().replace(/"/g, ''), 
+                    price: c[2], 
+                    pct: c[3], 
+                    sector: c[4]?.trim().replace(/"/g, ''), 
+                    desc: c[5]?.trim().replace(/"/g, '') 
+                };
+            }).filter(x => x.ticker);
+            renderGrid("Tecnologia");
+        } catch(e) { console.error("Erro ao carregar planilha"); }
     }
 
     function renderGrid(sector) {
-        if (document.getElementById('main-grid').style.display === 'none') return;
-        document.getElementById('sector-title').innerText = sector;
-        const container = document.getElementById('main-grid');
-        container.innerHTML = '';
-        window.stocks.filter(s => s.sector.toUpperCase() === sector.toUpperCase()).forEach(s => {
-            const isPos = !s.pct.includes('-');
-            const card = document.createElement('div');
+        const g = document.getElementById('main-grid'); 
+        g.innerHTML = '';
+        window.stocks.filter(x => x.sector.toUpperCase() === sector.toUpperCase()).forEach(x => {
+            const card = document.createElement('div'); 
             card.className = 'card';
+            const isNeg = x.pct && x.pct.includes('-');
             card.innerHTML = `
-                <div>
-                    <span class="symbol">${s.ticker}</span>
-                    <div class="price">R$ ${s.price}</div>
-                </div>
-                <div class="change-box">
-                    <span class="change ${isPos ? 'pos' : 'neg'}">${s.pct}</span>
-                </div>`;
-            card.onclick = () => openChart(s.ticker);
-            card.onmousemove = (e) => {
-                const tt = document.getElementById('company-info');
-                document.getElementById('tt-name').innerText = s.name;
-                document.getElementById('tt-desc').innerText = s.desc || "Aguardando análise estratégica...";
-                tt.style.display = 'block'; tt.style.left = (e.clientX + 15) + 'px'; tt.style.top = (e.clientY + 15) + 'px';
-            };
-            card.onmouseleave = () => { document.getElementById('company-info').style.display = 'none'; };
-            container.appendChild(card);
+                <div class="symbol">${x.ticker}</div>
+                <div class="price">R$ ${x.price}</div>
+                <div class="change ${isNeg ? 'neg' : 'pos'}">${x.pct}</div>`;
+            card.onclick = () => openChart(x);
+            g.appendChild(card);
         });
     }
 
-    function openChart(ticker) {
-        document.getElementById('chart-modal').style.display = 'flex';
-        const stockData = window.stocks.find(s => s.ticker === ticker);
-        const myDesc = stockData ? stockData.desc : "Análise Alpha em processamento...";
-        let cleanTicker = ticker.includes(':') ? ticker.split(':')[1] : ticker;
-        
-        document.getElementById('tv-chart-main').innerHTML = `<iframe src="https://s.tradingview.com/widgetembed/?symbol=${cleanTicker}&interval=D&theme=dark" style="width: 100%; height: 100%; border: none;"></iframe>`;
-        
-        document.getElementById('tv-analysis-pane').innerHTML = `
-            <div class="gauge-box">
-                <iframe src="https://s.tradingview.com/embed-widget/technical-analysis/?symbol=${cleanTicker}&interval=1D&theme=dark" style="width: 100%; height: 100%; border: none;"></iframe>
-            </div>
-            <div class="gauge-box" style="padding:30px; border-top:1px solid var(--border)">
-                <h3 style="color:var(--accent); font-size:12px; margin-bottom:15px; letter-spacing:2px">PROJEÇÃO ALPHA</h3>
-                <p style="font-size:13px; color:#ccc; line-height:1.8">${myDesc}</p>
-            </div>`;
+    function openChart(s) {
+        document.getElementById('chart-modal').style.display = 'block';
+        const cleanTicker = s.ticker.split(':').pop();
+        document.getElementById('chart-area').innerHTML = `<iframe src="https://s.tradingview.com/widgetembed/?symbol=${cleanTicker}&theme=dark" style="width:100%;height:100%;border:none"></iframe>`;
+        document.getElementById('desc-area').innerHTML = `
+            <h2 style="color:var(--accent);margin-bottom:20px;font-weight:300">${s.name}</h2>
+            <div style="width:30px;height:2px;background:var(--accent);margin-bottom:20px"></div>
+            <p style="line-height:1.8;color:#888;text-align:justify;font-size:14px">${s.desc || 'Análise Alpha em processamento...'}</p>`;
     }
 
     function closeChart() { document.getElementById('chart-modal').style.display = 'none'; }
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeChart(); });
 
-    function updateTicker() {
-        const feed = window.stocks.slice(0, 20).map(s => `${s.ticker}: ${s.price}`).join('  |  ');
-        document.getElementById('ticker-feed').innerText = `BOVESPA & NASDAQ LIVE: ${feed}  |  ALPHAMARKETCAP TERMINAL`;
-    }
-
-    const sectors = ["Tecnologia", "Defesa", "Energia", "Cibersegurança", "Bancos", "Commodities", "Logística", "Saúde", "Varejo", "Refúgio"];
-    const menu = document.getElementById('side-menu');
-    sectors.forEach((s, i) => {
-        const div = document.createElement('div');
-        div.className = `nav-item ${i === 0 ? 'active' : ''}`;
-        div.innerText = s.toUpperCase();
-        div.onclick = function() {
-            showMarket();
-            document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
-            this.classList.add('active');
+    // MENU LATERAL
+    const sectors = ["Tecnologia", "Defesa", "Energia", "Bancos", "Commodities", "Refúgio"];
+    const menu = document.getElementById('sector-menu');
+    sectors.forEach(s => {
+        const item = document.createElement('div');
+        item.className = 'nav-item';
+        item.innerText = s;
+        item.onclick = (e) => {
+            showSection('terminal');
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
             renderGrid(s);
         };
-        menu.appendChild(div);
+        menu.appendChild(item);
     });
 
-    fetchData(); loadWorldNews();
-    setInterval(fetchData, 60000);
-    setInterval(loadWorldNews, 300000);
-    setInterval(() => { document.getElementById('real-clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+    // RELÓGIO E NOTÍCIAS
+    setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+    fetchData();
 </script>
 </body>
 </html>
