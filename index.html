@@ -3,202 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPHAMARKETCAP | Global Financial Terminal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <title>ALPHAMARKETCAP | Portal de Inteligência Financeira</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #05070a; --surface: #0d1117; --accent: #00f2ff; --up: #00ff88; --down: #ff3366; --text: #f0f3f5; --text-dim: #848e9c; --border: #1f2937; }
+        :root { --bg: #0b0e11; --surface: #151921; --accent: #00f2ff; --up: #00ff88; --down: #ff3366; --text: #ffffff; --border: #2b2f3a; }
         
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* 1. TICKER TAPE (A barra de cotações que desliza) */
+        .ticker-wrap { width: 100%; overflow: hidden; background: #fff; height: 40px; border-bottom: 1px solid #ddd; }
         
-        header { background: #000; padding: 0 30px; border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; height: 65px; z-index: 100; position: relative; }
-        .logo { font-weight: 800; font-size: 22px; text-transform: uppercase; color: #fff; letter-spacing: 1px; }
+        /* 2. HEADER PRINCIPAL */
+        header { background: #000; height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 3px solid var(--accent); }
+        .logo { font-weight: 800; font-size: 20px; text-transform: uppercase; color: #fff; }
         .logo span { color: var(--accent); }
 
-        .container { display: flex; height: calc(100vh - 65px); }
+        .main-portal { max-width: 1400px; margin: 0 auto; padding: 30px; }
+
+        /* 3. DASHBOARD ESTILO B3 (Gráfico + Indicadores) */
+        .b3-hero { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 40px; }
         
-        /* SIDEBAR */
-        aside { width: 240px; padding: 20px; border-right: 1px solid var(--border); background: #000; display: flex; flex-direction: column; flex-shrink: 0; }
-        .nav-label { font-size: 10px; color: var(--accent); font-weight: 800; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; }
-        .nav-item { padding: 12px; color: var(--text-dim); cursor: pointer; font-size: 11px; font-weight: 600; border-radius: 4px; transition: 0.2s; text-transform: uppercase; margin-bottom: 4px; border-left: 3px solid transparent; }
-        .nav-item:hover, .nav-item.active { color: #fff; background: #161b22; border-left: 3px solid var(--accent); }
+        .b3-main-card { background: var(--surface); border-radius: 4px; padding: 25px; border: 1px solid var(--border); position: relative; }
+        .b3-indicators { display: flex; gap: 30px; margin-bottom: 20px; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .indicator-item { display: flex; flex-direction: column; }
+        .indicator-item span { color: var(--accent); font-weight: 700; }
 
-        .btn-about { margin-top: auto; padding: 15px; background: var(--surface); border: 1px solid var(--border); color: var(--accent); text-align: center; font-size: 10px; font-weight: 800; cursor: pointer; border-radius: 4px; text-transform: uppercase; }
+        .b3-side-card { background: var(--surface); border-radius: 4px; padding: 20px; border: 1px solid var(--border); }
+        
+        /* TABS DE PERFORMANCE */
+        .perf-tabs { display: flex; gap: 15px; border-bottom: 1px solid var(--border); margin-bottom: 15px; padding-bottom: 10px; }
+        .tab-btn { background: none; border: none; color: #848e9c; font-weight: 700; cursor: pointer; font-size: 12px; }
+        .tab-btn.active { color: #fff; border-bottom: 2px solid var(--accent); }
 
-        /* VIEWPORTS */
-        main { flex: 1; padding: 25px; overflow-y: auto; background: var(--bg); scroll-behavior: smooth; }
-        .view-section { display: none; }
-        .view-section.active { display: block; }
+        .stock-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .stock-ticker { display: flex; align-items: center; gap: 10px; }
+        .stock-icon { width: 30px; height: 30px; border-radius: 50%; background: #333; display: flex; align-items: center; justify-content: center; font-size: 10px; }
 
-        /* HERO CHART */
-        .hero-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 30px; }
-        .chart-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .live-tag { background: rgba(0, 242, 255, 0.1); color: var(--accent); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 800; animation: blink 2s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        /* LISTA DE TODAS AS EMPRESAS ABAIXO */
+        .full-list-section { margin-top: 50px; }
+        .grid-alpha { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .alpha-card { background: var(--surface); padding: 20px; border: 1px solid var(--border); border-radius: 8px; transition: 0.2s; }
+        .alpha-card:hover { border-color: var(--accent); transform: translateY(-3px); }
 
-        /* TABELA ESTILO B3 / BLOOMBERG */
-        .table-container { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
-        th { background: #161b22; text-align: left; padding: 15px; color: var(--accent); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); }
-        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; }
-        tr:hover td { background: rgba(0, 242, 255, 0.03); color: #fff; }
-        .pos { color: var(--up); } .neg { color: var(--down); }
+        /* MENU LATERAL SLIM */
+        .side-nav { position: fixed; left: 0; top: 100px; display: flex; flex-direction: column; gap: 10px; padding: 10px; z-index: 1000; }
+        .nav-dot { width: 45px; height: 45px; background: #000; border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--accent); font-size: 18px; }
+        .nav-dot:hover { background: var(--accent); color: #000; }
 
-        /* TEXTO SOBRE */
-        .about-box { max-width: 800px; margin: 40px auto; line-height: 1.8; color: #ccc; }
-        .about-box h1 { color: var(--accent); font-size: 32px; margin-bottom: 25px; }
     </style>
 </head>
 <body>
 
+<div class="ticker-wrap">
+    <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+          "symbols": [
+            {"proName": "BMFBOVESPA:IBOV", "title": "IBOVESPA"},
+            {"proName": "BMFBOVESPA:PETR4", "title": "PETR4"},
+            {"proName": "BMFBOVESPA:VALE3", "title": "VALE3"},
+            {"proName": "BMFBOVESPA:ITUB4", "title": "ITUB4"},
+            {"proName": "FX_IDC:USDBRL", "title": "USD/BRL"}
+          ],
+          "showSymbolLogo": true, "colorTheme": "light", "isTransparent": false, "displayMode": "adaptive", "locale": "br"
+        }
+        </script>
+    </div>
+</div>
+
 <header>
     <div class="logo">ALPHA<span>MARKETCAP</span></div>
-    <div id="clock" style="font-family: 'JetBrains Mono'; color: var(--accent); font-size: 14px;">00:00:00</div>
+    <div id="clock" style="font-family: 'JetBrains Mono'; font-size: 12px; color: var(--accent)">00:00:00</div>
 </header>
 
-<div class="container">
-    <aside>
-        <div class="nav-label">Monitoramento</div>
-        <div class="nav-item active" onclick="switchTab('terminal')">📊 Dashboard Alpha</div>
-        
-        <div class="nav-label">Listagem Completa</div>
-        <div id="sector-btns"></div>
+<div class="side-nav">
+    <div class="nav-dot" title="Dashboard" onclick="window.scrollTo(0,0)">📊</div>
+    <div class="nav-dot" title="Screener" onclick="document.getElementById('full-list').scrollIntoView()">🔍</div>
+    <div class="nav-dot" title="Institucional" onclick="alert('Sobre a Alphamarketcap: Nosso sonho se tornando realidade.')">ℹ️</div>
+</div>
 
-        <div class="btn-about" onclick="switchTab('about')">ℹ️ Nossa História</div>
-    </aside>
-
-    <main id="main-scroll">
-        <div id="terminal-view" class="view-section active">
-            <div class="hero-section">
-                <div class="chart-info">
-                    <div>
-                        <span id="display-name" style="font-size: 18px; font-weight: 700;">IBOVESPA</span>
-                        <span id="display-ticker" style="color: var(--text-dim); margin-left: 10px; font-size: 12px;">BMFBOVESPA:IBOV</span>
-                    </div>
-                    <div class="live-tag">● CARROSSEL ATIVO</div>
+<div class="main-portal">
+    
+    <div class="b3-hero">
+        <div class="b3-main-card">
+            <div class="b3-indicators">
+                <div class="indicator-item">Taxa DI 10/03 <br><span>14,90%</span></div>
+                <div class="indicator-item">Índice DI 11/03 <br><span>55.677,19</span></div>
+                <div class="indicator-item">S&P/B3 IBOVESPA VIX <br><span style="color:var(--up)">26,40 (+5.31%)</span></div>
+            </div>
+            
+            <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" width="30">
+                <h2 style="font-size:24px;">Índice Bovespa</h2>
+                <div style="margin-left:auto; text-align:right;">
+                    <div style="font-size:28px; font-weight:800;">183.325,86 <span style="font-size:14px; font-weight:400; color:var(--down)">-0,07%</span></div>
                 </div>
-                <div id="rotating-chart" style="height: 400px;"></div>
             </div>
-
-            <h2 style="margin: 40px 0 20px; font-weight: 400;">Monitor de Ativos <span style="color:var(--accent)">Full List</span></h2>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Ticker</th>
-                            <th>Empresa</th>
-                            <th>Preço</th>
-                            <th>Var %</th>
-                            <th>Setor</th>
-                        </tr>
-                    </thead>
-                    <tbody id="full-table-body">
-                        </tbody>
-                </table>
-            </div>
+            
+            <div id="b3-line-chart" style="height: 300px; width: 100%;"></div>
         </div>
 
-        <div id="about-view" class="view-section">
-            <div class="about-box">
-                <h1>O Sonho ALPHAMARKETCAP</h1>
-                <p>O <strong>ALPHAMARKETCAP</strong> não é apenas um site; é a prova de que com persistência, um sonho pode se tornar código. Construir este terminal exigiu superar bugs complexos e noites de estudo para integrar o que há de mais moderno no mercado financeiro.</p>
-                <p style="margin-top:20px;">Nossa missão é ser o terminal de referência para investidores que buscam clareza e autoridade. Cada gráfico que roda e cada linha dessa tabela foi pensada para entregar o poder da informação em tempo real.</p>
-                <p style="margin-top:20px; color: var(--accent); font-weight: 600;">"Onde os dados encontram a estratégia."</p>
+        <div class="b3-side-card">
+            <div class="perf-tabs">
+                <button class="tab-btn active">Mais Negociados</button>
+                <button class="tab-btn">Maiores Altas</button>
+                <button class="tab-btn">Maiores Baixas</button>
             </div>
+            <div id="side-stock-list">
+                </div>
+            <p style="font-size:10px; color:#848e9c; margin-top:20px;">Lista das empresas com o maior volume financeiro hoje.</p>
         </div>
-    </main>
+    </div>
+
+    <div id="full-list" class="full-list-section">
+        <h2 style="margin-bottom:25px; font-weight:300; border-left:4px solid var(--accent); padding-left:15px;">ACOMPANHE AS COTAÇÕES</h2>
+        <div class="grid-alpha" id="alpha-grid"></div>
+    </div>
+
 </div>
 
 <script src="https://s3.tradingview.com/tv.js"></script>
 <script>
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9hPdpNw-jrALbP32-Pgqhwe_X98uaZht0tjtZXidCFwiXvXTjbJc5diOaI270W8m_hyHYpd5xwlQl/pub?gid=0&single=true&output=csv';
 
-    // CONFIG CARROSSEL
-    const banks = [
-        { n: "IBOVESPA", t: "BMFBOVESPA:IBOV" },
-        { n: "Itaú Unibanco", t: "BMFBOVESPA:ITUB4" },
-        { n: "Bradesco", t: "BMFBOVESPA:BBDC4" },
-        { n: "Banco do Brasil", t: "BMFBOVESPA:BBAS3" },
-        { n: "Santander BR", t: "BMFBOVESPA:SANB11" },
-        { n: "BTG Pactual", t: "BMFBOVESPA:BPAC11" },
-        { n: "Nubank", t: "NYSE:NU" }
-    ];
-    let bIdx = 0;
+    // 1. CARREGAR GRÁFICO DE LINHA (ESTILO B3)
+    new TradingView.widget({
+        "container_id": "b3-line-chart",
+        "symbol": "BMFBOVESPA:IBOV",
+        "interval": "D", "timezone": "America/Sao_Paulo", "theme": "dark",
+        "style": "3", "locale": "br", "hide_top_toolbar": true, "save_image": false,
+        "width": "100%", "height": "100%"
+    });
 
-    function startCarousel() {
-        const asset = banks[bIdx];
-        document.getElementById('display-name').innerText = asset.n;
-        document.getElementById('display-ticker').innerText = asset.t;
-        new TradingView.widget({
-            "container_id": "rotating-chart", "symbol": asset.t,
-            "width": "100%", "height": "100%", "theme": "dark", "style": "3", "locale": "br", "hide_top_toolbar": true
-        });
-        bIdx = (bIdx + 1) % banks.length;
-    }
-
-    setInterval(startCarousel, 15000); // 15 segundos por banco
-    startCarousel();
-
-    // TABELAS E DADOS
-    async function fetchData() {
+    // 2. CARREGAR DADOS DA PLANILHA
+    async function loadAlphaData() {
         const r = await fetch(SHEET_URL);
         const t = await r.text();
         const rows = t.split('\n').slice(1);
-        window.allStocks = rows.map(row => {
+        const stocks = rows.map(row => {
             const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
             return { 
                 ticker: c[0].replace(/"/g,''), 
                 name: c[1].replace(/"/g,''), 
                 price: c[2], 
-                pct: c[3], 
-                sector: c[4].trim() 
+                pct: c[3] 
             };
         }).filter(x => x.ticker);
-        renderTable(window.allStocks);
+
+        renderSideList(stocks.slice(0,4)); // Mostra 4 na lateral estilo B3
+        renderGrid(stocks); // Mostra todas embaixo
     }
 
-    function renderTable(data) {
-        const tbody = document.getElementById('full-table-body');
-        tbody.innerHTML = '';
+    function renderSideList(data) {
+        const list = document.getElementById('side-stock-list');
+        list.innerHTML = '';
         data.forEach(x => {
-            const isNeg = x.pct.includes('-');
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="font-weight:700; color:var(--accent)">${x.ticker}</td>
-                <td>${x.name}</td>
-                <td>R$ ${x.price}</td>
-                <td class="${isNeg ? 'neg' : 'pos'}">${x.pct}</td>
-                <td style="color:var(--text-dim); font-size:11px">${x.sector}</td>
-            `;
-            tbody.appendChild(tr);
+            list.innerHTML += `
+                <div class="stock-item">
+                    <div class="stock-ticker">
+                        <div class="stock-icon">${x.ticker.substring(0,2)}</div>
+                        <div><strong>${x.ticker}</strong><br><small style="color:#848e9c; font-size:10px">${x.name.substring(0,15)}...</small></div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:14px; font-weight:700;">${x.price}</div>
+                        <div style="font-size:12px; color:${x.pct.includes('-')?'var(--down)':'var(--up)'}">${x.pct}</div>
+                    </div>
+                </div>`;
         });
     }
 
-    function switchTab(id) {
-        document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-        document.getElementById(id + '-view').classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        if(event.currentTarget.classList) event.currentTarget.classList.add('active');
+    function renderGrid(data) {
+        const grid = document.getElementById('alpha-grid');
+        grid.innerHTML = '';
+        data.forEach(x => {
+            grid.innerHTML += `
+                <div class="alpha-card">
+                    <div style="font-size:11px; color:var(--accent); font-weight:800">${x.ticker}</div>
+                    <div style="font-size:22px; margin:10px 0; font-family:'JetBrains Mono'">${x.price}</div>
+                    <div style="color:${x.pct.includes('-')?'var(--down)':'var(--up)'}; font-weight:800">${x.pct}</div>
+                </div>`;
+        });
     }
 
-    // BOTÕES DE FILTRO POR SETOR
-    const sectors = ["Tecnologia", "Defesa", "Energia", "Bancos", "Commodities", "Refúgio"];
-    sectors.forEach(s => {
-        const btn = document.createElement('div');
-        btn.className = 'nav-item';
-        btn.innerText = s;
-        btn.onclick = () => {
-            switchTab('terminal');
-            const filtered = window.allStocks.filter(x => x.sector.toUpperCase() === s.toUpperCase());
-            renderTable(filtered);
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            btn.classList.add('active');
-        };
-        document.getElementById('sector-btns').appendChild(btn);
-    });
-
-    fetchData();
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+    loadAlphaData();
 </script>
 </body>
 </html>
