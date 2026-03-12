@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPHAMARKETCAP | Global Intelligence</title>
+    <title>ALPHAMARKETCAP | Global Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -19,17 +19,12 @@
                 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
                 {
                   "symbols": [
-                    {"proName":"BMFBOVESPA:IBOV","title":"IBOVESPA"},
-                    {"proName":"NASDAQ:IXIC","title":"NASDAQ"},
-                    {"proName":"NYSE:NYA","title":"NYSE"},
-                    {"proName":"FX_IDC:USDBRL","title":"DÓLAR"},
-                    {"proName":"NYSE:GS","title":"GOLDMAN SACHS"},
-                    {"proName":"NYSE:JPM","title":"JP MORGAN"},
-                    {"proName":"NYSE:MS","title":"MORGAN STANLEY"},
-                    {"proName":"NYSE:BAC","title":"BANK OF AMERICA"},
-                    {"proName":"NYSE:C","title":"CITIGROUP"}
+                    {"proName":"BMFBOVESPA:IBOV","title":"IBOVESPA"},{"proName":"NASDAQ:IXIC","title":"NASDAQ"},
+                    {"proName":"FX_IDC:USDBRL","title":"DÓLAR"},{"proName":"NYSE:GS","title":"GOLDMAN SACHS"},
+                    {"proName":"NYSE:JPM","title":"JP MORGAN"},{"proName":"NYSE:MS","title":"MORGAN STANLEY"},
+                    {"proName":"NYSE:BAC","title":"BANK OF AMERICA"},{"proName":"NYSE:C","title":"CITIGROUP"}
                   ],
-                  "colorTheme":"light","locale":"br"
+                  "colorTheme":"dark","displayMode":"adaptive","locale":"br"
                 }
                 </script>
             </div>
@@ -42,20 +37,21 @@
 
         <main class="container">
             <div class="dashboard-grid">
-                <div class="main-card">
+                <div class="main-card chart-box">
                     <h2 class="card-label">MERCADO GLOBAL EM TEMPO REAL</h2>
-                    <div id="main-chart" style="height: 400px;"></div>
+                    <div id="main-chart"></div>
                 </div>
 
                 <div class="main-card">
                     <div class="tabs">
-                        <button class="tab-btn active" onclick="switchTab('top-gainers')">ALTAS</button>
-                        <button class="tab-btn" onclick="switchTab('top-losers')">BAIXAS</button>
+                        <button class="tab-btn active" onclick="switchTab('top-gainers', this)">ALTAS</button>
+                        <button class="tab-btn" onclick="switchTab('top-losers', this)">BAIXAS</button>
                     </div>
                     <div id="top-gainers" class="tab-content active"></div>
                     <div id="top-losers" class="tab-content"></div>
                 </div>
             </div>
+            
             <div id="sectors-container"></div>
         </main>
     </div>
