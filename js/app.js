@@ -1,76 +1,76 @@
 window.addEventListener('load', () => {
     setTimeout(() => {
-        const splash = document.getElementById('splash-screen');
-        const content = document.getElementById('site-content');
-        splash.style.opacity = '0';
+        document.getElementById('splash-screen').style.opacity = '0';
         setTimeout(() => {
-            splash.style.display = 'none';
-            content.style.display = 'block';
+            document.getElementById('splash-screen').style.display = 'none';
+            document.getElementById('site-content').style.display = 'block';
             setTimeout(() => { 
-                content.style.opacity = '1'; 
+                document.getElementById('site-content').style.opacity = '1'; 
                 initApp();
             }, 50);
         }, 800);
-    }, CONFIG.SPLASH_DELAY || 3000);
+    }, 3000);
 });
 
 function initApp() {
     new TradingView.widget({
-        "container_id": "main-chart", "symbol": CONFIG.IBOV_SYMBOL,
-        "interval": "D", "theme": "dark", "style": "3", "width": "100%", "height": "450", "locale": "br"
+        "container_id": "main-chart", "symbol": "BMFBOVESPA:IBOV",
+        "interval": "D", "theme": "dark", "style": "3", "width": "100%", "height": "100%", "locale": "br"
     });
     loadData();
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
 }
 
 async function loadData() {
-    try {
-        const response = await fetch(CONFIG.SHEET_URL);
-        const csvText = await response.text();
-        const rows = csvText.split('\n').slice(1);
-        const sectors = {};
+    const res = await fetch(CONFIG.SHEET_URL);
+    const text = await res.text();
+    const rows = text.split('\n').slice(1);
+    const sectors = {};
+    const highlights = document.getElementById('highlights-list');
+    highlights.innerHTML = "";
 
-        rows.forEach(row => {
-            const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-            if(cols[0] && cols[0].trim() !== "") {
-                const stock = {
-                    ticker: cols[0].replace(/"/g,'').trim(),
-                    name: cols[1]?.replace(/"/g,'').trim() || "",
-                    price: cols[2]?.trim() || "0,00",
-                    // LIMPEZA: Pega apenas os primeiros 5 caracteres da variação (ex: -0.33)
-                    pct: cols[3]?.trim().substring(0, 6) || "0%"
-                };
-                const sectorName = (cols[4] || "Outros").trim().replace(/"/g,'');
-                if(!sectors[sectorName]) sectors[sectorName] = [];
-                sectors[sectorName].push(stock);
+    rows.forEach((row, index) => {
+        const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        if(c[0]) {
+            const s = {
+                ticker: c[0].replace(/"/g,''),
+                price: c[2],
+                pct: c[3]?.substring(0,6) || "0%",
+                sector: (c[4] || "Outros").trim().replace(/"/g,'')
+            };
+            if(!sectors[s.sector]) sectors[s.sector] = [];
+            sectors[s.sector].push(s);
+
+            // Preenche destaques (primeiros 6)
+            if(index < 6) {
+                highlights.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #2b2f3a;">
+                        <b>${s.ticker}</b> <span style="color:${s.pct.includes('-')?'var(--down)':'var(--up)'}">${s.pct}</span>
+                    </div>`;
             }
-        });
-        renderSectors(sectors);
-    } catch (err) { console.error("Erro ao processar dados:", err); }
+        }
+    });
+    renderSectors(sectors);
 }
 
 function renderSectors(sectors) {
     const container = document.getElementById('sectors-container');
-    container.innerHTML = ""; // Limpa antes de renderizar
-    
+    container.innerHTML = "";
     for (const name in sectors) {
-        const section = document.createElement('div');
-        section.innerHTML = `<h2 class="sector-title">${name}</h2>`;
+        const div = document.createElement('div');
+        div.innerHTML = `<h2 class="sector-title">${name}</h2>`;
         const grid = document.createElement('div');
         grid.className = 'stocks-grid';
-
         sectors[name].forEach(s => {
-            const isNegative = s.pct.includes('-');
+            const isNeg = s.pct.includes('-');
             grid.innerHTML += `
-                <div class="stock-card" onclick="window.open('https://br.tradingview.com/symbols/${s.ticker}')">
-                    <div style="color:var(--accent); font-weight:800; font-size:12px; letter-spacing:1px">${s.ticker}</div>
+                <div class="stock-card" onclick="window.location.href='detalhes.html?symbol=${s.ticker}'">
+                    <div style="color:var(--accent); font-weight:800; font-size:12px;">${s.ticker}</div>
                     <div class="price">R$ ${s.price}</div>
-                    <div class="pct" style="color:${isNegative ? 'var(--down)' : 'var(--up)'}">
-                        ${isNegative ? '▼' : '▲'} ${s.pct}
-                    </div>
+                    <div style="color:${isNeg?'var(--down)':'var(--up)'}; font-weight:700;">${isNeg?'▼':'▲'} ${s.pct}</div>
                 </div>`;
         });
-        section.appendChild(grid);
-        container.appendChild(section);
+        div.appendChild(grid);
+        container.appendChild(div);
     }
 }
