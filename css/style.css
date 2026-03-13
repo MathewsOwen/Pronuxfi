@@ -1,59 +1,42 @@
 :root {
-    --bg-black: #030303;
+    --bg-black: #020202;
     --panel-bg: #080808;
-    --accent-cyan: #00f3ff;
-    --market-green: #00ff6a;
-    --market-red: #ff3c3c;
-    --border-gray: #1a1a1a;
-    --text-dim: #666;
+    --accent: #00f3ff;
+    --green: #00ff6a;
+    --red: #ff3c3c;
+    --border: #1a1a1a;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+body { background-color: var(--bg-black); color: #fff; font-family: 'JetBrains Mono', monospace; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-body {
-    background-color: var(--bg-black);
-    color: #fff;
-    font-family: 'JetBrains Mono', monospace;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
+/* Ticker Senior */
+.ticker-wrapper { background: #000; height: 32px; border-bottom: 1px solid var(--border); display: flex; align-items: center; overflow: hidden; }
+.ticker-content { display: flex; white-space: nowrap; animation: ticker-move 50s linear infinite; }
+.bank-unit { padding: 0 35px; font-size: 11px; color: #666; }
+.bank-unit span { color: var(--green); margin-left: 8px; }
+@keyframes ticker-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-/* Ticker dos Bancos */
-.ticker-wrapper { background: #000; height: 32px; border-bottom: 1px solid var(--border-gray); display: flex; align-items: center; overflow: hidden; }
-.ticker-content { display: flex; white-space: nowrap; animation: ticker-move 60s linear infinite; }
-.bank-unit { padding: 0 40px; font-size: 11px; color: var(--text-dim); }
-.bank-unit span { color: var(--market-green); margin-left: 5px; }
+/* Header */
+.main-header { height: 60px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background: #000; }
+.logo { font-weight: bold; letter-spacing: 3px; color: var(--accent); }
+.btn-terminal { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 8px 15px; font-size: 10px; cursor: pointer; }
 
-@keyframes ticker-move { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-
-/* Layout Superior */
-.main-header { height: 60px; border-bottom: 1px solid var(--border-gray); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
-.logo { font-weight: bold; letter-spacing: 3px; color: var(--accent-cyan); }
-.btn-terminal { background: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 8px 15px; font-size: 10px; cursor: pointer; }
-
-/* Estrutura Principal */
+/* Layout */
 .app-body { display: flex; flex: 1; overflow: hidden; }
-.sidebar { width: 200px; border-right: 1px solid var(--border-gray); background: #000; padding: 20px 0; }
-.nav-label { font-size: 9px; color: var(--text-dim); padding: 0 25px 10px; letter-spacing: 1px; }
+.sidebar { width: 220px; border-right: 1px solid var(--border); background: #000; padding: 20px 0; }
 .nav-item { display: block; padding: 15px 25px; color: #444; text-decoration: none; font-size: 11px; }
-.nav-item.active { color: var(--accent-cyan); background: rgba(0, 243, 255, 0.03); border-left: 2px solid var(--accent-cyan); }
+.nav-item.active { color: var(--accent); background: rgba(0, 243, 255, 0.05); border-left: 3px solid var(--accent); }
 
-/* Viewport e Painéis */
-.main-view { flex: 1; padding: 20px; }
-.grid-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; height: 100%; }
-.panel { background: var(--panel-bg); border: 1px solid var(--border-gray); border-radius: 4px; display: flex; flex-direction: column; }
-.panel-header { background: #000; padding: 12px; font-size: 10px; color: var(--text-dim); border-bottom: 1px solid var(--border-gray); }
-
-/* Gráfico */
-.canvas-area { flex: 1; display: flex; align-items: flex-end; padding: 30px; gap: 8px; }
-.bar { flex: 1; background: var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); transition: height 0.6s ease; cursor: pointer; }
+/* Grid e Painéis */
+.main-view { flex: 1; padding: 15px; }
+.grid-layout { display: grid; grid-template-columns: 1fr 300px; gap: 15px; height: 100%; }
+.panel { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 4px; }
+.panel-header { background: #000; padding: 12px; font-size: 10px; color: #555; border-bottom: 1px solid var(--border); }
 
 /* Movers */
 .movers-content { padding: 15px; }
-.list-title { font-size: 10px; color: var(--text-dim); margin-bottom: 10px; border-bottom: 1px solid #111; padding-bottom: 5px; }
-.mover-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 12px; border-bottom: 1px solid #0f0f0f; cursor: pointer; }
-.mover-row:hover { background: rgba(255,255,255,0.02); }
-.up { color: var(--market-green); }
-.down { color: var(--market-red); }
+.list-title { font-size: 9px; color: #444; margin-bottom: 10px; letter-spacing: 1px; }
+.mover-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 12px; border-bottom: 1px solid #0f0f0f; cursor: pointer; }
+.up { color: var(--green); }
+.down { color: var(--red); }
