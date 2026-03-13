@@ -4,52 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlphaMarketCap | Enterprise Terminal</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="terminal-dark">
+<body class="terminal-body">
 
     <div class="ticker-wrapper">
         <div class="ticker-content" id="bankTicker"></div>
     </div>
-    <div class="white-divider"></div> <header class="main-header">
-        <div class="logo">ALPHAMARKETCAP <span class="version">V5.1_PRO</span></div>
-        <div class="system-clock" id="clock">00:00:00</div>
+    <div class="white-divider"></div>
+
+    <header class="main-header">
+        <div class="brand">
+            <span class="logo-main">ALPHAMARKETCAP</span>
+            <span class="logo-sub">// CORE_V5_PRO</span>
+        </div>
+        <div class="clock-panel">
+            <span class="label">UTC_TIME:</span>
+            <span id="clock" class="orbitron">00:00:00</span>
+        </div>
         <button class="btn-terminal" id="authBtn">AUTH_CONNECTION</button>
     </header>
 
     <div class="app-body">
         <aside class="sidebar">
             <nav id="mainNav">
-                <div class="nav-label">OPERATIONS</div>
-                <button class="nav-btn active" data-target="dashboard">DASHBOARD</button>
-                <button class="nav-btn" data-target="signals">QUANT_SIGNALS</button>
-                <button class="nav-btn" data-target="liquidity">LIQUIDITY</button>
+                <div class="nav-label">>>_OPERATIONS</div>
+                <button class="nav-btn active" data-target="dashboard">
+                    <span class="icon">📊</span> DASHBOARD
+                </button>
+                <button class="nav-btn" data-target="signals">
+                    <span class="icon">📡</span> QUANT_SIGNALS
+                </button>
+                <button class="nav-btn" data-target="liquidity">
+                    <span class="icon">💧</span> GLOBAL_LIQUIDITY
+                </button>
             </nav>
+            <div class="sidebar-status">
+                <span class="pulse green"></span> CONNECTION_SECURE
+            </div>
         </aside>
 
         <main class="main-view">
-            <div class="grid-layout" id="view-dashboard">
-                <section class="panel chart-panel">
-                    <header class="panel-header">TRADINGVIEW_ENGINE // LIVE_FEED</header>
+            <div class="grid-layout active-view" id="view-dashboard">
+                <section class="panel chart-panel neon-border">
+                    <header class="panel-header">
+                        <h2>BMFBOVESPA:IBOV // LIVE_FEED</h2>
+                        <span class="tag green">REAL-TIME</span>
+                    </header>
                     <div id="tradingview_alpha" class="tv-container"></div>
                 </section>
 
-                <section class="panel movers-panel">
-                    <header class="panel-header">MARKET_MOVERS_24H</header>
+                <section class="panel movers-panel neon-border">
+                    <header class="panel-header">
+                        <h2>ALPHA_ALPHA_MOVERS</h2>
+                    </header>
                     <div class="movers-content" id="moversList">
                         </div>
                 </section>
             </div>
             
-            <div class="panel hidden-view" id="view-signals">
-                <header class="panel-header">QUANTUM_SIGNALS_FEED</header>
-                <div class="placeholder-content">AGUARDANDO CONEXÃO COM O FIREBASE PARA SINAIS EM TEMPO REAL...</div>
+            <div class="panel hidden-view neon-border" id="view-signals">
+                <header class="panel-header">📡 QUANTUM_SIGNALS_FEED</header>
+                <div class="placeholder-content">AGUARDANDO CONEXÃO FIREBASE...</div>
             </div>
 
-            <div class="panel hidden-view" id="view-liquidity">
-                <header class="panel-header">GLOBAL_LIQUIDITY_MAP</header>
-                <div class="placeholder-content">MAPA DE CALOR DE LIQUIDIDADE EM DESENVOLVIMENTO.</div>
+            <div class="panel hidden-view neon-border" id="view-liquidity">
+                <header class="panel-header">💧 GLOBAL_LIQUIDITY_MAP</header>
+                <div class="placeholder-content">MAPA DE CALOR EM DESENVOLVIMENTO.</div>
             </div>
         </main>
     </div>
