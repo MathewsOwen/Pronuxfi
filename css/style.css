@@ -1,59 +1,52 @@
-/* DESIGN SYSTEM ALPHA */
 :root {
     --bg: #020202;
-    --glass: rgba(10, 10, 10, 0.8);
     --accent: #00f3ff;
     --green: #00ff8c;
     --red: #ff3c5f;
-    --border: rgba(255, 255, 255, 0.05);
-    --white-glow: rgba(255, 255, 255, 0.8);
+    --border: #111;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); color: #fff; font-family: 'JetBrains Mono', monospace; height: 100vh; overflow: hidden; }
+body { background: var(--bg); color: #fff; font-family: 'JetBrains Mono', monospace; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-/* Ticker Premium */
-.ticker-wrapper { height: 35px; background: #000; display: flex; align-items: center; overflow: hidden; }
-.ticker-content { display: flex; white-space: nowrap; animation: moveTicker 50s linear infinite; }
-.bank-unit { padding: 0 40px; font-size: 11px; color: #555; letter-spacing: 1px; }
-.bank-unit b { color: var(--green); margin-left: 8px; }
+/* Ticker e Linha Branca Neon */
+.ticker-wrapper { height: 32px; background: #000; overflow: hidden; display: flex; align-items: center; }
+.ticker-content { display: flex; white-space: nowrap; animation: ticker-move 40s linear infinite; }
+.bank-unit { padding: 0 35px; font-size: 11px; color: #444; }
+.bank-unit span { color: var(--green); margin-left: 5px; }
 
-/* A LINHA BRANCA DESTAQUE */
-.premium-divider { height: 1.5px; background: #fff; width: 100%; box-shadow: 0 0 15px var(--white-glow); position: relative; z-index: 10; }
+/* LINHA BRANCA COM BRILHO ALTO */
+.premium-divider { height: 2px; background: #ffffff; width: 100%; box-shadow: 0 0 15px #ffffff, 0 0 5px #ffffff; z-index: 100; position: relative; }
 
-@keyframes moveTicker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes ticker-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-/* Header e Logo */
-.main-header { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.5); }
-.logo-icon { width: 35px; height: 35px; background: var(--accent); color: #000; font-weight: 900; display: flex; align-items: center; justify-content: center; border-radius: 4px; box-shadow: 0 0 20px var(--accent); margin-right: 15px; }
-.brand-group { display: flex; align-items: center; }
-.logo-text .main { display: block; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 900; color: var(--accent); letter-spacing: 3px; }
-.logo-text .version { font-size: 9px; color: #444; letter-spacing: 1px; }
+/* Header & Logo */
+.main-header { height: 60px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
+.brand { display: flex; align-items: center; gap: 15px; }
+.logo-box { background: var(--accent); color: #000; font-weight: 900; padding: 5px 10px; border-radius: 4px; box-shadow: 0 0 15px var(--accent); }
+.logo-main { font-family: 'Orbitron', sans-serif; font-weight: 900; color: var(--accent); letter-spacing: 2px; }
+.logo-sub { font-size: 9px; color: #333; margin-left: 10px; }
 
-/* Sidebar */
-.app-container { display: flex; height: calc(100vh - 106.5px); }
-.sidebar { width: 240px; border-right: 1px solid var(--border); background: #000; padding: 30px 0; display: flex; flex-direction: column; }
-.nav-link { width: 100%; padding: 18px 25px; background: none; border: none; color: #444; text-align: left; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 15px; font-family: inherit; font-size: 12px; }
-.nav-link.active { color: var(--accent); background: rgba(0, 243, 255, 0.03); border-right: 3px solid var(--accent); text-shadow: 0 0 10px var(--accent); }
+/* Layout */
+.app-body { display: flex; flex: 1; overflow: hidden; }
+.sidebar { width: 220px; border-right: 1px solid var(--border); background: #000; padding: 20px 0; }
+.nav-btn { width: 100%; padding: 15px 25px; background: none; border: none; color: #444; text-align: left; cursor: pointer; color: inherit; font-size: 11px; transition: 0.3s; }
+.nav-btn.active { color: var(--accent); border-right: 3px solid var(--accent); background: rgba(0, 243, 255, 0.05); }
 
-/* Painéis Glassmorphism */
-.viewport { flex: 1; padding: 20px; position: relative; }
-.glass-panel { background: var(--glass); border: 1px solid var(--border); border-radius: 8px; backdrop-filter: blur(10px); display: flex; flex-direction: column; overflow: hidden; }
-.view-grid { display: grid; grid-template-columns: 1fr 340px; gap: 20px; height: 100%; }
-.tv-frame { flex: 1; width: 100%; border: none; }
+/* Viewport e TV */
+.main-view { flex: 1; padding: 20px; }
+.grid-layout { display: grid; grid-template-columns: 1fr 320px; gap: 20px; height: 100%; }
+.panel { background: #050505; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; }
+.tv-container { flex: 1; width: 100%; min-height: 400px; }
+.panel-header { padding: 12px; font-size: 10px; color: #333; border-bottom: 1px solid var(--border); background: #000; letter-spacing: 1px; }
 
-.panel-header { padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); }
-.panel-header .title { font-size: 10px; color: #555; font-weight: bold; }
-.status-tag { font-size: 9px; color: var(--green); border: 1px solid var(--green); padding: 2px 8px; border-radius: 4px; }
+/* Movers List */
+.movers-content { overflow-y: auto; flex: 1; }
+.mover-row { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid #0f0f0f; cursor: pointer; font-size: 12px; }
+.mover-row:hover { background: #111; border-left: 2px solid var(--accent); }
+.up { color: var(--green); } .down { color: var(--red); }
 
-/* Lista de Ativos */
-.mover-row { display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.02); cursor: pointer; transition: 0.2s; }
-.mover-row:hover { background: rgba(0, 243, 255, 0.05); }
-.up { color: var(--green); font-weight: bold; }
-.down { color: var(--red); font-weight: bold; }
-
-/* Utilidades */
-.hidden { display: none; }
-.orbitron { font-family: 'Orbitron', sans-serif; }
-.auth-btn { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: 0.3s; }
-.auth-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
+/* Relógio */
+.orbitron { font-family: 'Orbitron', sans-serif; color: var(--accent); font-size: 14px; text-shadow: 0 0 5px var(--accent); }
+.pulse { width: 8px; height: 8px; background: var(--green); border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 10px var(--green); animation: pulse-anim 2s infinite; }
+@keyframes pulse-anim { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
