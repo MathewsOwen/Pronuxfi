@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AlphaMarketCap - Inteligência Global, Gráficos em Tempo Real e Monitoramento de Ativos.">
-    <meta name="keywords" content="Mercado Financeiro, Alpha, Terminal, Criptomoedas, Gráficos">
+    <meta name="description" content="AlphaMarketCap - Inteligência Global e Monitoramento de Ativos em Tempo Real">
     <title>AlphaMarketCap | Terminal Dashboard</title>
-    
     <link rel="stylesheet" href="detalhe/style.css">
 </head>
 <body>
@@ -16,7 +14,6 @@
         <div class="ticker">
             <span class="ticker-box">BTC <span class="green">▲ $68,241</span></span>
             <span class="ticker-box">ETH <span class="green">▲ $3,812</span></span>
-            <span class="ticker-box">SOL <span class="red">▼ $145</span></span>
         </div>
         <button id="loginBtn" class="btn-access">LOGIN_MEMBRO</button>
     </header>
@@ -27,7 +24,6 @@
                 <div class="nav-item active">📊 DASHBOARD</div>
                 <div class="nav-item">📈 LIVE CHARTS</div>
                 <div class="nav-item">📡 SIGNALS</div>
-                <div class="nav-item">⚙️ SETTINGS</div>
             </nav>
         </aside>
 
@@ -35,18 +31,13 @@
             <section class="chart-section">
                 <div class="section-header">
                     <h2>MARKET_MONITOR_V2</h2>
-                    <div class="controls">1H | 4H | 1D | REAL-TIME</div>
                 </div>
-                
-                <div class="graph-area" id="graphArea">
-                    <div class="grid-line"></div>
-                </div>
+                <div class="graph-area" id="graphArea"></div>
             </section>
 
             <section class="data-grid">
                 <div class="data-card">VOLATILITY: <span class="cyan">HIGH</span></div>
-                <div class="data-card">TREND: <span class="cyan">BULLISH</span></div>
-                <div class="data-card">UPTIME: <span class="cyan">99.9%</span></div>
+                <div class="data-card">STATUS: <span class="cyan">ONLINE</span></div>
             </section>
         </main>
     </div>
