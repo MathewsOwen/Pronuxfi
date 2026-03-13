@@ -3,102 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlphaMarketCap | Terminal</title>
-    <style>
-        /* ESTILO ALPHA ESTÁVEL */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            background-color: #0a0a0a;
-            color: #d4af37; /* Dourado Alpha */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background-color: #000;
-            border-bottom: 1px solid #1a1a1a;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            letter-spacing: 3px;
-        }
-
-        .btn-login {
-            background: transparent;
-            border: 1px solid #00f3ff; /* Azul Neon */
-            color: #00f3ff;
-            padding: 10px 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-
-        .btn-login:hover {
-            background: #00f3ff;
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
-        }
-
-        main {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            flex-direction: column;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            letter-spacing: 10px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            color: #666;
-            letter-spacing: 4px;
-            font-size: 0.9rem;
-        }
-
-        .status-bar {
-            margin-top: 30px;
-            width: 150px;
-            height: 2px;
-            background: #d4af37;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
-    </style>
+    <title>AlphaMarketCap | Terminal Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <div class="logo">ALPHAMARKETCAP</div>
-        <button class="btn-login" id="loginBtn">ACESSAR TERMINAL</button>
+    <header class="navbar">
+        <div class="logo">ALPHAMARKETCAP // SYSTEM</div>
+        <div class="ticker">
+            <span class="ticker-box">BTC <span class="green">▲ $68,241</span></span>
+            <span class="ticker-box">ETH <span class="green">▲ $3,812</span></span>
+            <span class="ticker-box">SOL <span class="red">▼ $145</span></span>
+        </div>
+        <button id="loginBtn" class="btn-access">LOGIN_MEMBRO</button>
     </header>
 
-    <main>
-        <h1>GLOBAL INTELLIGENCE</h1>
-        <p>TERMINAL DE DADOS FINANCEIROS</p>
-        <div class="status-bar"></div>
-    </main>
+    <div class="app-container">
+        <aside class="sidebar">
+            <nav>
+                <div class="nav-item active">📊 DASHBOARD</div>
+                <div class="nav-item">📈 LIVE CHARTS</div>
+                <div class="nav-item">📡 SIGNALS</div>
+                <div class="nav-item">⚙️ SETTINGS</div>
+            </nav>
+        </aside>
 
-    <script>
-        // Lógica simples inicial
-        document.getElementById('loginBtn').addEventListener('click', () => {
-            alert('Iniciando conexão segura com o Firebase...');
-        });
-    </script>
+        <main class="terminal-view">
+            <section class="chart-section">
+                <div class="section-header">
+                    <h2>MARKET_MONITOR_V2</h2>
+                    <div class="controls">1H | 4H | 1D | REAL-TIME</div>
+                </div>
+                
+                <div class="graph-area" id="graphArea">
+                    <div class="grid-line"></div>
+                </div>
+            </section>
+
+            <section class="data-grid">
+                <div class="data-card">VOLATILITY: <span class="cyan">HIGH</span></div>
+                <div class="data-card">TREND: <span class="cyan">BULLISH</span></div>
+                <div class="data-card">UPTIME: <span class="cyan">99.9%</span></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
