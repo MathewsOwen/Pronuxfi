@@ -1,20 +1,18 @@
 const AlphaCore = {
-    highs: ["VALE3", "PETR4", "ITUB4", "BBAS3", "BBDC4", "ELET3", "WEGE3", "RENT3", "SUZB3", "JBSS3"],
-    lows: ["MGLU3", "AMER3", "AZUL4", "GOLL4", "LREN3", "CVCB3", "VIIA3", "COGN3", "HAPV3", "BEEF3"],
-    
-    newsSources: [
-        { portal: "REUTERS", title: "Acordo comercial entre China e Brasil impulsiona commodities." },
-        { portal: "BLOOMBERG", title: "Dólar cai após dados de emprego nos EUA virem abaixo do esperado." },
-        { portal: "VALOR", title: "Tesouro Nacional anuncia novo leilão de títulos prefixados." }
+    // Links reais de notícias para simular portal
+    newsData: [
+        { portal: "INFO MONEY", url: "https://www.infomoney.com.br", title: "Ibovespa opera em alta com foco no cenário fiscal." },
+        { portal: "VALOR", url: "https://valor.globo.com", title: "Dólar recua perante moedas emergentes nesta manhã." },
+        { portal: "BLOOMBERG", url: "https://www.bloomberg.com.br", title: "Ações de tecnologia lideram ganhos em Nova York." },
+        { portal: "REUTERS", url: "https://www.reuters.com", title: "Petróleo Brent sobe por temores de oferta no Oriente Médio." }
     ],
 
     init() {
         this.renderRankings();
         this.initTV("BMFBOVESPA:IBOV");
-        this.renderNews(false); // Primeira carga sem som
-
-        // Atualização de notícias a cada 1 minuto com SOM
-        setInterval(() => this.renderNews(true), 60000);
+        this.renderNews(false);
+        // Atualização a cada 30 minutos (1.800.000 ms)
+        setInterval(() => this.renderNews(true), 1800000);
     },
 
     initTV(symbol) {
@@ -23,76 +21,57 @@ const AlphaCore = {
             "symbol": symbol,
             "theme": "dark",
             "container_id": "tradingview_alpha",
-            "backgroundColor": "#000b1a",
-            "gridColor": "rgba(211, 175, 55, 0.05)"
+            "backgroundColor": "#001633",
+            "gridColor": "rgba(211, 175, 55, 0.05)",
+            "locale": "br"
         });
     },
 
     renderRankings() {
-        const hList = document.getElementById('highList');
-        const lList = document.getElementById('lowList');
+        const highs = ["VALE3", "PETR4", "ITUB4", "BBAS3", "BBDC4", "ELET3", "WEGE3", "RENT3", "SUZB3", "JBSS3"];
+        const lows = ["MGLU3", "AMER3", "AZUL4", "GOLL4", "LREN3", "CVCB3", "VIIA3", "COGN3", "HAPV3", "BEEF3"];
         
-        this.highs.forEach(s => {
-            hList.innerHTML += `<div class="asset-row"><span>${s}</span><span style="color:var(--green)">+${(Math.random()*5).toFixed(2)}%</span></div>`;
+        highs.forEach(s => {
+            document.getElementById('highList').innerHTML += `<div class="asset-row" onclick="AlphaCore.initTV('BMFBOVESPA:${s}')"><span>${s}</span><span style="color:var(--green)">+${(Math.random()*5).toFixed(2)}%</span></div>`;
         });
-        this.lows.forEach(s => {
-            lList.innerHTML += `<div class="asset-row"><span>${s}</span><span style="color:var(--red)">-${(Math.random()*5).toFixed(2)}%</span></div>`;
+        lows.forEach(s => {
+            document.getElementById('lowList').innerHTML += `<div class="asset-row" onclick="AlphaCore.initTV('BMFBOVESPA:${s}')"><span>${s}</span><span style="color:var(--red)">-${(Math.random()*5).toFixed(2)}%</span></div>`;
         });
     },
 
-    renderNews(shouldPlaySound) {
+    renderNews(playSound) {
         const feed = document.getElementById('newsFeed');
+        const itemData = this.newsData[Math.floor(Math.random() * this.newsData.length)];
         const now = new Date().toLocaleTimeString();
-        const news = this.newsSources[Math.floor(Math.random() * this.newsSources.length)];
 
-        // Adiciona a notícia no topo
-        const item = `
-            <div class="news-item">
-                <small style="color:var(--gold)">${news.portal} • AGORA</small>
-                <h4 style="margin-top:5px">${news.title}</h4>
-            </div>`;
+        const newsHTML = `
+            <a href="${itemData.url}" target="_blank" class="news-item">
+                <small style="color:var(--gold)">${itemData.portal} • ${now}</small>
+                <h3 style="margin-top:8px">${itemData.title}</h3>
+                <p style="font-size:12px; color:#777; margin-top:10px">Clique para ler a matéria completa no portal.</p>
+            </a>`;
         
-        feed.insertAdjacentHTML('afterbegin', item);
+        feed.insertAdjacentHTML('afterbegin', newsHTML);
 
-        // Toca o som se for uma atualização automática
-        if(shouldPlaySound) {
-            const audio = document.getElementById('notif-sound');
-            audio.play().catch(e => console.log("Áudio bloqueado pelo browser até o primeiro clique."));
+        if(playSound) {
+            document.getElementById('notif-sound').play().catch(() => {});
         }
     }
 };
 
-// Funções de Interface
-function toggleRanking(type) {
-    const high = document.getElementById('highList');
-    const low = document.getElementById('lowList');
-    const bHigh = document.getElementById('btn-high');
-    const bLow = document.getElementById('btn-low');
+// Funções Globais
+window.switchTab = (t) => {
+    document.getElementById('marketView').classList.toggle('hidden', t === 'news');
+    document.getElementById('rankingView').classList.toggle('hidden', t === 'news');
+    document.getElementById('newsView').classList.toggle('hidden', t === 'market');
+    document.querySelectorAll('.nav-link-pill').forEach((b, i) => b.classList.toggle('active', (i === 0 && t === 'market') || (i === 1 && t === 'news')));
+};
 
-    if(type === 'high') {
-        high.classList.remove('hidden'); low.classList.add('hidden');
-        bHigh.classList.add('active'); bLow.classList.remove('active');
-    } else {
-        high.classList.add('hidden'); low.classList.remove('hidden');
-        bHigh.classList.remove('active'); bLow.classList.add('active');
-    }
-}
-
-function switchTab(tab) {
-    const market = document.getElementById('marketView');
-    const ranking = document.getElementById('rankingView');
-    const news = document.getElementById('newsView');
-    const btns = document.querySelectorAll('.nav-link');
-
-    btns.forEach(b => b.classList.remove('active'));
-    
-    if(tab === 'news') {
-        market.classList.add('hidden'); ranking.classList.add('hidden'); news.classList.remove('hidden');
-        btns[1].classList.add('active');
-    } else {
-        market.classList.remove('hidden'); ranking.classList.remove('hidden'); news.classList.add('hidden');
-        btns[0].classList.add('active');
-    }
-}
+window.toggleRanking = (type) => {
+    document.getElementById('highList').classList.toggle('hidden', type === 'low');
+    document.getElementById('lowList').classList.toggle('hidden', type === 'high');
+    document.getElementById('btn-high').classList.toggle('active', type === 'high');
+    document.getElementById('btn-low').classList.toggle('active', type === 'low');
+};
 
 document.addEventListener('DOMContentLoaded', () => AlphaCore.init());
