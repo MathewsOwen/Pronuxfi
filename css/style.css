@@ -1,13 +1,13 @@
 :root {
     --gold: #d4af37;
-    --neon-blue: #00f3ff;
-    --dark-bg: #050505;
+    --neon: #00f3ff;
+    --bg: #050505;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    background-color: var(--dark-bg);
+    background-color: var(--bg);
     color: white;
     font-family: 'Montserrat', sans-serif;
     overflow: hidden;
@@ -17,18 +17,19 @@ body {
 #splash-screen {
     position: fixed;
     inset: 0;
-    background: var(--dark-bg);
+    background: var(--bg);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    text-align: center;
 }
+
+.splash-content { text-align: center; width: 100%; }
 
 .main-logo {
     width: 280px;
     max-width: 80%;
-    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.2));
+    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
 }
 
 .splash-phrase {
@@ -36,34 +37,34 @@ body {
     font-size: 0.8rem;
     letter-spacing: 5px;
     margin-top: 25px;
-    text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
 }
 
 .loader-container {
     width: 200px;
     height: 2px;
-    background: #1a1a1a;
+    background: #111;
     margin: 30px auto;
-    overflow: hidden;
 }
 
 .loader-bar {
     width: 0%;
     height: 100%;
-    background: var(--neon-blue);
-    box-shadow: 0 0 10px var(--neon-blue);
+    background: var(--neon);
+    box-shadow: 0 0 10px var(--neon);
     animation: load 2.5s forwards;
 }
 
-/* Navbar */
+/* Interface do Terminal */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background: #0d0d0d;
-    border-bottom: 1px solid #222;
+    background: #0a0a0a;
+    border-bottom: 1px solid #1a1a1a;
 }
+
+.nav-icon { width: 35px; border-radius: 4px; }
 
 .logo-nav {
     display: flex;
@@ -76,8 +77,8 @@ body {
 
 .btn-member {
     background: transparent;
-    border: 1px solid var(--neon-blue);
-    color: var(--neon-blue);
+    border: 1px solid var(--neon);
+    color: var(--neon);
     padding: 8px 16px;
     font-family: 'JetBrains Mono', monospace;
     cursor: pointer;
@@ -85,21 +86,21 @@ body {
 }
 
 .btn-member:hover {
-    background: var(--neon-blue);
+    background: var(--neon);
     color: black;
-    box-shadow: 0 0 15px var(--neon-blue);
+    box-shadow: 0 0 15px var(--neon);
 }
 
 .terminal-body {
-    padding: 100px 20px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
 }
 
-.welcome-card h1 {
-    font-size: 2.5rem;
+.status-card h1 {
+    color: var(--gold);
     letter-spacing: 5px;
     margin-bottom: 10px;
-    color: var(--gold);
 }
 
 @keyframes load { to { width: 100%; } }
