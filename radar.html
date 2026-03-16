@@ -1,16 +1,58 @@
-<body class="apex-theme">
-    <main class="data-container">
-        <div class="terminal-header">
-            <h2>MARKET MONITOR <span class="dim">/ REAL-TIME FEED</span></h2>
-            <div class="filters"><button class="btn-active">ALL</button><button>GAINERS</button></div>
-        </div>
-        <div class="terminal-table">
-            <div class="t-head">
-                <span>ASSET</span><span>PRICE</span><span>24H CHG</span><span>MARKET CAP</span><span>ACTION</span>
-            </div>
-            <div id="dataGrid" class="t-body"></div>
-        </div>
-    </main>
-    <script src="js/api.js"></script>
-    <script src="js/data-engine.js"></script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radar de Mercado | Pronuxfin</title>
+  <meta
+    name="description"
+    content="Radar da Pronuxfin com leitura rápida de tendência, risco e oportunidades."
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">PRONUXFIN</div>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="mercados.html">Mercados</a>
+      <a href="acoes.html">Ações</a>
+      <a href="cripto.html">Cripto</a>
+      <a href="noticias.html">Notícias</a>
+      <a href="radar.html" class="active">Radar</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <div class="section-head">
+      <h1>Radar do Mercado</h1>
+      <p>Leitura estratégica com foco em tendência, risco e oportunidades.</p>
+    </div>
+
+    <section class="radar-grid">
+      <article class="card">
+        <span class="card-label">TENDÊNCIA</span>
+        <h3>Alta moderada</h3>
+        <p>O mercado mostra viés positivo com atenção a volatilidade de curto prazo.</p>
+      </article>
+
+      <article class="card">
+        <span class="card-label">RISCO</span>
+        <h3>Controlado</h3>
+        <p>Sem sinais extremos no cenário-base, mas com necessidade de gestão de exposição.</p>
+      </article>
+
+      <article class="card">
+        <span class="card-label">DESTAQUES</span>
+        <h3>BTC, PETR4, VALE3</h3>
+        <p>Ativos com maior atenção no radar inicial da plataforma.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Pronuxfin — Inteligência Financeira</p>
+  </footer>
 </body>
+</html>
