@@ -16,17 +16,21 @@ async function fetchCryptoPrices() {
   );
 }
 
+/*
+  IMPORTANTE:
+  Sem token na brapi, use apenas os papéis liberados:
+  PETR4, VALE3, MGLU3, ITUB4
+*/
 async function fetchStocks() {
   const data = await fetchJson(
-    "https://brapi.dev/api/quote/PETR4,VALE3,ITUB4,WEGE3,BBAS3,BBDC4,MGLU3,ELET3"
+    "https://brapi.dev/api/quote/PETR4,VALE3,MGLU3,ITUB4"
   );
 
   return data.results || [];
 }
 
 async function fetchMarketNews() {
-  const query =
-    "bolsa OR bitcoin OR mercado financeiro OR ibovespa OR ações";
+  const query = "bolsa OR bitcoin OR mercado financeiro OR ibovespa OR ações";
 
   return fetchJson(
     `https://newsapi.org/v2/everything?q=${encodeURIComponent(
