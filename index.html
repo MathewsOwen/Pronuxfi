@@ -1,97 +1,113 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRONUXFIN | Inteligência Financeira</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&family=Orbitron:wght@700&family=Plus+Jakarta+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Pronuxfin | Inteligência Financeira</title>
+    
+    <meta name="description" content="Inteligência financeira, dados institucionais e insights de IA.">
+    <link rel="icon" href="img/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="premium-dark">
 
     <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3" preload="auto"></audio>
 
-    <div class="glass-ticker">
+    <div class="top-nav-ticker">
         <div class="ticker-track" id="globalTicker"></div>
     </div>
 
     <header class="main-header">
-        <div class="container header-content">
-            <div class="brand-unit">
-                <div class="logo-wrapper">
-                    <span class="logo-bold">PRONUX</span><span class="logo-thin">FIN</span>
+        <div class="container header-wrap">
+            <div class="brand">
+                <div class="logo-box">
+                    <span class="logo-gold">PRONUX</span><span class="logo-white">FIN</span>
                 </div>
-                <p class="tagline-luxury">Inteligência financeira para quem pensa no futuro.</p>
+                <p class="slogan">Inteligência financeira para quem pensa no futuro.</p>
             </div>
-            <nav class="glass-nav">
-                <button class="nav-btn active" onclick="switchTab('market')">MERCADO</button>
-                <button class="nav-btn" onclick="switchTab('news')">NOTÍCIAS</button>
-                <button class="nav-btn ai-special" onclick="switchTab('ai')">INSIGHTS IA</button>
+            
+            <nav class="main-nav">
+                <button class="nav-item active" data-tab="market">Mercado</button>
+                <button class="nav-item" data-tab="news">Notícias</button>
+                <button class="nav-item ai-glow" data-tab="ai">Insights IA</button>
             </nav>
         </div>
     </header>
 
-    <main class="container content-layout">
-        
-        <div class="main-column">
-            <section id="marketView" class="view-section">
-                <div class="glass-card chart-container">
+    <main class="container main-layout">
+        <div class="content-body">
+            
+            <section id="marketView" class="tab-view">
+                <div class="premium-card chart-box">
                     <div id="tradingview_pronux"></div>
                 </div>
             </section>
 
-            <section id="aiView" class="view-section hidden">
-                <div class="glass-card ai-dashboard">
-                    <div class="ai-hero">
-                        <div class="ai-badge">SISTEMA NEURAL ATIVO</div>
-                        <h2>PRONUX NEURAL ENGINE</h2>
+            <section id="aiView" class="tab-view hidden">
+                <div class="premium-card ai-interface">
+                    <div class="ai-header">
+                        <span class="ai-status">Neural Engine Online</span>
+                        <h2>Análise de Fluxo Institucional</h2>
                     </div>
-                    <div class="ai-visual-grid">
-                        <div class="metric-glass">
-                            <span class="label">FLUXO INSTITUCIONAL</span>
-                            <div id="aiTopBuy" class="flow-data"></div>
+                    <div class="ai-grid">
+                        <div class="ai-tile">
+                            <span class="tile-label">MAIORES ORDENS (TOP 10 CORRETORAS)</span>
+                            <div id="aiTopBuy" class="ai-data-list"></div>
                         </div>
-                        <div class="metric-glass">
-                            <span class="label">MATRIZ DE RISCO</span>
-                            <div id="aiRiskMatrix" class="risk-data"></div>
+                        <div class="ai-tile">
+                            <span class="tile-label">MATRIZ DE RISCO & TENDÊNCIA</span>
+                            <div id="aiRiskMatrix" class="ai-data-list"></div>
                         </div>
                     </div>
-                    <div class="report-glass">
-                        <h3>ANÁLISE PROFISSIONAL</h3>
-                        <p id="aiReportText">Sincronizando...</p>
+                    <div class="ai-text-report">
+                        <h3>INSIGHT ESTRATÉGICO</h3>
+                        <p id="aiReportText">Sincronizando modelos preditivos...</p>
                     </div>
                     <div class="gauge-section">
-                        <h4>FEAR & GREED INDEX</h4>
-                        <div class="modern-gauge">
-                            <div id="gaugePointer" class="glow-pointer"></div>
+                        <p class="tile-label">SENTIMENTO DO MERCADO (FEAR & GREED)</p>
+                        <div class="gauge-bar">
+                            <div id="gaugePointer" class="pointer"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="newsView" class="view-section hidden">
-                <div class="glass-card news-container">
-                    <h2 class="section-title">FEED DE INTELIGÊNCIA</h2>
-                    <div id="newsFeed" class="news-list-container"></div>
+            <section id="newsView" class="tab-view hidden">
+                <div class="premium-card">
+                    <h2 class="gold-title">Central de Inteligência</h2>
+                    <div id="newsFeed" class="news-list"></div>
                 </div>
             </section>
         </div>
 
-        <aside id="rankingView" class="side-column">
-            <div class="glass-card ranking-panel">
-                <div class="pill-selector">
-                    <button id="btn-high" class="selector-item active" onclick="toggleRanking('high')">ALTAS</button>
-                    <button id="btn-low" class="selector-item" onclick="toggleRanking('low')">BAIXAS</button>
+        <aside class="side-panel">
+            <div class="premium-card ranking-card">
+                <div class="ranking-tabs">
+                    <button id="btn-high" class="rank-tab active" data-rank="high">Altas</button>
+                    <button id="btn-low" class="rank-tab" data-rank="low">Baixas</button>
                 </div>
-                <div id="highList" class="asset-list-modern"></div>
-                <div id="lowList" class="asset-list-modern hidden"></div>
-                <div class="rebalance-timer">Sincronização em: <span id="timer">60</span>s</div>
+                <div id="highList" class="asset-list"></div>
+                <div id="lowList" class="asset-list hidden"></div>
+                <div class="footer-sync">
+                    Sincronização em <span id="timer">60</span>s
+                </div>
             </div>
         </aside>
-
     </main>
 
+    <footer class="main-footer">
+        <div class="container footer-wrap">
+            <p>© 2026 Pronuxfin — Inteligência de Mercado</p>
+            <p class="footer-mini">Dados simulados para fins demonstrativos via WebSocket.</p>
+        </div>
+    </footer>
+
     <script src="https://s3.tradingview.com/tv.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/app.js" defer></script>
 </body>
 </html>
