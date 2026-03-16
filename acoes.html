@@ -6,7 +6,7 @@
   <title>Ações | Pronuxfin</title>
   <meta
     name="description"
-    content="Acompanhe ações da bolsa com tabela organizada e leitura rápida na Pronuxfin."
+    content="Acompanhe ações da bolsa com ranking, destaques e leitura profissional na Pronuxfin."
   />
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -24,31 +24,160 @@
     </nav>
   </header>
 
+  <div class="ticker">
+    <div class="ticker-track" id="stocksTickerTrack"></div>
+  </div>
+
   <main class="page">
     <div class="section-head">
       <h1>Ações da Bolsa</h1>
-      <p>Uma visão objetiva das principais ações monitoradas pela plataforma.</p>
+      <p>
+        Ranking, visão rápida e leitura dos principais papéis monitorados pela
+        Pronuxfin.
+      </p>
     </div>
 
-    <div class="table-card">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Ticker</th>
-            <th>Preço</th>
-            <th>Variação</th>
-            <th>Direção</th>
-          </tr>
-        </thead>
-        <tbody id="stocksTable"></tbody>
-      </table>
-    </div>
+    <section class="stats market-stats">
+      <article class="stat-card">
+        <span class="card-label">TOP ALTA</span>
+        <div class="stat-value" id="topGainerStat">--</div>
+      </article>
+
+      <article class="stat-card">
+        <span class="card-label">TOP QUEDA</span>
+        <div class="stat-value" id="topLoserStat">--</div>
+      </article>
+
+      <article class="stat-card">
+        <span class="card-label">SETOR FORTE</span>
+        <div class="stat-value">Bancos</div>
+      </article>
+
+      <article class="stat-card">
+        <span class="card-label">FLUXO</span>
+        <div class="stat-value">Ativo</div>
+      </article>
+    </section>
+
+    <section class="section no-pad-top">
+      <div class="grid-2">
+        <div class="table-card">
+          <div class="card-top">
+            <h3>Top Altas</h3>
+            <span class="mini-tag">UP</span>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Preço</th>
+                <th>Variação</th>
+              </tr>
+            </thead>
+            <tbody id="topGainersTable"></tbody>
+          </table>
+        </div>
+
+        <div class="table-card">
+          <div class="card-top">
+            <h3>Top Baixas</h3>
+            <span class="mini-tag">DOWN</span>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Preço</th>
+                <th>Variação</th>
+              </tr>
+            </thead>
+            <tbody id="topLosersTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section no-pad-top">
+      <div class="grid-2">
+        <div class="table-card">
+          <div class="card-top">
+            <h3>Lista principal</h3>
+            <span class="mini-tag">B3</span>
+          </div>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Preço</th>
+                <th>Variação</th>
+                <th>Direção</th>
+              </tr>
+            </thead>
+            <tbody id="stocksTable"></tbody>
+          </table>
+        </div>
+
+        <div class="card market-side-card">
+          <span class="card-label">LEITURA INSTITUCIONAL</span>
+          <h3>Panorama das ações</h3>
+          <p>
+            O mercado de ações segue com foco em nomes líquidos, setores de
+            peso e empresas com maior sensibilidade ao fluxo estrangeiro.
+          </p>
+
+          <div class="mini-insights">
+            <div class="mini-insight">
+              <strong>Setor em destaque</strong>
+              <span class="positive">Financeiro</span>
+            </div>
+            <div class="mini-insight">
+              <strong>Risco</strong>
+              <span class="neutral">Moderado</span>
+            </div>
+            <div class="mini-insight">
+              <strong>Ativos no radar</strong>
+              <span class="positive">PETR4, ITUB4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section no-pad-top">
+      <div class="grid-3">
+        <article class="card highlight-card">
+          <span class="card-label">MOMENTUM</span>
+          <h3>Papéis com força</h3>
+          <p>
+            Ativos com melhor sustentação de movimento e maior atenção do mercado.
+          </p>
+        </article>
+
+        <article class="card highlight-card">
+          <span class="card-label">VALOR</span>
+          <h3>Liquidez e relevância</h3>
+          <p>
+            A seleção inicial prioriza nomes relevantes, conhecidos e com leitura clara.
+          </p>
+        </article>
+
+        <article class="card highlight-card">
+          <span class="card-label">PRONUX VIEW</span>
+          <h3>Leitura objetiva</h3>
+          <p>
+            A página de ações foi desenhada para parecer uma central institucional.
+          </p>
+        </article>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
     <p>© 2026 Pronuxfin — Inteligência Financeira</p>
   </footer>
 
+  <script src="js/app.js" defer></script>
   <script src="js/stocks.js" defer></script>
 </body>
 </html>
