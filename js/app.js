@@ -1,3 +1,10 @@
+const REFRESH_INTERVALS = {
+  markets: 60_000,
+  stocks: 60_000,
+  crypto: 60_000,
+  news: 300_000
+};
+
 function getChangeClass(change) {
   if (String(change).startsWith("+")) return "positive";
   if (String(change).startsWith("-")) return "negative";
@@ -23,6 +30,11 @@ function formatUsd(value) {
   return value.toLocaleString("en-US");
 }
 
+function safeSetText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+
 function createAdvancedChart(containerId, symbol) {
   if (typeof TradingView === "undefined") return;
   const container = document.getElementById(containerId);
@@ -44,6 +56,19 @@ function createAdvancedChart(containerId, symbol) {
     hide_side_toolbar: false,
     allow_symbol_change: true,
     container_id: containerId
+  });
+}
+
+function bindClickableRows() {
+  document.querySelectorAll("tr.clickable-row").forEach((row) => {
+    if (row.dataset.bound === "true") return;
+    row.dataset.bound = "true";
+
+    row.addEventListener("click", (event) => {
+      if (event.target.tagName.toLowerCase() === "a") return;
+      const url = row.getAttribute("data-url");
+      if (url) window.location.href = url;
+    });
   });
 }
 
