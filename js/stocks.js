@@ -1,47 +1,111 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const stocksTable = document.getElementById("stocksTable");
+  const homeStocksTable = document.getElementById("homeStocksTable");
+  const topGainersTable = document.getElementById("topGainersTable");
+  const topLosersTable = document.getElementById("topLosersTable");
+  const topGainerStat = document.getElementById("topGainerStat");
+  const topLoserStat = document.getElementById("topLoserStat");
+  const stocksTickerTrack = document.getElementById("stocksTickerTrack");
 
-const stocksTable = document.getElementById("stocksTable")
+  try {
+    const apiStocks = await fetchStocks();
 
-if (!stocksTable) return
+    const stocks = apiStocks.map((stock) => {
+      const percent = Number(stock.regularMarketChangePercent || 0);
+      const formattedChange = `${percent >= 0 ? "+" : ""}${percent.toFixed(2)}%`;
 
-try {
+      return {
+        ticker: stock.symbol,
+        price:
+          typeof stock.regularMarketPrice === "number"
+            ? stock.regularMarketPrice.toLocaleString("pt-BR")
+            : "--",
+        change: formattedChange,
+        direction: percent >= 0 ? "Alta" : "Baixa"
+      };
+    });
 
-const stocks = await fetchStocks()
+    const assetUrl = (ticker) => `ativos/ativo.html?symbol=${ticker}`;
 
-stocksTable.innerHTML = stocks.map(stock => `
+    const renderMainRows = (list) =>
+      list
+        .map((stock) => `
+          <tr class="clickable-row" data-url="${assetUrl(stock.ticker)}">
+            <td><a class="asset-link" href="${assetUrl(stock.ticker)}">${stock.ticker}</a></td>
+            <td>${stock.price}</td>
+            <td class="${getChangeClass(stock.change)}">${stock.change}</td>
+            <td>
+              <span class="status">
+                <span class="dot ${getDotClassByChange(stock.change)}"></span>
+                ${stock.direction}
+              </span>
+            </td>
+          </tr>
+        `)
+        .join("");
 
-<tr>
+    const renderMiniRows = (list) =>
+      list
+        .map((stock) => `
+          <tr class="clickable-row" data-url="${assetUrl(stock.ticker)}">
+            <td><a class="asset-link" href="${assetUrl(stock.ticker)}">${stock.ticker}</a></td>
+            <td>${stock.price}</td>
+            <td class="${getChangeClass(stock.change)}">${stock.change}</td>
+          </tr>
+        `)
+        .join("");
 
-<td>${stock.symbol}</td>
+    const positiveStocks = stocks.filter((item) => item.change.startsWith("+"));
+    const negativeStocks = stocks.filter((item) => item.change.startsWith("-"));
 
-<td>${stock.regularMarketPrice}</td>
+    positiveStocks.sort(
+      (a, b) =>
+        parseFloat(b.change.replace("%", "").replace(",", ".")) -
+        parseFloat(a.change.replace("%", "").replace(",", "."))
+    );
 
-<td class="${stock.regularMarketChangePercent >= 0 ? 'positive' : 'negative'}">
+    negativeStocks.sort(
+      (a, b) =>
+        parseFloat(a.change.replace("%", "").replace(",", ".")) -
+        parseFloat(b.change.replace("%", "").replace(",", "."))
+    );
 
-${stock.regularMarketChangePercent.toFixed(2)}%
+    if (stocksTable) stocksTable.innerHTML = renderMainRows(stocks);
+    if (homeStocksTable) homeStocksTable.innerHTML = renderMainRows(stocks.slice(0, 5));
+    if (topGainersTable) topGainersTable.innerHTML = renderMiniRows(positiveStocks.slice(0, 4));
+    if (topLosersTable) topLosersTable.innerHTML = renderMiniRows(negativeStocks.slice(0, 4));
 
-</td>
+    if (topGainerStat && positiveStocks.length > 0) topGainerStat.textContent = positiveStocks[0].ticker;
+    if (topLoserStat && negativeStocks.length > 0) topLoserStat.textContent = negativeStocks[0].ticker;
 
-<td>
+    if (stocksTickerTrack) {
+      const tickerItems = stocks
+        .map(
+          (stock) => `
+          <span class="ticker-item">
+            <strong>${stock.ticker}</strong>
+            <span>${stock.price}</span>
+            <span class="${getChangeClass(stock.change)}">${stock.change}</span>
+          </span>
+        `
+        )
+        .join("");
 
-<span class="status">
+      stocksTickerTrack.innerHTML = tickerItems + tickerItems;
+    }
 
-<span class="dot ${stock.regularMarketChangePercent >= 0 ? 'green' : 'red'}"></span>
-
-${stock.regularMarketChangePercent >= 0 ? 'Alta' : 'Baixa'}
-
-</span>
-
-</td>
-
-</tr>
-
-`).join("")
-
-} catch {
-
-stocksTable.innerHTML = `<tr><td colspan="4">Erro ao carregar dados</td></tr>`
-
-}
-
-})
+    document.querySelectorAll("tr.clickable-row").forEach((row) => {
+      row.addEventListener("click", (event) => {
+        if (event.target.tagName.toLowerCase() === "a") return;
+        const url = row.getAttribute("data-url");
+        if (url) window.location.href = url;
+      });
+    });
+  } catch (error) {
+    const failRow = createEmptyRow(4, "Não foi possível carregar os dados das ações.");
+    if (stocksTable) stocksTable.innerHTML = failRow;
+    if (homeStocksTable) homeStocksTable.innerHTML = failRow;
+    if (topGainersTable) topGainersTable.innerHTML = createEmptyRow(3, "Erro ao carregar.");
+    if (topLosersTable) topLosersTable.innerHTML = createEmptyRow(3, "Erro ao carregar.");
+  }
+});
