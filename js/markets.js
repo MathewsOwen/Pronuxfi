@@ -1,11 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const marketTable = document.getElementById("marketTable");
   const tickerTrack = document.getElementById("tickerTrack");
-  const heroStats = {
-    ibov: document.getElementById("statIbov"),
-    usd: document.getElementById("statUsd"),
-    sp500: document.getElementById("statSp500")
-  };
+  const forexTable = document.getElementById("forexTable");
+  const commoditiesTable = document.getElementById("commoditiesTable");
 
   const markets = [
     { symbol: "IBOVESPA", price: "128.450", change: "+0,84%", direction: "Alta" },
@@ -14,6 +11,20 @@ document.addEventListener("DOMContentLoaded", () => {
     { symbol: "USD/BRL", price: "5,02", change: "-0,11%", direction: "Baixa" },
     { symbol: "OURO", price: "2.150", change: "+0,23%", direction: "Alta" },
     { symbol: "PETRÓLEO", price: "78,40", change: "+0,31%", direction: "Alta" }
+  ];
+
+  const forex = [
+    { pair: "USD/BRL", price: "5,02", change: "-0,11%" },
+    { pair: "EUR/USD", price: "1,09", change: "+0,08%" },
+    { pair: "GBP/USD", price: "1,27", change: "+0,05%" },
+    { pair: "USD/JPY", price: "148,20", change: "-0,14%" }
+  ];
+
+  const commodities = [
+    { asset: "OURO", price: "2.150", change: "+0,23%" },
+    { asset: "PRATA", price: "24,80", change: "+0,18%" },
+    { asset: "PETRÓLEO WTI", price: "78,40", change: "+0,31%" },
+    { asset: "GÁS NATURAL", price: "2,10", change: "-0,26%" }
   ];
 
   if (marketTable) {
@@ -48,7 +59,45 @@ document.addEventListener("DOMContentLoaded", () => {
     tickerTrack.innerHTML = tickerItems + tickerItems;
   }
 
-  if (heroStats.ibov) heroStats.ibov.textContent = "128.450";
-  if (heroStats.usd) heroStats.usd.textContent = "5,02";
-  if (heroStats.sp500) heroStats.sp500.textContent = "5.210";
+  if (forexTable) {
+    forexTable.innerHTML = forex
+      .map((item) => `
+        <tr>
+          <td>${item.pair}</td>
+          <td>${item.price}</td>
+          <td class="${getChangeClass(item.change)}">${item.change}</td>
+        </tr>
+      `)
+      .join("");
+  }
+
+  if (commoditiesTable) {
+    commoditiesTable.innerHTML = commodities
+      .map((item) => `
+        <tr>
+          <td>${item.asset}</td>
+          <td>${item.price}</td>
+          <td class="${getChangeClass(item.change)}">${item.change}</td>
+        </tr>
+      `)
+      .join("");
+  }
+
+  if (typeof TradingView !== "undefined" && document.getElementById("tradingview_market")) {
+    new TradingView.widget({
+      autosize: true,
+      symbol: "BMFBOVESPA:IBOV",
+      interval: "D",
+      timezone: "America/Sao_Paulo",
+      theme: "dark",
+      style: "1",
+      locale: "br",
+      toolbar_bg: "#0f172a",
+      enable_publishing: false,
+      hide_top_toolbar: false,
+      hide_side_toolbar: false,
+      allow_symbol_change: true,
+      container_id: "tradingview_market"
+    });
+  }
 });
