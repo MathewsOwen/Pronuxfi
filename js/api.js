@@ -1,8 +1,10 @@
-const PronuxAPI = {
-    async getCripto() {
-        try {
-            const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true");
-            return r.ok ? await r.json() : null;
-        } catch(e) { return null; }
+const PronuxData = {
+    async getMarket() {
+        // Integração direta com dados reais quando você tiver sua chave
+        return [
+            {id: "BTC", p: 64120, c: 1.2, cap: "1.2T"},
+            {id: "ETH", p: 3450, c: -0.5, cap: "410B"},
+            {id: "SOL", p: 145, c: 5.4, cap: "64B"}
+        ];
     }
 };
