@@ -126,26 +126,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       .join("");
   }
 
-  function createChart(symbolCode) {
-    if (typeof TradingView === "undefined" || !document.getElementById("asset_chart")) return;
-
-    new TradingView.widget({
-      autosize: true,
-      symbol: symbolCode,
-      interval: "D",
-      timezone: "America/Sao_Paulo",
-      theme: "dark",
-      style: "1",
-      locale: "br",
-      toolbar_bg: "#0f172a",
-      enable_publishing: false,
-      hide_top_toolbar: false,
-      hide_side_toolbar: false,
-      allow_symbol_change: true,
-      container_id: "asset_chart"
-    });
-  }
-
   try {
     if (isCrypto) {
       setBasicMeta(assetMeta.name, assetMeta.market, assetMeta.category);
@@ -168,7 +148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         { label: "Preço atual", value: typeof rawPrice === "number" ? `$${formatUsd(rawPrice)}` : "--" }
       ]);
 
-      createChart(assetMeta.tv);
+      createAdvancedChart("asset_chart", assetMeta.tv);
       return;
     }
 
@@ -180,7 +160,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const rawPrice = stock?.regularMarketPrice;
     const rawChange = stock?.regularMarketChangePercent;
 
-    elements.price.textContent = typeof rawPrice === "number" ? String(rawPrice) : "--";
+    elements.price.textContent =
+      typeof rawPrice === "number" ? rawPrice.toLocaleString("pt-BR") : "--";
     elements.status.textContent = "Monitorando";
     elements.summary.textContent =
       `${assetMeta.name} está no radar da Pronuxfin como um dos ativos relevantes da bolsa brasileira.`;
@@ -192,14 +173,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       { label: "Nome", value: assetMeta.name },
       { label: "Mercado", value: assetMeta.market },
       { label: "Categoria", value: assetMeta.category },
-      { label: "Preço atual", value: typeof rawPrice === "number" ? String(rawPrice) : "--" },
+      {
+        label: "Preço atual",
+        value: typeof rawPrice === "number" ? rawPrice.toLocaleString("pt-BR") : "--"
+      },
       {
         label: "Variação",
-        value: typeof rawChange === "number" ? `${rawChange >= 0 ? "+" : ""}${rawChange.toFixed(2)}%` : "--"
+        value:
+          typeof rawChange === "number"
+            ? `${rawChange >= 0 ? "+" : ""}${rawChange.toFixed(2)}%`
+            : "--"
       }
     ]);
 
-    createChart(assetMeta.tv);
+    createAdvancedChart("asset_chart", assetMeta.tv);
   } catch (error) {
     elements.price.textContent = "Indisponível";
     elements.change.textContent = "--";
