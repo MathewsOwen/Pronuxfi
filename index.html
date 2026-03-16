@@ -1,113 +1,156 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pronuxfin | Inteligência Financeira</title>
-    
-    <meta name="description" content="Inteligência financeira, dados institucionais e insights de IA.">
-    <link rel="icon" href="img/favicon.png">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pronuxfin | Inteligência de Mercado e Dados Financeiros</title>
+
+<meta name="description" content="Pronuxfin é uma plataforma de inteligência financeira com dados de mercado, criptomoedas, ações e radar de oportunidades em tempo real.">
+<meta name="keywords" content="mercado financeiro, ações hoje, bitcoin hoje, ibovespa agora, criptomoedas, radar do mercado">
+<meta name="author" content="Pronuxfin">
+
+<meta property="og:title" content="Pronuxfin | Inteligência Financeira">
+<meta property="og:description" content="Dados de mercado, ranking de ações e radar de investimentos.">
+<meta property="og:type" content="website">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/layout.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 </head>
-<body class="premium-dark">
 
-    <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3" preload="auto"></audio>
+<body>
 
-    <div class="top-nav-ticker">
-        <div class="ticker-track" id="globalTicker"></div>
-    </div>
+<header class="header">
 
-    <header class="main-header">
-        <div class="container header-wrap">
-            <div class="brand">
-                <div class="logo-box">
-                    <span class="logo-gold">PRONUX</span><span class="logo-white">FIN</span>
-                </div>
-                <p class="slogan">Inteligência financeira para quem pensa no futuro.</p>
-            </div>
-            
-            <nav class="main-nav">
-                <button class="nav-item active" data-tab="market">Mercado</button>
-                <button class="nav-item" data-tab="news">Notícias</button>
-                <button class="nav-item ai-glow" data-tab="ai">Insights IA</button>
-            </nav>
-        </div>
-    </header>
+<div class="container nav">
 
-    <main class="container main-layout">
-        <div class="content-body">
-            
-            <section id="marketView" class="tab-view">
-                <div class="premium-card chart-box">
-                    <div id="tradingview_pronux"></div>
-                </div>
-            </section>
+<div class="logo">PRONUXFIN</div>
 
-            <section id="aiView" class="tab-view hidden">
-                <div class="premium-card ai-interface">
-                    <div class="ai-header">
-                        <span class="ai-status">Neural Engine Online</span>
-                        <h2>Análise de Fluxo Institucional</h2>
-                    </div>
-                    <div class="ai-grid">
-                        <div class="ai-tile">
-                            <span class="tile-label">MAIORES ORDENS (TOP 10 CORRETORAS)</span>
-                            <div id="aiTopBuy" class="ai-data-list"></div>
-                        </div>
-                        <div class="ai-tile">
-                            <span class="tile-label">MATRIZ DE RISCO & TENDÊNCIA</span>
-                            <div id="aiRiskMatrix" class="ai-data-list"></div>
-                        </div>
-                    </div>
-                    <div class="ai-text-report">
-                        <h3>INSIGHT ESTRATÉGICO</h3>
-                        <p id="aiReportText">Sincronizando modelos preditivos...</p>
-                    </div>
-                    <div class="gauge-section">
-                        <p class="tile-label">SENTIMENTO DO MERCADO (FEAR & GREED)</p>
-                        <div class="gauge-bar">
-                            <div id="gaugePointer" class="pointer"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+<nav>
 
-            <section id="newsView" class="tab-view hidden">
-                <div class="premium-card">
-                    <h2 class="gold-title">Central de Inteligência</h2>
-                    <div id="newsFeed" class="news-list"></div>
-                </div>
-            </section>
-        </div>
+<a href="index.html">Home</a>
+<a href="mercados.html">Mercados</a>
+<a href="acoes.html">Ações</a>
+<a href="cripto.html">Cripto</a>
+<a href="noticias.html">Notícias</a>
+<a href="radar.html">Radar</a>
 
-        <aside class="side-panel">
-            <div class="premium-card ranking-card">
-                <div class="ranking-tabs">
-                    <button id="btn-high" class="rank-tab active" data-rank="high">Altas</button>
-                    <button id="btn-low" class="rank-tab" data-rank="low">Baixas</button>
-                </div>
-                <div id="highList" class="asset-list"></div>
-                <div id="lowList" class="asset-list hidden"></div>
-                <div class="footer-sync">
-                    Sincronização em <span id="timer">60</span>s
-                </div>
-            </div>
-        </aside>
-    </main>
+</nav>
 
-    <footer class="main-footer">
-        <div class="container footer-wrap">
-            <p>© 2026 Pronuxfin — Inteligência de Mercado</p>
-            <p class="footer-mini">Dados simulados para fins demonstrativos via WebSocket.</p>
-        </div>
-    </footer>
+</div>
 
-    <script src="https://s3.tradingview.com/tv.js"></script>
-    <script src="js/app.js" defer></script>
+</header>
+
+
+<div class="ticker">
+
+<div class="ticker-track" id="tickerTrack">
+
+<span>BTC $64,120 ▲</span>
+<span>ETH $3,450 ▲</span>
+<span>IBOV 128,450 ▼</span>
+<span>USD/BRL 5.02</span>
+<span>OURO $2,150 ▲</span>
+
+</div>
+
+</div>
+
+
+<section class="hero">
+
+<h1>Onde dados viram decisões.</h1>
+
+<p>
+Acompanhe mercados globais, criptomoedas, ações e oportunidades em tempo real.
+</p>
+
+</section>
+
+
+<section class="markets container">
+
+<h2>Mercados agora</h2>
+
+<div class="market-grid">
+
+<div class="market-card">
+
+<h3>Bitcoin</h3>
+
+<p id="btcPrice">carregando...</p>
+
+</div>
+
+<div class="market-card">
+
+<h3>Ethereum</h3>
+
+<p id="ethPrice">carregando...</p>
+
+</div>
+
+<div class="market-card">
+
+<h3>Ibovespa</h3>
+
+<p>128.450</p>
+
+</div>
+
+<div class="market-card">
+
+<h3>Dólar</h3>
+
+<p>5.02</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="ranking container">
+
+<h2>Radar do Mercado</h2>
+
+<div class="ranking-grid">
+
+<div class="ranking-box">
+
+<h3>Top Altas</h3>
+
+<ul id="topGainers"></ul>
+
+</div>
+
+<div class="ranking-box">
+
+<h3>Top Quedas</h3>
+
+<ul id="topLosers"></ul>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer class="footer">
+
+<p>© 2026 Pronuxfin — Plataforma de Inteligência Financeira</p>
+
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+
 </body>
 </html>
