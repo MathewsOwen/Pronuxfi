@@ -1,35 +1,46 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ações | Pronuxfin</title>
-<link rel="stylesheet" href="css/layout.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ações em Tempo Real | Pronuxfin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
 </head>
 
-<body>
+<body class="premium-dark">
 
-<header class="topbar">
-<div class="logo">PRONUXFIN</div>
+    <header class="header">
+        <div class="container nav">
+            <div class="logo">PRONUX<span>FIN</span></div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="mercados.html">Mercados</a>
+                <a href="acoes.html" class="active">Ações</a>
+                <a href="cripto.html">Cripto</a>
+                <a href="noticias.html">Notícias</a>
+                <a href="radar.html">Radar</a>
+            </nav>
+        </div>
+    </header>
 
-<nav>
-<a href="index.html">Home</a>
-<a href="mercados.html">Mercados</a>
-<a href="acoes.html">Ações</a>
-<a href="cripto.html">Cripto</a>
-<a href="noticias.html">Notícias</a>
-<a href="radar.html">Radar</a>
-</nav>
-</header>
+    <main class="container page">
+        <header class="page-header">
+            <h1>Monitor de Ativos B3</h1>
+            <p class="subtitle">Dados simulados com volatilidade de alta frequência para análise de momentum.</p>
+        </header>
 
-<section class="page">
-<h1>Ações da Bolsa</h1>
-<div id="stocksTable"></div>
-</section>
+        <section id="stocksTable" class="market-grid-vertical">
+            </section>
 
-<script src="js/stocks.js"></script>
+        <footer class="info-footer">
+            <p><span class="live-dot"></span> Sincronizado com o motor de execução Pronux V5.0</p>
+        </footer>
+    </main>
 
+    <script src="js/stocks.js"></script>
 </body>
 </html>
-
