@@ -14,14 +14,28 @@
   <header class="header">
     <div class="logo">PRONUXFIN</div>
 
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="mercados.html">Mercados</a>
-      <a href="acoes.html">Ações</a>
-      <a href="cripto.html">Cripto</a>
-      <a href="noticias.html">Notícias</a>
-      <a href="radar.html" class="active">Radar</a>
-    </nav>
+    <div class="header-right">
+      <div class="search-wrap">
+        <input
+          type="text"
+          id="globalSearch"
+          class="search-input"
+          placeholder="Buscar ativo... Ex: PETR4, VALE3, BTC, ETH"
+          autocomplete="off"
+        />
+        <div id="searchResults" class="search-results"></div>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="mercados.html">Mercados</a>
+        <a href="acoes.html">Ações</a>
+        <a href="cripto.html">Cripto</a>
+        <a href="noticias.html">Notícias</a>
+        <a href="radar.html" class="active">Radar</a>
+        <a href="heatmap.html">Heatmap</a>
+      </nav>
+    </div>
   </header>
 
   <main class="page">
@@ -169,5 +183,7 @@
   <footer class="footer">
     <p>© 2026 Pronuxfin — Inteligência Financeira</p>
   </footer>
+
+  <script src="js/app.js" defer></script>
 </body>
 </html>
