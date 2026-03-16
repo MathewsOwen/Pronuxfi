@@ -6,7 +6,7 @@
   <title>Mercados Globais | Pronuxfin</title>
   <meta
     name="description"
-    content="Acompanhe os principais mercados globais, índices e moedas na Pronuxfin."
+    content="Acompanhe mercados globais, índices, moedas e commodities em uma visão profissional na Pronuxfin."
   />
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -24,31 +24,141 @@
     </nav>
   </header>
 
+  <div class="ticker">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
   <main class="page">
     <div class="section-head">
       <h1>Mercados Globais</h1>
-      <p>Índices, moedas e referências do mercado em uma visão centralizada.</p>
+      <p>
+        Índices, moedas e commodities em uma leitura centralizada, com foco em
+        contexto, velocidade e clareza.
+      </p>
     </div>
 
-    <div class="table-card">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Ativo</th>
-            <th>Preço</th>
-            <th>Variação</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="marketTable"></tbody>
-      </table>
-    </div>
+    <section class="stats market-stats">
+      <article class="stat-card">
+        <span class="card-label">IBOVESPA</span>
+        <div class="stat-value">128.450</div>
+      </article>
+
+      <article class="stat-card">
+        <span class="card-label">NASDAQ</span>
+        <div class="stat-value">18.200</div>
+      </article>
+
+      <article class="stat-card">
+        <span class="card-label">USD/BRL</span>
+        <div class="stat-value">5,02</div>
+      </article>
+
+      <article class="stat-card">
+        <span class="card-label">OURO</span>
+        <div class="stat-value">2.150</div>
+      </article>
+    </section>
+
+    <section class="section no-pad-top">
+      <div class="widget-card">
+        <div id="tradingview_market"></div>
+      </div>
+    </section>
+
+    <section class="section no-pad-top">
+      <div class="grid-2">
+        <div class="table-card">
+          <div class="card-top">
+            <h3>Principais índices</h3>
+            <span class="mini-tag">GLOBAL</span>
+          </div>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ativo</th>
+                <th>Preço</th>
+                <th>Variação</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="marketTable"></tbody>
+          </table>
+        </div>
+
+        <div class="card market-side-card">
+          <span class="card-label">LEITURA RÁPIDA</span>
+          <h3>Panorama do dia</h3>
+          <p>
+            O cenário global segue com viés positivo em índices de risco, dólar
+            mais contido e commodities ainda relevantes no radar.
+          </p>
+
+          <div class="mini-insights">
+            <div class="mini-insight">
+              <strong>Tendência</strong>
+              <span class="positive">Alta moderada</span>
+            </div>
+            <div class="mini-insight">
+              <strong>Volatilidade</strong>
+              <span class="neutral">Controlada</span>
+            </div>
+            <div class="mini-insight">
+              <strong>Alerta</strong>
+              <span class="negative">FX sensível</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section no-pad-top">
+      <div class="grid-2">
+        <div class="table-card">
+          <div class="card-top">
+            <h3>Moedas</h3>
+            <span class="mini-tag">FOREX</span>
+          </div>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Par</th>
+                <th>Cotação</th>
+                <th>Variação</th>
+              </tr>
+            </thead>
+            <tbody id="forexTable"></tbody>
+          </table>
+        </div>
+
+        <div class="table-card">
+          <div class="card-top">
+            <h3>Commodities</h3>
+            <span class="mini-tag">MACRO</span>
+          </div>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ativo</th>
+                <th>Preço</th>
+                <th>Variação</th>
+              </tr>
+            </thead>
+            <tbody id="commoditiesTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
     <p>© 2026 Pronuxfin — Inteligência Financeira</p>
   </footer>
 
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <script src="js/app.js" defer></script>
   <script src="js/markets.js" defer></script>
 </body>
 </html>
