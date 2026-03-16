@@ -1,24 +1,48 @@
-const Home = {
+const Terminal = {
     init() {
-        this.ticker();
-        if(document.getElementById('ai-timer')) this.timer();
+        this.renderChart();
+        this.clock();
+        this.aiLogic();
     },
-    ticker() {
-        const t = document.getElementById('tickerTrack');
-        if(t) t.innerHTML = `<span>${"BTC $64.1k ▲ | IBOV 128k ▼ | ETH $3.4k ▲ | USD 5.02 ▼ | ".repeat(15)}</span>`;
-    },
-    timer() {
-        let s = 600;
+    renderChart() {
+        const chart = LightweightCharts.createChart(document.getElementById('tvChart'), {
+            layout: { backgroundColor: '#0a0a0a', textColor: '#555' },
+            grid: { vertLines: { color: '#1a1a1a' }, horzLines: { color: '#1a1a1a' } },
+            crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+            rightPriceScale: { borderColor: '#1a1a1a' },
+            timeScale: { borderColor: '#1a1a1a' },
+        });
+
+        const lineSeries = chart.addLineSeries({ color: '#00ff88', lineWidth: 2 });
+        // Dados simulando o mercado
+        let data = Array.from({length: 100}, (_, i) => ({
+            time: (Date.now() / 1000) - (100 - i) * 60,
+            value: 64000 + Math.random() * 500
+        }));
+        lineSeries.setData(data);
+
         setInterval(() => {
-            s--; if(s<0) s=600;
-            document.getElementById('ai-timer').innerText = `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`;
-            if(s%30===0) this.updateGraph();
-        }, 1000);
-        this.updateGraph();
+            const lastVal = data[data.length - 1].value;
+            const newVal = { time: Date.now() / 1000, value: lastVal + (Math.random() - 0.5) * 50 };
+            lineSeries.update(newVal);
+            document.getElementById('headerPrice').innerText = `$ ${newVal.value.toFixed(2)}`;
+        }, 2000);
     },
-    updateGraph() {
-        const g = document.getElementById('projection-graph');
-        if(g) g.innerHTML = Array(20).fill().map(() => `<div class="bar" style="height:${Math.random()*90+10}%"></div>`).join('');
+    clock() {
+        setInterval(() => {
+            document.getElementById('liveClock').innerText = new Date().toUTCString().split(' ')[4] + " UTC";
+        }, 1000);
+    },
+    aiLogic() {
+        const logs = document.getElementById('aiLogs');
+        const msgs = ["> Monitoring dark pools...", "> Whales activity increased", "> Analyzing BTC order imbalance", "> RSI Oversold on 5m"];
+        setInterval(() => {
+            const p = document.createElement('p');
+            p.innerText = msgs[Math.floor(Math.random()*msgs.length)];
+            logs.appendChild(p);
+            if(logs.childNodes.length > 10) logs.removeChild(logs.firstChild);
+            logs.scrollTop = logs.scrollHeight;
+        }, 4000);
     }
 };
-document.addEventListener('DOMContentLoaded', () => Home.init());
+document.addEventListener('DOMContentLoaded', () => Terminal.init());
