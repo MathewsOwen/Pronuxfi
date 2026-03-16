@@ -23,22 +23,32 @@ function formatUsd(value) {
   return value.toLocaleString("en-US");
 }
 
+function createAdvancedChart(containerId, symbol) {
+  if (typeof TradingView === "undefined") return;
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  new TradingView.widget({
+    autosize: true,
+    symbol,
+    interval: "D",
+    timezone: "America/Sao_Paulo",
+    theme: "dark",
+    style: "1",
+    locale: "br",
+    toolbar_bg: "#0f172a",
+    enable_publishing: false,
+    hide_top_toolbar: false,
+    hide_side_toolbar: false,
+    allow_symbol_change: true,
+    container_id: containerId
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  if (typeof TradingView !== "undefined" && document.getElementById("tradingview_chart")) {
-    new TradingView.widget({
-      autosize: true,
-      symbol: "BMFBOVESPA:IBOV",
-      interval: "D",
-      timezone: "America/Sao_Paulo",
-      theme: "dark",
-      style: "1",
-      locale: "br",
-      toolbar_bg: "#0f172a",
-      enable_publishing: false,
-      hide_top_toolbar: false,
-      hide_side_toolbar: false,
-      allow_symbol_change: true,
-      container_id: "tradingview_chart"
-    });
+  if (document.getElementById("tradingview_chart")) {
+    createAdvancedChart("tradingview_chart", "BMFBOVESPA:IBOV");
   }
 });
