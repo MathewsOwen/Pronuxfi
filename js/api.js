@@ -1,7 +1,7 @@
 const NEWS_API_KEY = "36f6190c46284b89876d032af65ecbf8";
 
 async function fetchJson(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, { cache: "no-store" });
 
   if (!response.ok) {
     throw new Error(`Erro na requisição: ${response.status}`);
@@ -25,8 +25,7 @@ async function fetchStocks() {
 }
 
 async function fetchMarketNews() {
-  const query =
-    "bolsa OR bitcoin OR mercado financeiro OR ibovespa OR ações";
+  const query = "bolsa OR bitcoin OR mercado financeiro OR ibovespa OR ações";
 
   return fetchJson(
     `https://newsapi.org/v2/everything?q=${encodeURIComponent(
