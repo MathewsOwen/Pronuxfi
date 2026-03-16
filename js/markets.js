@@ -1,11 +1,34 @@
-const markets = [
-    {n: "S&P 500", t: "SPX", p: "5,120", c: 0.4},
-    {n: "Nasdaq", t: "IXIC", p: "16,200", c: 0.9},
-    {n: "Dólar", t: "USDBRL", p: "5.02", c: -0.2}
-];
-const mGrid = document.getElementById("marketGrid");
-if(mGrid) mGrid.innerHTML = markets.map(m => `
-    <div class="row-item">
-        <div><b>${m.n}</b><br><small>${m.t}</small></div>
-        <div style="text-align:right">${m.p}<br><span class="${m.c>=0?'up':'down'}">${m.c}%</span></div>
-    </div>`).join('');
+document.addEventListener("DOMContentLoaded", () => {
+  const marketTable = document.getElementById("marketTable");
+  if (!marketTable) return;
+
+  const markets = [
+    { symbol: "IBOVESPA", price: "128.450", change: "+0,84%", direction: "Alta" },
+    { symbol: "S&P 500", price: "5.210", change: "+0,42%", direction: "Alta" },
+    { symbol: "NASDAQ", price: "18.200", change: "+0,67%", direction: "Alta" },
+    { symbol: "USD/BRL", price: "5,02", change: "-0,11%", direction: "Baixa" },
+    { symbol: "OURO", price: "2.150", change: "+0,23%", direction: "Alta" }
+  ];
+
+  marketTable.innerHTML = markets
+    .map((item) => {
+      const isPositive = item.change.startsWith("+");
+      const statusClass = isPositive ? "green" : "red";
+      const changeClass = isPositive ? "positive" : "negative";
+
+      return `
+        <tr>
+          <td>${item.symbol}</td>
+          <td>${item.price}</td>
+          <td class="${changeClass}">${item.change}</td>
+          <td>
+            <span class="status">
+              <span class="dot ${statusClass}"></span>
+              ${item.direction}
+            </span>
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+});
