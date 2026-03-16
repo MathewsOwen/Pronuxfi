@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async () => {
+async function renderCrypto() {
   const cryptoTable = document.getElementById("cryptoTable");
   const homeCryptoTable = document.getElementById("homeCryptoTable");
   const cryptoWatchTable = document.getElementById("cryptoWatchTable");
@@ -77,15 +77,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       ethMainStat.textContent = `$${formatUsd(data.ethereum.usd)}`;
     }
 
-    document.querySelectorAll("tr.clickable-row").forEach((row) => {
-      row.addEventListener("click", (event) => {
-        if (event.target.tagName.toLowerCase() === "a") return;
-        const url = row.getAttribute("data-url");
-        if (url) window.location.href = url;
-      });
-    });
+    bindClickableRows();
   } catch (error) {
     const fail = createEmptyRow(3, "Não foi possível carregar os dados agora.");
+
     if (cryptoTable) cryptoTable.innerHTML = fail;
     if (homeCryptoTable) homeCryptoTable.innerHTML = fail;
     if (cryptoWatchTable) cryptoWatchTable.innerHTML = fail;
@@ -94,4 +89,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (btcMainStat) btcMainStat.textContent = "Indisponível";
     if (ethMainStat) ethMainStat.textContent = "Indisponível";
   }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderCrypto();
+  setInterval(renderCrypto, REFRESH_INTERVALS.crypto);
 });
