@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendário Econômico | Pronuxfin</title>
+  <meta
+    name="description"
+    content="Calendário econômico da Pronuxfin com eventos importantes, juros, inflação, payroll e indicadores."
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">PRONUXFIN</div>
+
+    <div class="header-right">
+      <div class="search-wrap">
+        <input
+          type="text"
+          id="globalSearch"
+          class="search-input"
+          placeholder="Buscar ativo... Ex: PETR4, VALE3, BTC, ETH"
+          autocomplete="off"
+        />
+        <div id="searchResults" class="search-results"></div>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="mercados.html">Mercados</a>
+        <a href="acoes.html">Ações</a>
+        <a href="cripto.html">Cripto</a>
+        <a href="noticias.html">Notícias</a>
+        <a href="radar.html">Radar</a>
+        <a href="heatmap.html">Heatmap</a>
+        <a href="ranking.html">Ranking</a>
+        <a href="calendario.html" class="active">Calendário</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="section-head">
+      <h1>Calendário Econômico</h1>
+      <p>
+        Acompanhe os eventos macroeconômicos mais relevantes para o mercado,
+        incluindo juros, inflação, emprego e atividade econômica.
+      </p>
+    </div>
+
+    <section class="stats market-stats">
+      <article class="stat-card">
+        <span class="card-label">PRÓXIMO EVENTO</span>
+        <div class="stat-value" id="calendarNextEvent">--</div>
+      </article>
+
+      <article class="stat-card">
+        <span class="card-label">IMPACTO ALTO</span>
+        <div class="stat-value" id="calendarHighImpact">--</div>
+      </article>
+
+      <article class="stat-card">
+        <span class="card-label">BRASIL</span>
+        <div class="stat-value">Monitorando</div>
+      </article>
+
+      <article class="stat-card">
+        <span class="card-label">EUA</span>
+        <div class="stat-value">Monitorando</div>
+      </article>
+    </section>
+
+    <section class="section no-pad-top">
+      <div class="table-card">
+        <div class="card-top">
+          <h3>Eventos econômicos</h3>
+          <span class="mini-tag">MACRO</span>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Hora</th>
+              <th>País</th>
+              <th>Evento</th>
+              <th>Impacto</th>
+              <th>Leitura</th>
+            </tr>
+          </thead>
+          <tbody id="calendarTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section no-pad-top">
+      <div class="grid-3">
+        <article class="card highlight-card">
+          <span class="card-label">JUROS</span>
+          <h3>Política monetária</h3>
+          <p>
+            Decisões de juros influenciam bolsa, câmbio, renda fixa e apetite a risco.
+          </p>
+        </article>
+
+        <article class="card highlight-card">
+          <span class="card-label">INFLAÇÃO</span>
+          <h3>Pressão de preços</h3>
+          <p>
+            Dados de inflação ajudam o mercado a reprecificar expectativa de juros.
+          </p>
+        </article>
+
+        <article class="card highlight-card">
+          <span class="card-label">EMPREGO</span>
+          <h3>Força econômica</h3>
+          <p>
+            Payroll e desemprego são eventos-chave para leitura da atividade.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section no-pad-top">
+      <div class="grid-2">
+        <article class="card market-side-card">
+          <span class="card-label">LEITURA PRONUX</span>
+          <h3>Por que acompanhar</h3>
+          <p>
+            O calendário econômico dá contexto para movimentos de curto prazo e
+            ajuda a entender por que o mercado acelera ou desacelera.
+          </p>
+        </article>
+
+        <article class="card market-side-card">
+          <span class="card-label">EVENTOS-CHAVE</span>
+          <div class="mini-insights">
+            <div class="mini-insight">
+              <strong>Juros</strong>
+              <span class="neutral">Banco Central / Fed</span>
+            </div>
+            <div class="mini-insight">
+              <strong>Inflação</strong>
+              <span class="neutral">IPCA / CPI</span>
+            </div>
+            <div class="mini-insight">
+              <strong>Emprego</strong>
+              <span class="neutral">Payroll / Desemprego</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Pronuxfin — Inteligência Financeira</p>
+  </footer>
+
+  <script src="js/app.js" defer></script>
+  <script src="js/calendar.js" defer></script>
+</body>
+</html>
