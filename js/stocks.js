@@ -1,10 +1,34 @@
-const stocks = [
-    {s: "PETR4", p: 38.50, c: 1.2}, {s: "VALE3", p: 66.20, c: -0.5},
-    {s: "ITUB4", p: 31.90, c: 0.8}, {s: "MGLU3", p: 2.15, c: -3.2}
-];
-const grid = document.getElementById("stocksGrid");
-if(grid) grid.innerHTML = stocks.map(s => `
-    <div class="row-item">
-        <div><b>${s.s}</b><br><small>B3</small></div>
-        <div style="text-align:right">R$ ${s.p.toFixed(2)}<br><span class="${s.c>=0?'up':'down'}">${s.c}%</span></div>
-    </div>`).join('');
+document.addEventListener("DOMContentLoaded", () => {
+  const stocksTable = document.getElementById("stocksTable");
+  if (!stocksTable) return;
+
+  const stocks = [
+    { ticker: "PETR4", price: "38,50", change: "+1,82%", direction: "Alta" },
+    { ticker: "VALE3", price: "66,20", change: "-0,95%", direction: "Baixa" },
+    { ticker: "ITUB4", price: "31,90", change: "+0,74%", direction: "Alta" },
+    { ticker: "WEGE3", price: "45,10", change: "+1,10%", direction: "Alta" },
+    { ticker: "BBAS3", price: "28,44", change: "-0,38%", direction: "Baixa" }
+  ];
+
+  stocksTable.innerHTML = stocks
+    .map((stock) => {
+      const isPositive = stock.change.startsWith("+");
+      const statusClass = isPositive ? "green" : "red";
+      const changeClass = isPositive ? "positive" : "negative";
+
+      return `
+        <tr>
+          <td>${stock.ticker}</td>
+          <td>${stock.price}</td>
+          <td class="${changeClass}">${stock.change}</td>
+          <td>
+            <span class="status">
+              <span class="dot ${statusClass}"></span>
+              ${stock.direction}
+            </span>
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+});
