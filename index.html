@@ -3,91 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pronuxfin | Inteligência de Mercado</title>
-    <meta name="description" content="Inteligência financeira com IA e radar de oportunidades em tempo real.">
-    
+    <title>Pronuxfin | Dashboard Neural</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 </head>
 <body class="premium-dark">
-
-<header class="header">
-    <div class="container nav">
-        <div class="logo">PRONUX<span>FIN</span></div>
-        <nav>
-            <a href="index.html" class="active">Home</a>
-            <a href="mercados.html">Mercados</a>
-            <a href="acoes.html">Ações</a>
-            <a href="cripto.html">Cripto</a>
-            <a href="noticias.html">Notícias</a>
-            <a href="radar.html">Radar</a>
-        </nav>
-    </div>
-</header>
-
-<div class="ticker">
-    <div class="ticker-track" id="tickerTrack">
+    <header class="header">
+        <div class="container nav">
+            <div class="logo">PRONUX<span>FIN</span></div>
+            <nav>
+                <a href="index.html" class="active">Home</a>
+                <a href="mercados.html">Mercados</a>
+                <a href="acoes.html">Ações</a>
+                <a href="cripto.html">Cripto</a>
+                <a href="noticias.html">Notícias</a>
+                <a href="radar.html">Radar</a>
+            </nav>
         </div>
-</div>
-
-<section class="hero">
-    <div class="container">
-        <h1>Onde dados viram decisões.</h1>
-        <p>Acompanhe mercados globais e insights de IA em tempo real.</p>
-    </div>
-</section>
-
-<section class="ai-intelligence container">
-    <div class="premium-card ai-full-card">
-        <div class="ai-header">
-            <div class="ai-badge">PRONUX AI ENGINE V5.0</div>
-            <div id="ai-timer" class="ai-timer">Próxima Análise: 10:00</div>
-        </div>
-        
-        <div class="ai-main-content">
-            <div class="ai-visual-dashboard">
-                <p class="label">PROJEÇÃO DE VOLATILIDADE (PRÓXIMOS 10 MIN)</p>
-                <div id="projection-graph" class="graph-container"></div>
-            </div>
-
-            <div class="ai-explanations">
-                <div class="exp-box bull">
-                    <h4>MOTIVOS DE ALTA ▲</h4>
-                    <div id="bull-reasons" class="reason-list"></div>
+    </header>
+    <div class="ticker"><div class="ticker-track" id="tickerTrack"></div></div>
+    <main class="container">
+        <section class="hero">
+            <h1>Onde dados viram decisões.</h1>
+            <p>Inteligência artificial aplicada ao monitoramento de ativos globais.</p>
+        </section>
+        <section class="ai-intelligence">
+            <div class="premium-card gold-border">
+                <div class="ai-header">
+                    <div class="ai-badge">NEURAL ENGINE V5.0</div>
+                    <div id="ai-timer" class="ai-timer">10:00</div>
                 </div>
-                <div class="exp-box bear">
-                    <h4>MOTIVOS DE QUEDA ▼</h4>
-                    <div id="bear-reasons" class="reason-list"></div>
+                <div class="ai-main-content">
+                    <div id="projection-graph" class="graph-container"></div>
+                    <div class="ai-verdict-box">
+                        <h4>VEREDITO DA IA</h4>
+                        <p id="ai-verdict">Sincronizando modelos preditivos...</p>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="ai-final-verdict">
-            <h4>PARECER TÉCNICO ALGORÍTMICO</h4>
-            <p id="ai-verdict">Processando fluxos globais...</p>
-        </div>
-    </div>
-</section>
-
-<section class="ranking container">
-    <div class="ranking-grid">
-        <div class="ranking-box">
-            <h3>Top Altas</h3>
-            <ul id="topGainers"></ul>
-        </div>
-        <div class="ranking-box">
-            <h3>Top Quedas</h3>
-            <ul id="topLosers"></ul>
-        </div>
-    </div>
-</section>
-
-<footer class="footer">
-    <p>© 2026 Pronuxfin — Terminal de Inteligência Financeira</p>
-</footer>
-
-<script src="js/api.js"></script>
-<script src="js/app.js"></script>
+        </section>
+    </main>
+    <script src="js/app.js"></script>
 </body>
 </html>
