@@ -15,4 +15,3 @@ ${m.symbol} - ${m.price}
 </div>
 `).join("")
 }
-
