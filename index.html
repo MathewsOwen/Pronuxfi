@@ -32,13 +32,52 @@
     </header>
 
     <main class="container content-layout">
-        <section id="marketView" class="view-section">
-            <div class="glass-card chart-container">
-                <div id="tradingview_pronux"></div>
-            </div>
-        </section>
+        
+        <div class="main-column">
+            <section id="marketView" class="view-section">
+                <div class="glass-card chart-container">
+                    <div id="tradingview_pronux"></div>
+                </div>
+            </section>
 
-        <aside id="rankingView" class="view-section">
+            <section id="aiView" class="view-section hidden">
+                <div class="glass-card ai-dashboard">
+                    <div class="ai-hero">
+                        <div class="ai-badge">SISTEMA NEURAL ATIVO</div>
+                        <h2>PRONUX NEURAL ENGINE</h2>
+                    </div>
+                    <div class="ai-visual-grid">
+                        <div class="metric-glass">
+                            <span class="label">FLUXO INSTITUCIONAL</span>
+                            <div id="aiTopBuy" class="flow-data"></div>
+                        </div>
+                        <div class="metric-glass">
+                            <span class="label">MATRIZ DE RISCO</span>
+                            <div id="aiRiskMatrix" class="risk-data"></div>
+                        </div>
+                    </div>
+                    <div class="report-glass">
+                        <h3>ANÁLISE PROFISSIONAL</h3>
+                        <p id="aiReportText">Sincronizando...</p>
+                    </div>
+                    <div class="gauge-section">
+                        <h4>FEAR & GREED INDEX</h4>
+                        <div class="modern-gauge">
+                            <div id="gaugePointer" class="glow-pointer"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="newsView" class="view-section hidden">
+                <div class="glass-card news-container">
+                    <h2 class="section-title">FEED DE INTELIGÊNCIA</h2>
+                    <div id="newsFeed" class="news-list-container"></div>
+                </div>
+            </section>
+        </div>
+
+        <aside id="rankingView" class="side-column">
             <div class="glass-card ranking-panel">
                 <div class="pill-selector">
                     <button id="btn-high" class="selector-item active" onclick="toggleRanking('high')">ALTAS</button>
@@ -50,44 +89,6 @@
             </div>
         </aside>
 
-        <section id="aiView" class="view-section hidden">
-            <div class="glass-card ai-dashboard">
-                <div class="ai-hero">
-                    <div class="ai-badge">SISTEMA NEURAL ATIVO</div>
-                    <h2>PRONUX NEURAL ENGINE</h2>
-                </div>
-                
-                <div class="ai-visual-grid">
-                    <div class="metric-glass">
-                        <span class="label">FLUXO INSTITUCIONAL</span>
-                        <div id="aiTopBuy" class="flow-data"></div>
-                    </div>
-                    <div class="metric-glass">
-                        <span class="label">MATRIZ DE RISCO</span>
-                        <div id="aiRiskMatrix" class="risk-data"></div>
-                    </div>
-                </div>
-
-                <div class="report-glass">
-                    <h3>ANÁLISE PROFISSIONAL</h3>
-                    <p id="aiReportText"></p>
-                </div>
-
-                <div class="gauge-section">
-                    <h4>FEAR & GREED INDEX</h4>
-                    <div class="modern-gauge">
-                        <div id="gaugePointer" class="glow-pointer"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="newsView" class="view-section hidden">
-            <div class="glass-card news-container">
-                <h2 class="section-title">FEED DE INTELIGÊNCIA</h2>
-                <div id="newsFeed"></div>
-            </div>
-        </section>
     </main>
 
     <script src="https://s3.tradingview.com/tv.js"></script>
