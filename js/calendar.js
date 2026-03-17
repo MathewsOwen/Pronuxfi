@@ -78,26 +78,52 @@ document.addEventListener("DOMContentLoaded", () => {
     return "positive";
   }
 
-  calendarTable.innerHTML = events
+  function parseEventDate(date, time) {
+    const [day, month, year] = String(date).split("/").map(Number);
+    const [hours, minutes] = String(time).split(":").map(Number);
+
+    return new Date(year, month - 1, day, hours, minutes);
+  }
+
+  const normalizedEvents = events
+    .map((item) => ({
+      ...item,
+      eventDate: parseEventDate(item.date, item.time)
+    }))
+    .sort((a, b) => a.eventDate - b.eventDate);
+
+  const now = new Date();
+  const upcomingEvents = normalizedEvents.filter((item) => item.eventDate >= now);
+
+  if (normalizedEvents.length === 0) {
+    calendarTable.innerHTML = createEmptyRow(6, "Nenhum evento disponível.");
+
+    if (nextEvent) nextEvent.textContent = "--";
+    if (highImpact) highImpact.textContent = "0 eventos";
+    return;
+  }
+
+  calendarTable.innerHTML = normalizedEvents
     .map(
       (item) => `
         <tr>
-          <td>${item.date}</td>
-          <td>${item.time}</td>
-          <td>${item.country}</td>
-          <td>${item.event}</td>
-          <td class="${getImpactClass(item.impact)}">${item.impact}</td>
-          <td>${item.reading}</td>
+          <td>${escapeHtml(item.date)}</td>
+          <td>${escapeHtml(item.time)}</td>
+          <td>${escapeHtml(item.country)}</td>
+          <td>${escapeHtml(item.event)}</td>
+          <td class="${getImpactClass(item.impact)}">${escapeHtml(item.impact)}</td>
+          <td>${escapeHtml(item.reading)}</td>
         </tr>
       `
     )
     .join("");
 
   if (nextEvent) {
-    nextEvent.textContent = events[0].event;
+    nextEvent.textContent = upcomingEvents.length > 0 ? upcomingEvents[0].event : "--";
   }
 
-  const highImpactCount = events.filter((item) => item.impact === "Alto").length;
+  const highImpactCount = upcomingEvents.filter((item) => item.impact === "Alto").length;
+
   if (highImpact) {
     highImpact.textContent = `${highImpactCount} eventos`;
   }
