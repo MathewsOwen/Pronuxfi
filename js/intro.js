@@ -3,12 +3,14 @@
 
   const STORAGE_KEY = "pronuxfin_intro_seen";
   const INTRO_DURATION = 5200;
+  const FADE_DURATION = 1000;
 
   const introScreen = document.getElementById("introScreen");
   const skipIntroBtn = document.getElementById("skipIntroBtn");
 
   let introFinished = false;
   let introTimer = null;
+  let removeTimer = null;
 
   function disableBodyScroll() {
     document.body.style.overflow = "hidden";
@@ -21,7 +23,7 @@
   function hasSeenIntro() {
     try {
       return localStorage.getItem(STORAGE_KEY) === "true";
-    } catch (error) {
+    } catch {
       return false;
     }
   }
@@ -29,67 +31,66 @@
   function saveIntroSeen() {
     try {
       localStorage.setItem(STORAGE_KEY, "true");
-    } catch (error) {
-      /* silencioso: navegação continua normal mesmo sem storage */
+    } catch {
+      /* sem bloqueio */
     }
   }
 
-  function clearIntroTimer() {
+  function clearTimers() {
     if (introTimer) {
-      clearTimeout(introTimer);
+      window.clearTimeout(introTimer);
       introTimer = null;
     }
+
+    if (removeTimer) {
+      window.clearTimeout(removeTimer);
+      removeTimer = null;
+    }
   }
 
-  function removeIntroFromDOM() {
+  function removeIntro() {
     if (!introScreen) return;
     introScreen.remove();
   }
 
-  function finishIntro({ persist = true, removeAfterTransition = true } = {}) {
+  function finishIntro({ persist = true, immediate = false } = {}) {
     if (!introScreen || introFinished) return;
 
     introFinished = true;
-    clearIntroTimer();
+    clearTimers();
 
     if (persist) {
       saveIntroSeen();
     }
 
-    introScreen.classList.add("hide");
-    introScreen.setAttribute("aria-hidden", "true");
     enableBodyScroll();
+    introScreen.setAttribute("aria-hidden", "true");
 
-    if (removeAfterTransition) {
-      window.setTimeout(() => {
-        removeIntroFromDOM();
-      }, 1000);
+    if (immediate) {
+      removeIntro();
+      return;
     }
+
+    introScreen.classList.add("hide");
+
+    removeTimer = window.setTimeout(() => {
+      removeIntro();
+    }, FADE_DURATION);
   }
 
-  function skipIntro() {
-    finishIntro({ persist: true, removeAfterTransition: true });
-  }
-
-  function instantSkipIntro() {
-    if (!introScreen) return;
-
-    introFinished = true;
-    clearIntroTimer();
-    introScreen.setAttribute("aria-hidden", "true");
-    enableBodyScroll();
-    removeIntroFromDOM();
+  function handleSkip() {
+    finishIntro({ persist: true, immediate: false });
   }
 
   function handleKeydown(event) {
     if (event.key === "Escape") {
-      skipIntro();
+      handleSkip();
     }
   }
 
   function bindEvents() {
     if (skipIntroBtn) {
-      skipIntroBtn.addEventListener("click", skipIntro);
+      skipIntroBtn.addEventListener("click", handleSkip, { passive: true });
     }
 
     document.addEventListener("keydown", handleKeydown);
@@ -102,7 +103,7 @@
     disableBodyScroll();
 
     introTimer = window.setTimeout(() => {
-      finishIntro({ persist: true, removeAfterTransition: true });
+      finishIntro({ persist: true, immediate: false });
     }, INTRO_DURATION);
   }
 
@@ -110,7 +111,7 @@
     if (!introScreen) return;
 
     if (hasSeenIntro()) {
-      instantSkipIntro();
+      finishIntro({ persist: false, immediate: true });
       return;
     }
 
@@ -123,11 +124,4 @@
   } else {
     initIntro();
   }
-
-  /* opcional para debug manual no console:
-     window.resetPronuxfinIntro = function () {
-       localStorage.removeItem(STORAGE_KEY);
-       location.reload();
-     };
-  */
 })();
