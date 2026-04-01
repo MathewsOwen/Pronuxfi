@@ -1,186 +1,130 @@
-let rankingRenderInProgress = false;
+// ===============================
+// RANKING - PRONUXFIN
+// ===============================
 
-async function renderRankingPage() {
-  if (rankingRenderInProgress) return;
-  rankingRenderInProgress = true;
+let RANKING_STATE = {
+  all: [],
+  filtered: []
+};
 
-  const gainersTable = document.getElementById("rankingGainersTable");
-  const losersTable = document.getElementById("rankingLosersTable");
-  const stocksTable = document.getElementById("rankingStocksTable");
-  const cryptoTable = document.getElementById("rankingCryptoTable");
+// ===============================
+// INIT
+// ===============================
+document.addEventListener('DOMContentLoaded', () => {
+  const tableContainer = document.querySelector('#ranking-table');
+  const filterInput = document.querySelector('#ranking-filter-input');
+  const refreshButton = document.querySelector('#ranking-refresh-btn');
 
-  const topGainer = document.getElementById("rankingTopGainer");
-  const topLoser = document.getElementById("rankingTopLoser");
-  const topCrypto = document.getElementById("rankingTopCrypto");
-
-  if (!gainersTable || !losersTable || !stocksTable || !cryptoTable) {
-    rankingRenderInProgress = false;
+  if (!tableContainer || !window.api) {
     return;
   }
 
-  gainersTable.innerHTML = createEmptyRow(3, "Carregando ranking...");
-  losersTable.innerHTML = createEmptyRow(3, "Carregando ranking...");
-  stocksTable.innerHTML = createEmptyRow(4, "Carregando ações...");
-  cryptoTable.innerHTML = createEmptyRow(3, "Carregando criptomoedas...");
+  loadRanking(tableContainer);
 
+  if (filterInput) {
+    filterInput.addEventListener('input', () => {
+      applyRankingFilter(filterInput.value, tableContainer);
+    });
+  }
+
+  if (refreshButton) {
+    refreshButton.addEventListener('click', () => {
+      loadRanking(tableContainer, true);
+    });
+  }
+});
+
+// ===============================
+// CARREGAR RANKING
+// ===============================
+async function loadRanking(container, forceReload = false) {
   try {
-    const [stocksApi, cryptoApi] = await Promise.all([
-      fetchStocks(),
-      fetchCryptoPrices()
-    ]);
+    setLoading(container, 'Atualizando ranking...');
 
-    const assetBase = getAssetPageBase();
+    const response = await window.api.getRanking(50);
+    const rows = response.items || response.data || [];
 
-    const stocks = stocksApi
-      .filter((stock) => stock && stock.symbol)
-      .map((stock) => {
-        const percent = Number(stock.regularMarketChangePercent ?? 0);
-        const rawPrice = Number(stock.regularMarketPrice);
-
-        return {
-          symbol: String(stock.symbol).toUpperCase(),
-          price: Number.isFinite(rawPrice)
-            ? rawPrice.toLocaleString("pt-BR", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              })
-            : "--",
-          change: Number.isFinite(percent) ? percent : 0,
-          changeText: `${percent >= 0 ? "+" : ""}${(Number.isFinite(percent) ? percent : 0).toFixed(2)}%`,
-          direction: percent > 0 ? "Alta" : percent < 0 ? "Baixa" : "Neutro"
-        };
-      })
-      .sort((a, b) => a.symbol.localeCompare(b.symbol, "pt-BR"));
-
-    const cryptos = [
-      { name: "Bitcoin", symbol: "BTC", price: cryptoApi?.bitcoin?.usd ?? null },
-      { name: "Ethereum", symbol: "ETH", price: cryptoApi?.ethereum?.usd ?? null },
-      { name: "Solana", symbol: "SOL", price: cryptoApi?.solana?.usd ?? null },
-      { name: "BNB", symbol: "BNB", price: cryptoApi?.binancecoin?.usd ?? null },
-      { name: "XRP", symbol: "XRP", price: cryptoApi?.ripple?.usd ?? null }
-    ];
-
-    const positiveStocks = [...stocks]
-      .filter((item) => item.change > 0)
-      .sort((a, b) => b.change - a.change);
-
-    const negativeStocks = [...stocks]
-      .filter((item) => item.change < 0)
-      .sort((a, b) => a.change - b.change);
-
-    const assetUrl = (symbol) =>
-      `${assetBase}?symbol=${encodeURIComponent(symbol)}`;
-
-    const stockMainRows = (list) =>
-      list
-        .map(
-          (item) => `
-            <tr class="clickable-row" data-url="${assetUrl(item.symbol)}">
-              <td>
-                <a class="asset-link" href="${assetUrl(item.symbol)}">${escapeHtml(item.symbol)}</a>
-              </td>
-              <td>${item.price}</td>
-              <td class="${getChangeClass(item.changeText)}">${item.changeText}</td>
-              <td>
-                <span class="status">
-                  <span class="dot ${getDotClassByChange(item.changeText)}"></span>
-                  ${item.direction}
-                </span>
-              </td>
-            </tr>
-          `
-        )
-        .join("");
-
-    const stockMiniRows = (list) =>
-      list
-        .map(
-          (item) => `
-            <tr class="clickable-row" data-url="${assetUrl(item.symbol)}">
-              <td>
-                <a class="asset-link" href="${assetUrl(item.symbol)}">${escapeHtml(item.symbol)}</a>
-              </td>
-              <td>${item.price}</td>
-              <td class="${getChangeClass(item.changeText)}">${item.changeText}</td>
-            </tr>
-          `
-        )
-        .join("");
-
-    const cryptoRows = cryptos
-      .map(
-        (item) => `
-          <tr class="clickable-row" data-url="${assetUrl(item.symbol)}">
-            <td>
-              <a class="asset-link" href="${assetUrl(item.symbol)}">${escapeHtml(item.name)}</a>
-            </td>
-            <td>${item.price !== null ? formatUsd(item.price) : "--"}</td>
-            <td>
-              <span class="status">
-                <span class="dot blue"></span>
-                Monitorando
-              </span>
-            </td>
-          </tr>
-        `
-      )
-      .join("");
-
-    gainersTable.innerHTML =
-      positiveStocks.length > 0
-        ? stockMiniRows(positiveStocks.slice(0, 5))
-        : createEmptyRow(3, "Sem altas disponíveis.");
-
-    losersTable.innerHTML =
-      negativeStocks.length > 0
-        ? stockMiniRows(negativeStocks.slice(0, 5))
-        : createEmptyRow(3, "Sem quedas disponíveis.");
-
-    stocksTable.innerHTML =
-      stocks.length > 0
-        ? stockMainRows(stocks)
-        : createEmptyRow(4, "Sem ações disponíveis.");
-
-    cryptoTable.innerHTML =
-      cryptos.length > 0
-        ? cryptoRows
-        : createEmptyRow(3, "Sem criptomoedas disponíveis.");
-
-    if (topGainer) {
-      topGainer.textContent =
-        positiveStocks.length > 0 ? positiveStocks[0].symbol : "--";
+    if (!Array.isArray(rows) || rows.length === 0) {
+      setEmpty(container, 'Nenhum ranking disponível.');
+      return;
     }
 
-    if (topLoser) {
-      topLoser.textContent =
-        negativeStocks.length > 0 ? negativeStocks[0].symbol : "--";
-    }
+    RANKING_STATE.all = rows;
+    RANKING_STATE.filtered = rows;
 
-    if (topCrypto) {
-      topCrypto.textContent = cryptos.length > 0 ? "BTC" : "--";
-    }
-
-    bindClickableRows();
+    renderRankingTable(container, rows);
   } catch (error) {
-    gainersTable.innerHTML = createEmptyRow(3, "Erro ao carregar ranking.");
-    losersTable.innerHTML = createEmptyRow(3, "Erro ao carregar ranking.");
-    stocksTable.innerHTML = createEmptyRow(4, "Erro ao carregar ações.");
-    cryptoTable.innerHTML = createEmptyRow(3, "Erro ao carregar criptomoedas.");
-
-    if (topGainer) topGainer.textContent = "--";
-    if (topLoser) topLoser.textContent = "--";
-    if (topCrypto) topCrypto.textContent = "--";
-
-    console.error("[Pronuxfin] Erro em renderRankingPage:", error);
-  } finally {
-    rankingRenderInProgress = false;
+    console.error('[RANKING ERROR]', error);
+    setError(container, 'Erro ao carregar ranking.');
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderRankingPage();
+// ===============================
+// FILTRO
+// ===============================
+function applyRankingFilter(term, container) {
+  const value = term.toLowerCase().trim();
 
-  setInterval(() => {
-    renderRankingPage();
-  }, REFRESH_INTERVALS.stocks);
-});
+  if (!value) {
+    RANKING_STATE.filtered = RANKING_STATE.all;
+  } else {
+    RANKING_STATE.filtered = RANKING_STATE.all.filter((item) => {
+      const symbol = (item.symbol || '').toLowerCase();
+      const name = (item.name || '').toLowerCase();
+      const type = (item.type || '').toLowerCase();
+
+      return (
+        symbol.includes(value) ||
+        name.includes(value) ||
+        type.includes(value)
+      );
+    });
+  }
+
+  renderRankingTable(container, RANKING_STATE.filtered);
+}
+
+// ===============================
+// RENDER TABELA
+// ===============================
+function renderRankingTable(container, rows) {
+  renderTable(
+    container,
+    [
+      {
+        label: '#',
+        key: 'rank',
+        render: (_, index) => `<strong>${index + 1}</strong>`
+      },
+      {
+        label: 'Ativo',
+        key: 'symbol',
+        render: (row) => createAssetRowLink(row.symbol, row.type || 'stock')
+      },
+      {
+        label: 'Nome',
+        key: 'name',
+        render: (row) => row.name || '--'
+      },
+      {
+        label: 'Tipo',
+        key: 'type',
+        render: (row) => `<span class="badge">${(row.type || 'ativo').toUpperCase()}</span>`
+      },
+      {
+        label: 'Preço',
+        key: 'price',
+        render: (row) => {
+          const currency = row.currency || 'USD';
+          return formatCurrency(row.price, currency);
+        }
+      },
+      {
+        label: 'Variação',
+        key: 'changePercent',
+        render: (row) => formatDeltaHTML(row.changePercent)
+      }
+    ],
+    rows
+  );
+}
