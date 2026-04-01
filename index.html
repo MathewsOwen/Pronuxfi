@@ -3,335 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Pronuxfin | Inteligência Financeira</title>
-
   <meta
     name="description"
-    content="Pronuxfin é uma plataforma de inteligência financeira com mercados, ações, criptomoedas, notícias, radar estratégico e heatmap em uma experiência premium."
+    content="Pronuxfin é uma plataforma premium de inteligência financeira com ações, criptomoedas, mercados e leitura estratégica."
   />
-  <meta
-    name="keywords"
-    content="Pronuxfin, mercado financeiro, ações, criptomoedas, B3, investimentos, radar estratégico, heatmap, notícias financeiras, inteligência financeira"
-  />
-  <meta name="author" content="Pronuxfin" />
-  <meta name="theme-color" content="#0b1220" />
-
-  <meta property="og:title" content="Pronuxfin | Inteligência Financeira" />
-  <meta
-    property="og:description"
-    content="Mercados, ações, criptomoedas, radar estratégico, notícias e leitura institucional em uma experiência premium."
-  />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="pt_BR" />
-  <meta property="og:image" content="img/logo-pronuxfin.webp" />
-
-  <link rel="preload" href="img/logo-pronuxfin.webp" as="image" />
-  <link rel="preconnect" href="https://s3.tradingview.com" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <noscript>
-    <div class="noscript-alert">
-      A Pronuxfin precisa do JavaScript ativado para carregar gráficos, dados de mercado e notícias em tempo real.
+  <header class="topbar">
+    <div class="logo">PRONUXFIN</div>
+
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Buscar ativo... Ex: PETR4, VALE3, BTC, ETH"
+      />
     </div>
-  </noscript>
 
-  <!-- INTRO / SPLASH SCREEN -->
-  <div class="intro-screen" id="introScreen" aria-hidden="true">
-    <div class="intro-bg-glow"></div>
-
-    <button
-      class="skip-intro"
-      id="skipIntroBtn"
-      type="button"
-      aria-label="Pular animação de abertura"
-    >
-      Pular abertura
-    </button>
-
-    <div class="intro-center">
-      <div class="logo-reveal" aria-label="Logo animado Pronuxfin" role="img">
-        <img
-          src="img/logo-pronuxfin.webp"
-          alt="Pronuxfin"
-          class="logo-base"
-          draggable="false"
-        />
-
-        <div class="logo-reveal-mask" aria-hidden="true">
-          <span class="reveal-piece rp-1"></span>
-          <span class="reveal-piece rp-2"></span>
-          <span class="reveal-piece rp-3"></span>
-          <span class="reveal-piece rp-4"></span>
-          <span class="reveal-piece rp-5"></span>
-          <span class="reveal-piece rp-6"></span>
-          <span class="reveal-piece rp-7"></span>
-          <span class="reveal-piece rp-8"></span>
-        </div>
-
-        <div class="o-bars-absolute" aria-hidden="true">
-          <span class="o-bar-real o-bar-real-1"></span>
-          <span class="o-bar-real o-bar-real-2"></span>
-          <span class="o-bar-real o-bar-real-3"></span>
-        </div>
-
-        <div class="x-arrow-absolute" aria-hidden="true">
-          <span class="x-arrow-stem"></span>
-          <span class="x-arrow-tip"></span>
-        </div>
-      </div>
-
-      <p class="brand-tagline">WHERE UNDERSTANDING BECOMES ADVANTAGE</p>
-    </div>
-  </div>
-
-  <header class="header">
-    <a href="index.html" class="logo" aria-label="Ir para a página inicial da Pronuxfin">
-      PRONUXFIN
-    </a>
-
-    <div class="header-right">
-      <div class="search-wrap">
-        <input
-          type="text"
-          id="globalSearch"
-          class="search-input"
-          placeholder="Buscar ativo... Ex: PETR4, VALE3, BTC, ETH"
-          autocomplete="off"
-          aria-label="Buscar ativo"
-        />
-        <div
-          id="searchResults"
-          class="search-results"
-          role="listbox"
-          aria-label="Resultados da busca"
-        ></div>
-      </div>
-
-      <nav class="nav" aria-label="Navegação principal">
-        <a href="index.html" class="active" aria-current="page">Home</a>
-        <a href="mercados.html">Mercados</a>
-        <a href="acoes.html">Ações</a>
-        <a href="cripto.html">Cripto</a>
-        <a href="noticias.html">Notícias</a>
-        <a href="radar.html">Radar</a>
-        <a href="heatmap.html">Heatmap</a>
-        <a href="ranking.html">Ranking</a>
-        <a href="calendario.html">Calendário</a>
-      </nav>
-    </div>
+    <nav class="nav">
+      <a class="active" href="index.html">Home</a>
+      <a href="mercados.html">Mercados</a>
+      <a href="acoes.html">Ações</a>
+      <a href="cripto.html">Cripto</a>
+      <a href="noticias.html">Notícias</a>
+      <a href="radar.html">Radar</a>
+      <a href="heatmap.html">Heatmap</a>
+      <a href="ranking.html">Ranking</a>
+      <a href="calendario.html">Calendário</a>
+    </nav>
   </header>
-
-  <div class="ticker" aria-label="Ticker de mercado">
-    <div class="ticker-track" id="tickerTrack"></div>
-  </div>
 
   <main>
     <section class="hero">
-      <div class="hero-content">
-        <span class="badge">PLATAFORMA FINANCEIRA PREMIUM</span>
-        <h1>Onde dados viram decisões.</h1>
-        <p>
-          Mercados globais, ações, criptomoedas, radar estratégico, notícias e
-          leitura institucional em uma experiência moderna, rápida e profissional.
-        </p>
+      <div class="hero-badge">PLATAFORMA FINANCEIRA PREMIUM</div>
+      <h1>Onde dados viram decisões.</h1>
+      <p>
+        Mercados globais, ações, criptomoedas, radar estratégico, notícias e leitura
+        institucional em uma experiência moderna, rápida e profissional.
+      </p>
 
-        <div class="hero-actions">
-          <a href="mercados.html" class="btn-primary">Explorar Mercados</a>
-          <a href="radar.html" class="btn-secondary">Abrir Radar</a>
+      <div class="hero-actions">
+        <a href="mercados.html" class="btn btn-primary">Explorar Mercados</a>
+        <a href="radar.html" class="btn btn-secondary">Abrir Radar</a>
+      </div>
+    </section>
+
+    <section class="market-cards">
+      <article class="market-card">
+        <span class="market-label">IBOVESPA</span>
+        <strong id="ibov-price">--</strong>
+        <small id="ibov-change">--</small>
+      </article>
+
+      <article class="market-card">
+        <span class="market-label">USD/BRL</span>
+        <strong id="usdbrl-price">--</strong>
+        <small id="usdbrl-change">--</small>
+      </article>
+
+      <article class="market-card">
+        <span class="market-label">BITCOIN</span>
+        <strong id="btc-price">--</strong>
+        <small id="btc-change">--</small>
+      </article>
+
+      <article class="market-card">
+        <span class="market-label">S&amp;P 500</span>
+        <strong id="sp500-price">--</strong>
+        <small id="sp500-change">--</small>
+      </article>
+    </section>
+
+    <section class="market-chart-section">
+      <h2>Gráfico do mercado</h2>
+      <p>Uma visão profissional para acompanhar o comportamento dos ativos.</p>
+
+      <div class="chart-placeholder">
+        <div class="chart-box">Área reservada para gráfico / TradingView</div>
+      </div>
+    </section>
+
+    <section class="home-panels">
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Criptomoedas</h3>
+          <span>Atualização em tempo real</span>
         </div>
-      </div>
-    </section>
-
-    <section class="stats" aria-label="Indicadores principais">
-      <article class="stat-card">
-        <span class="card-label">IBOVESPA</span>
-        <div class="stat-value" id="statIbov">--</div>
-      </article>
-
-      <article class="stat-card">
-        <span class="card-label">USD/BRL</span>
-        <div class="stat-value" id="statUsd">--</div>
-      </article>
-
-      <article class="stat-card">
-        <span class="card-label">BITCOIN</span>
-        <div class="stat-value" id="statBtc">--</div>
-      </article>
-
-      <article class="stat-card">
-        <span class="card-label">S&amp;P 500</span>
-        <div class="stat-value" id="statSp500">--</div>
-      </article>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h2>Gráfico do mercado</h2>
-        <p>Uma visão profissional para acompanhar o comportamento dos ativos.</p>
+        <div id="crypto-cards" class="crypto-grid"></div>
       </div>
 
-      <div class="widget-card chart-card">
-        <div id="tradingview_chart" class="chart-container"></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h2>Visão geral dos mercados</h2>
-        <p>Principais indicadores acompanhados pela Pronuxfin.</p>
-      </div>
-
-      <div class="table-card">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Ativo</th>
-              <th>Preço</th>
-              <th>Variação</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="marketTable"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h2>Destaques da bolsa</h2>
-        <p>Principais ações monitoradas na plataforma.</p>
-      </div>
-
-      <div class="grid-2">
-        <div class="table-card">
-          <div class="card-top">
-            <h3>Top Ações</h3>
-            <span class="mini-tag">B3</span>
-          </div>
-
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Ticker</th>
-                <th>Preço</th>
-                <th>Variação</th>
-                <th>Direção</th>
-              </tr>
-            </thead>
-            <tbody id="homeStocksTable"></tbody>
-          </table>
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Ações brasileiras</h3>
+          <span>Principais papéis monitorados</span>
         </div>
 
-        <div class="table-card">
-          <div class="card-top">
-            <h3>Top Criptomoedas</h3>
-            <span class="mini-tag">CRYPTO</span>
-          </div>
-
-          <table class="table">
+        <div class="table-wrapper">
+          <table class="stocks-table">
             <thead>
               <tr>
                 <th>Ativo</th>
-                <th>Preço (USD)</th>
-                <th>Status</th>
+                <th>Preço</th>
+                <th>Variação</th>
+                <th>Máx</th>
+                <th>Mín</th>
               </tr>
             </thead>
-            <tbody id="homeCryptoTable"></tbody>
+            <tbody id="stocks-table-body"></tbody>
           </table>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h2>Radar estratégico</h2>
-        <p>Leitura rápida do mercado com foco em direção, risco e oportunidade.</p>
-      </div>
-
-      <div class="grid-3">
-        <article class="card highlight-card">
-          <span class="card-label">TENDÊNCIA</span>
-          <h3>Alta moderada</h3>
-          <p>
-            O mercado segue com viés positivo, mas ainda exige atenção à
-            volatilidade e aos movimentos macro.
-          </p>
-        </article>
-
-        <article class="card highlight-card">
-          <span class="card-label">RISCO</span>
-          <h3>Controlado</h3>
-          <p>
-            O cenário-base continua saudável, porém com necessidade de gestão
-            de exposição em ativos mais sensíveis.
-          </p>
-        </article>
-
-        <article class="card highlight-card">
-          <span class="card-label">OPORTUNIDADES</span>
-          <h3>BTC, PETR4, VALE3</h3>
-          <p>
-            Ativos no radar com maior atenção por fluxo, liquidez e relevância
-            no mercado.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
-        <h2>Últimas leituras do mercado</h2>
-        <p>Notícias e sinais que mantêm o investidor à frente do movimento.</p>
-      </div>
-
-      <div id="homeNewsFeed" class="grid-3"></div>
-    </section>
-
-    <section class="section">
-      <div class="grid-3">
-        <article class="card premium-box">
-          <span class="card-label">PLATAFORMA</span>
-          <h3>Experiência institucional</h3>
-          <p>
-            Visual premium, leitura rápida e estrutura pronta para crescer
-            como plataforma de dados financeiros.
-          </p>
-        </article>
-
-        <article class="card premium-box">
-          <span class="card-label">DADOS</span>
-          <h3>Monitoramento inteligente</h3>
-          <p>
-            A Pronuxfin foi pensada para unir análise, velocidade, clareza e
-            uma experiência visual muito mais forte.
-          </p>
-        </article>
-
-        <article class="card premium-box">
-          <span class="card-label">ESCALA</span>
-          <h3>Base para evoluir</h3>
-          <p>
-            Essa estrutura já prepara o projeto para páginas de ativos,
-            rankings, gráficos e expansão de SEO.
-          </p>
-        </article>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <p>© 2026 Pronuxfin — Inteligência Financeira</p>
-  </footer>
-
-  <script src="https://s3.tradingview.com/tv.js"></script>
-  <script src="js/intro.js" defer></script>
-  <script src="js/api.js" defer></script>
-  <script src="js/app.js" defer></script>
-  <script src="js/markets.js" defer></script>
-  <script src="js/stocks.js" defer></script>
-  <script src="js/crypto.js" defer></script>
-  <script src="js/news.js" defer></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
