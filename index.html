@@ -3,120 +3,135 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Pronuxfin | Inteligência Financeira</title>
-  <meta
-    name="description"
-    content="Pronuxfin é uma plataforma premium de inteligência financeira com ações, criptomoedas, mercados e leitura estratégica."
-  />
+
+  <meta name="description" content="Plataforma de inteligência financeira com dados de ações, criptomoedas, mercados globais e notícias em tempo real." />
+
+  <!-- CSS -->
   <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-  <header class="topbar">
-    <div class="logo">PRONUXFIN</div>
 
-    <div class="search-box">
-      <input
-        type="text"
-        placeholder="Buscar ativo... Ex: PETR4, VALE3, BTC, ETH"
-      />
+  <!-- ================= HEADER ================= -->
+  <header class="header">
+    <div class="container header-content">
+
+      <div class="logo">
+        PRONUX<span>FIN</span>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html" data-nav-link>Home</a>
+        <a href="acoes.html" data-nav-link>Ações</a>
+        <a href="cripto.html" data-nav-link>Cripto</a>
+        <a href="mercados.html" data-nav-link>Mercados</a>
+        <a href="ranking.html" data-nav-link>Ranking</a>
+        <a href="heatmap.html" data-nav-link>Heatmap</a>
+        <a href="radar.html" data-nav-link>Radar</a>
+        <a href="calendario.html" data-nav-link>Calendário</a>
+      </nav>
+
+      <!-- BUSCA -->
+      <form class="search" data-search-form>
+        <input type="text" placeholder="Buscar ativo..." data-search-input />
+        <div class="search-results" data-search-results></div>
+      </form>
+
     </div>
-
-    <nav class="nav">
-      <a class="active" href="index.html">Home</a>
-      <a href="mercados.html">Mercados</a>
-      <a href="acoes.html">Ações</a>
-      <a href="cripto.html">Cripto</a>
-      <a href="noticias.html">Notícias</a>
-      <a href="radar.html">Radar</a>
-      <a href="heatmap.html">Heatmap</a>
-      <a href="ranking.html">Ranking</a>
-      <a href="calendario.html">Calendário</a>
-    </nav>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-badge">PLATAFORMA FINANCEIRA PREMIUM</div>
-      <h1>Onde dados viram decisões.</h1>
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="container">
+
+      <h1>Inteligência Financeira em Tempo Real</h1>
       <p>
-        Mercados globais, ações, criptomoedas, radar estratégico, notícias e leitura
-        institucional em uma experiência moderna, rápida e profissional.
+        Acompanhe ações, criptomoedas e mercados globais com dados profissionais e visão estratégica.
       </p>
 
-      <div class="hero-actions">
-        <a href="mercados.html" class="btn btn-primary">Explorar Mercados</a>
-        <a href="radar.html" class="btn btn-secondary">Abrir Radar</a>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="market-cards">
-      <article class="market-card">
-        <span class="market-label">IBOVESPA</span>
-        <strong id="ibov-price">--</strong>
-        <small id="ibov-change">--</small>
-      </article>
+  <!-- ================= OVERVIEW ================= -->
+  <section class="section">
+    <div class="container">
 
-      <article class="market-card">
-        <span class="market-label">USD/BRL</span>
-        <strong id="usdbrl-price">--</strong>
-        <small id="usdbrl-change">--</small>
-      </article>
+      <h2>Visão Geral do Mercado</h2>
 
-      <article class="market-card">
-        <span class="market-label">BITCOIN</span>
-        <strong id="btc-price">--</strong>
-        <small id="btc-change">--</small>
-      </article>
-
-      <article class="market-card">
-        <span class="market-label">S&amp;P 500</span>
-        <strong id="sp500-price">--</strong>
-        <small id="sp500-change">--</small>
-      </article>
-    </section>
-
-    <section class="market-chart-section">
-      <h2>Gráfico do mercado</h2>
-      <p>Uma visão profissional para acompanhar o comportamento dos ativos.</p>
-
-      <div class="chart-placeholder">
-        <div class="chart-box">Área reservada para gráfico / TradingView</div>
-      </div>
-    </section>
-
-    <section class="home-panels">
-      <div class="panel">
-        <div class="panel-header">
-          <h3>Criptomoedas</h3>
-          <span>Atualização em tempo real</span>
-        </div>
-        <div id="crypto-cards" class="crypto-grid"></div>
+      <div class="grid grid-4" id="overview-strip">
+        <div class="loading">Carregando mercado...</div>
       </div>
 
-      <div class="panel">
-        <div class="panel-header">
-          <h3>Ações brasileiras</h3>
-          <span>Principais papéis monitorados</span>
-        </div>
+    </div>
+  </section>
 
-        <div class="table-wrapper">
-          <table class="stocks-table">
-            <thead>
-              <tr>
-                <th>Ativo</th>
-                <th>Preço</th>
-                <th>Variação</th>
-                <th>Máx</th>
-                <th>Mín</th>
-              </tr>
-            </thead>
-            <tbody id="stocks-table-body"></tbody>
-          </table>
-        </div>
+  <!-- ================= AÇÕES ================= -->
+  <section class="section">
+    <div class="container">
+
+      <div class="section-header">
+        <h2>Destaques da B3</h2>
+        <a href="acoes.html">Ver tudo →</a>
       </div>
-    </section>
-  </main>
 
+      <div id="home-stocks"></div>
+
+    </div>
+  </section>
+
+  <!-- ================= RANKING ================= -->
+  <section class="section">
+    <div class="container">
+
+      <div class="section-header">
+        <h2>Ranking de Ativos</h2>
+        <a href="ranking.html">Ver ranking →</a>
+      </div>
+
+      <div id="home-ranking" class="grid grid-3"></div>
+
+    </div>
+  </section>
+
+  <!-- ================= NOTÍCIAS ================= -->
+  <section class="section">
+    <div class="container">
+
+      <div class="section-header">
+        <h2>Notícias de Mercado</h2>
+        <a href="noticias.html">Ver notícias →</a>
+      </div>
+
+      <div id="home-news" class="grid grid-3"></div>
+
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="container footer-content">
+
+      <div>
+        <strong>Pronuxfin</strong>
+        <p>Onde entendimento vira vantagem.</p>
+      </div>
+
+      <div>
+        <small>© <span data-current-year></span> Pronuxfin</small>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script src="js/api.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/home.js"></script>
+
 </body>
 </html>
