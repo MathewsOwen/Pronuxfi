@@ -1,101 +1,122 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+// ===============================
+// CRIPTO - PRONUXFIN
+// ===============================
 
-  <title>Criptomoedas | Pronuxfin</title>
-  <meta
-    name="description"
-    content="Acompanhe criptomoedas em tempo real com preço, variação, volume e capitalização de mercado na Pronuxfin."
-  />
+let CRYPTO_STATE = {
+  all: [],
+  filtered: []
+};
 
-  <link rel="stylesheet" href="css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-</head>
-<body>
+// ===============================
+// INIT
+// ===============================
+document.addEventListener('DOMContentLoaded', () => {
+  const tableContainer = document.querySelector('#crypto-table');
+  const filterInput = document.querySelector('#crypto-filter-input');
+  const refreshButton = document.querySelector('#crypto-refresh-btn');
 
-  <!-- ================= HEADER ================= -->
-  <header class="header">
-    <div class="container header-content">
-      <div class="logo">
-        PRONUX<span>FIN</span>
-      </div>
+  if (!tableContainer || !window.api) {
+    return;
+  }
 
-      <nav class="nav">
-        <a href="index.html" data-nav-link>Home</a>
-        <a href="acoes.html" data-nav-link>Ações</a>
-        <a href="cripto.html" data-nav-link>Cripto</a>
-        <a href="mercados.html" data-nav-link>Mercados</a>
-        <a href="noticias.html" data-nav-link>Notícias</a>
-        <a href="ranking.html" data-nav-link>Ranking</a>
-        <a href="heatmap.html" data-nav-link>Heatmap</a>
-        <a href="radar.html" data-nav-link>Radar</a>
-        <a href="calendario.html" data-nav-link>Calendário</a>
-      </nav>
+  loadCryptos(tableContainer);
 
-      <form class="search" data-search-form>
-        <input type="text" placeholder="Buscar ativo..." data-search-input />
-        <div class="search-results" data-search-results></div>
-      </form>
-    </div>
-  </header>
+  if (filterInput) {
+    filterInput.addEventListener('input', () => {
+      applyCryptoFilter(filterInput.value, tableContainer);
+    });
+  }
 
-  <!-- ================= CONTEÚDO ================= -->
-  <main class="section">
-    <div class="container">
+  if (refreshButton) {
+    refreshButton.addEventListener('click', () => {
+      loadCryptos(tableContainer, true);
+    });
+  }
+});
 
-      <div class="page-title">
-        <h1>Mercado Cripto</h1>
-        <p>
-          Monitore criptomoedas com dados atualizados, leitura rápida de desempenho
-          e acesso simplificado aos principais ativos do mercado digital.
-        </p>
-      </div>
+// ===============================
+// CARREGAR CRIPTOS
+// ===============================
+async function loadCryptos(container, forceReload = false) {
+  try {
+    setLoading(container, 'Atualizando mercado cripto...');
 
-      <div class="filters-bar">
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <input
-            type="text"
-            id="crypto-filter-input"
-            placeholder="Filtrar por símbolo ou nome..."
-          />
-          <button type="button" id="crypto-refresh-btn">Atualizar</button>
-        </div>
-      </div>
+    const response = await window.api.getCryptos(50);
+    const rows = response.items || response.data || [];
 
-      <section class="panel">
-        <div class="section-header">
-          <h2>Lista de Criptomoedas</h2>
-          <a href="index.html">Voltar para Home →</a>
-        </div>
+    if (!Array.isArray(rows) || rows.length === 0) {
+      setEmpty(container, 'Nenhuma criptomoeda encontrada.');
+      return;
+    }
 
-        <div id="crypto-table">
-          <div class="loading">Carregando criptomoedas...</div>
-        </div>
-      </section>
+    CRYPTO_STATE.all = rows;
+    CRYPTO_STATE.filtered = rows;
 
-    </div>
-  </main>
+    renderCryptoTable(container, rows);
+  } catch (error) {
+    console.error('[CRYPTO ERROR]', error);
+    setError(container, 'Erro ao carregar criptomoedas.');
+  }
+}
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="footer">
-    <div class="container footer-content">
-      <div>
-        <strong>Pronuxfin</strong>
-        <p>Onde entendimento vira vantagem.</p>
-      </div>
+// ===============================
+// FILTRO
+// ===============================
+function applyCryptoFilter(term, container) {
+  const value = term.toLowerCase().trim();
 
-      <div>
-        <small>© <span data-current-year></span> Pronuxfin</small>
-      </div>
-    </div>
-  </footer>
+  if (!value) {
+    CRYPTO_STATE.filtered = CRYPTO_STATE.all;
+  } else {
+    CRYPTO_STATE.filtered = CRYPTO_STATE.all.filter((item) => {
+      const symbol = (item.symbol || '').toLowerCase();
+      const name = (item.name || '').toLowerCase();
 
-  <!-- ================= SCRIPTS ================= -->
-  <script src="js/api.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/crypto.js"></script>
+      return symbol.includes(value) || name.includes(value);
+    });
+  }
 
-</body>
-</html>
+  renderCryptoTable(container, CRYPTO_STATE.filtered);
+}
+
+// ===============================
+// RENDER TABELA
+// ===============================
+function renderCryptoTable(container, rows) {
+  renderTable(
+    container,
+    [
+      {
+        label: 'Ativo',
+        key: 'symbol',
+        render: (row) => createAssetRowLink(row.symbol, 'crypto')
+      },
+      {
+        label: 'Nome',
+        key: 'name',
+        render: (row) => row.name || '--'
+      },
+      {
+        label: 'Preço',
+        key: 'price',
+        render: (row) => formatCurrency(row.price, 'USD')
+      },
+      {
+        label: 'Variação 24h',
+        key: 'changePercent',
+        render: (row) => formatDeltaHTML(row.changePercent)
+      },
+      {
+        label: 'Volume',
+        key: 'volume',
+        render: (row) => formatCompact(row.volume)
+      },
+      {
+        label: 'Market Cap',
+        key: 'marketCap',
+        render: (row) => formatCompact(row.marketCap)
+      }
+    ],
+    rows
+  );
+}
