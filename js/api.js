@@ -8,7 +8,7 @@ const API_CONFIG = {
       ? 'https://pronuxfin-backend.onrender.com/api'
       : 'http://localhost:3000/api')
   ).replace(/\/+$/, ''),
-  timeout: 10000
+  timeout: 12000
 };
 
 // ===============================
@@ -25,6 +25,7 @@ async function request(path, options = {}) {
     const response = await fetch(url, {
       method: options.method || 'GET',
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
         ...(options.headers || {})
       },
@@ -37,6 +38,11 @@ async function request(path, options = {}) {
     if (!response.ok) {
       const text = await response.text();
       throw new Error(`Erro ${response.status}: ${text}`);
+    }
+
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      throw new Error('A API não retornou JSON válido.');
     }
 
     return await response.json();
