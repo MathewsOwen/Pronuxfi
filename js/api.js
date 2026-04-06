@@ -2,7 +2,12 @@
 // CONFIGURAÇÃO DA API
 // ===============================
 const API_CONFIG = {
-  baseURL: window.PRONUXFIN_API_BASE || 'http://localhost:3000/api',
+  baseURL: (
+    window.PRONUXFIN_API_BASE ||
+    (window.location.hostname.includes('github.io')
+      ? 'https://SEU-BACKEND.onrender.com/api'
+      : 'http://localhost:3000/api')
+  ).replace(/\/+$/, ''),
   timeout: 10000
 };
 
@@ -11,9 +16,10 @@ const API_CONFIG = {
 // ===============================
 async function request(path, options = {}) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), API_CONFIG.timeout);
+  const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.timeout);
 
-  const url = `${API_CONFIG.baseURL}${path}`;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const url = `${API_CONFIG.baseURL}${normalizedPath}`;
 
   try {
     const response = await fetch(url, {
@@ -26,7 +32,7 @@ async function request(path, options = {}) {
       signal: controller.signal
     });
 
-    clearTimeout(timeout);
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const text = await response.text();
@@ -34,16 +40,15 @@ async function request(path, options = {}) {
     }
 
     return await response.json();
-
   } catch (error) {
-    clearTimeout(timeout);
+    clearTimeout(timeoutId);
 
     if (error.name === 'AbortError') {
-      console.error('[API TIMEOUT]', path);
+      console.error('[API TIMEOUT]', url);
       throw new Error('Tempo de resposta excedido.');
     }
 
-    console.error('[API ERROR]', path, error);
+    console.error('[API ERROR]', url, error);
     throw error;
   }
 }
@@ -52,18 +57,14 @@ async function request(path, options = {}) {
 // ENDPOINTS CENTRALIZADOS
 // ===============================
 const api = {
-
-  // 🔍 Busca global
   search(query) {
     return request(`/search?q=${encodeURIComponent(query)}`);
   },
 
-  // 📊 Visão geral
   getOverview() {
     return request('/markets/overview');
   },
 
-  // 🇧🇷 AÇÕES B3
   getStocks(symbols = 'PETR4,VALE3,ITUB4,BBAS3,WEGE3') {
     return request(`/stocks/quote?symbols=${encodeURIComponent(symbols)}`);
   },
@@ -72,42 +73,34 @@ const api = {
     return request(`/stocks/list?page=${page}&limit=${limit}`);
   },
 
-  // 🪙 CRIPTO
   getCryptos(limit = 20) {
     return request(`/crypto/markets?limit=${limit}`);
   },
 
-  // 🌎 MERCADOS GLOBAIS
   getGlobalMarkets() {
     return request('/markets/global');
   },
 
-  // 📰 NOTÍCIAS
   getNews(limit = 12) {
     return request(`/news/latest?limit=${limit}`);
   },
 
-  // 🏆 RANKING
   getRanking(limit = 20) {
     return request(`/ranking/assets?limit=${limit}`);
   },
 
-  // 🔥 HEATMAP
   getHeatmap() {
     return request('/heatmap/b3');
   },
 
-  // 🎯 RADAR
   getRadar() {
     return request('/radar/events');
   },
 
-  // 📅 CALENDÁRIO ECONÔMICO
   getCalendar(country = 'BR', limit = 20) {
     return request(`/calendar/economic?country=${encodeURIComponent(country)}&limit=${limit}`);
   },
 
-  // 📈 DETALHE DE ATIVO
   getAssetDetails(symbol, type = 'stock') {
     return request(`/asset/${encodeURIComponent(symbol)}?type=${encodeURIComponent(type)}`);
   }
@@ -117,3 +110,4 @@ const api = {
 // DISPONIBILIZA GLOBALMENTE
 // ===============================
 window.api = api;
+window.API_CONFIG = API_CONFIG;
