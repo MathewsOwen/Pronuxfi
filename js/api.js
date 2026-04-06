@@ -5,7 +5,7 @@ const API_CONFIG = {
   baseURL: (
     window.PRONUXFIN_API_BASE ||
     (window.location.hostname.includes('github.io')
-      ? 'https://SEU-BACKEND.onrender.com/api'
+      ? 'https://pronuxfin-backend.onrender.com/api'
       : 'http://localhost:3000/api')
   ).replace(/\/+$/, ''),
   timeout: 10000
@@ -106,8 +106,5 @@ const api = {
   }
 };
 
-// ===============================
-// DISPONIBILIZA GLOBALMENTE
-// ===============================
 window.api = api;
 window.API_CONFIG = API_CONFIG;
