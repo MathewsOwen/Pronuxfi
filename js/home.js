@@ -7,6 +7,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   const homeRanking = document.querySelector('#home-ranking');
   const homeNews = document.querySelector('#home-news');
 
+  if (overviewStrip) {
+    renderOverviewSkeleton(overviewStrip);
+  }
+
+  if (homeStocks) {
+    setLoading(homeStocks, 'Carregando destaques da B3...');
+  }
+
+  if (homeRanking) {
+    renderCardSkeletons(homeRanking, 3);
+  }
+
+  if (homeNews) {
+    renderNewsSkeletons(homeNews, 3);
+  }
+
   await Promise.allSettled([
     loadOverview(overviewStrip),
     loadHomeStocks(homeStocks),
@@ -14,6 +30,48 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadHomeNews(homeNews)
   ]);
 });
+
+// ===============================
+// HELPERS DE NORMALIZAÇÃO
+// ===============================
+function normalizeCollection(response) {
+  if (Array.isArray(response)) {
+    return response;
+  }
+
+  if (Array.isArray(response?.items)) {
+    return response.items;
+  }
+
+  if (Array.isArray(response?.data)) {
+    return response.data;
+  }
+
+  if (Array.isArray(response?.results)) {
+    return response.results;
+  }
+
+  return [];
+}
+
+function safeNumber(value, fallback = 0) {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value !== 'string') {
+    return fallback;
+  }
+
+  const normalized = value
+    .trim()
+    .replace(/\.(?=\d{3}(\D|$))/g, '')
+    .replace(',', '.')
+    .replace(/[^\d.-]/g, '');
+
+  const parsed = Number(normalized);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
 
 // ===============================
 // VISÃO GERAL DO MERCADO
@@ -25,9 +83,9 @@ async function loadOverview(container) {
 
   try {
     const response = await window.api.getOverview();
-    const items = response.items || response.data || [];
+    const items = normalizeCollection(response);
 
-    if (!Array.isArray(items) || items.length === 0) {
+    if (!items.length) {
       setEmpty(container, 'Nenhum dado disponível para visão geral.');
       return;
     }
@@ -36,18 +94,15 @@ async function loadOverview(container) {
       .slice(0, 4)
       .map((item) => {
         const name = item.name || item.symbol || 'Ativo';
-        const price = item.price ?? item.value ?? 0;
-        const changePercent = item.changePercent ?? item.variation ?? 0;
+        const price = item.price ?? item.value ?? item.points ?? 0;
+        const changePercent = item.changePercent ?? item.variation ?? item.change ?? 0;
 
         return `
           <div class="quote-item">
-            <h4>${name}</h4>
-            <div class="value">${formatNumber(price, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            })}</div>
-            <p class="delta ${getDeltaClass(changePercent)}">
-              ${formatPercent(changePercent)}
+            <h4>${escapeHTML(name)}</h4>
+            <div class="value">${formatSmartValue(price)}</div>
+            <p class="delta ${getDeltaClass(safeNumber(changePercent))}">
+              ${formatPercent(safeNumber(changePercent))}
             </p>
           </div>
         `;
@@ -71,7 +126,12 @@ async function loadHomeStocks(container) {
     setLoading(container, 'Carregando destaques da B3...');
 
     const response = await window.api.getStocks();
-    const rows = response.items || response.data || [];
+    const rows = normalizeCollection(response);
+
+    if (!rows.length) {
+      setEmpty(container, 'Nenhum destaque da B3 disponível no momento.');
+      return;
+    }
 
     renderTable(
       container,
@@ -79,25 +139,37 @@ async function loadHomeStocks(container) {
         {
           label: 'Ticker',
           key: 'symbol',
-          render: (row) => createAssetRowLink(row.symbol, 'stock')
+          render: (row) => createAssetRowLink(row.symbol || '--', 'stock')
         },
         {
           label: 'Nome',
           key: 'name',
-          render: (row) => row.name || '--'
+          render: (row) => escapeHTML(row.name || '--')
         },
         {
           label: 'Preço',
           key: 'price',
-          render: (row) => formatCurrency(row.price, 'BRL')
+          render: (row) =>
+            formatCurrency(
+              safeNumber(row.price ?? row.close ?? row.regularMarketPrice ?? 0),
+              'BRL'
+            )
         },
         {
           label: 'Variação',
           key: 'changePercent',
-          render: (row) => formatDeltaHTML(row.changePercent)
+          render: (row) =>
+            formatDeltaHTML(
+              safeNumber(
+                row.changePercent ??
+                row.variation ??
+                row.regularMarketChangePercent ??
+                0
+              )
+            )
         }
       ],
-      rows
+      rows.slice(0, 6)
     );
   } catch (error) {
     console.error('[HOME STOCKS ERROR]', error);
@@ -114,29 +186,30 @@ async function loadHomeRanking(container) {
   }
 
   try {
-    container.innerHTML = '<div class="loading">Carregando ranking...</div>';
-
     const response = await window.api.getRanking(6);
-    const items = response.items || response.data || [];
+    const items = normalizeCollection(response);
 
-    if (!Array.isArray(items) || items.length === 0) {
+    if (!items.length) {
       setEmpty(container, 'Nenhum ranking disponível no momento.');
       return;
     }
 
     container.innerHTML = items
+      .slice(0, 6)
       .map((item, index) => {
         const symbol = item.symbol || '--';
         const type = item.type || 'stock';
         const name = item.name || 'Ativo monitorado';
-        const changePercent = item.changePercent ?? 0;
+        const changePercent = safeNumber(
+          item.changePercent ?? item.variation ?? item.change ?? 0
+        );
 
         return `
           <div class="asset-list-item">
             <small>Posição ${index + 1}</small>
             <strong>${createAssetRowLink(symbol, type)}</strong>
             <span class="card-subtitle">
-              ${name} • 
+              ${escapeHTML(name)} •
               <span class="delta ${getDeltaClass(changePercent)}">
                 ${formatPercent(changePercent)}
               </span>
@@ -160,12 +233,10 @@ async function loadHomeNews(container) {
   }
 
   try {
-    container.innerHTML = '<div class="loading">Carregando notícias...</div>';
-
     const response = await window.api.getNews(6);
-    const items = response.items || response.data || [];
+    const items = normalizeCollection(response);
 
-    if (!Array.isArray(items) || items.length === 0) {
+    if (!items.length) {
       setEmpty(container, 'Nenhuma notícia disponível no momento.');
       return;
     }
@@ -178,4 +249,49 @@ async function loadHomeNews(container) {
     console.error('[HOME NEWS ERROR]', error);
     setError(container, 'Não foi possível carregar as notícias.');
   }
+}
+
+// ===============================
+// SKELETONS PREMIUM
+// ===============================
+function renderOverviewSkeleton(container) {
+  container.innerHTML = Array.from({ length: 4 })
+    .map(
+      () => `
+        <div class="quote-item skeleton-card">
+          <div class="skeleton skeleton-line skeleton-title"></div>
+          <div class="skeleton skeleton-line skeleton-value"></div>
+          <div class="skeleton skeleton-line skeleton-delta"></div>
+        </div>
+      `
+    )
+    .join('');
+}
+
+function renderCardSkeletons(container, total = 3) {
+  container.innerHTML = Array.from({ length: total })
+    .map(
+      () => `
+        <div class="asset-list-item skeleton-card">
+          <div class="skeleton skeleton-line skeleton-mini"></div>
+          <div class="skeleton skeleton-line skeleton-value"></div>
+          <div class="skeleton skeleton-line"></div>
+        </div>
+      `
+    )
+    .join('');
+}
+
+function renderNewsSkeletons(container, total = 3) {
+  container.innerHTML = Array.from({ length: total })
+    .map(
+      () => `
+        <div class="news-card skeleton-card">
+          <div class="skeleton skeleton-line skeleton-title"></div>
+          <div class="skeleton skeleton-line"></div>
+          <div class="skeleton skeleton-line skeleton-mini"></div>
+        </div>
+      `
+    )
+    .join('');
 }
